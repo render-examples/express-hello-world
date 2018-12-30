@@ -6,7 +6,7 @@ The app in this repo is deployed at [https://express.app.render.com](https://exp
 
 ## Deployment
 
-Create a new web service in the project with the following values:
+Create a new web service with the following values:
   * Build Command: `yarn`
   * Start Command: `node app.js`
 
