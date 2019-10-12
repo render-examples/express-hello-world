@@ -7,7 +7,8 @@ The app in this repo is deployed at [https://express.onrender.com](https://expre
 ## Deployment
 
 Create a new web service with the following values:
-  * Build Command: `yarn`
+
+  * Build Command: `yarn` or `npm install`
   * Start Command: `node app.js`
 
 That's it! Your web service will be live on your Render URL as soon as the build finishes.
