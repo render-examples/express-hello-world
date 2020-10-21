@@ -8,6 +8,4 @@ app.post('/captureEmail', function(request, response) {
     return response.status(200).send(request.body.emailAddress);
 });
 
-module.exports = router;
-
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
