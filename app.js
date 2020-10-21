@@ -3,8 +3,10 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 3001;
 const validator = require('email-validator');
+const cors = require('cors');
 
 app.use(bodyParser.json());
+app.use(cors());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
