@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 3001;
+const validator = require('email-validator');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -12,6 +13,9 @@ app.use(bodyParser.urlencoded({
 app.get("/", (req, res) => res.send("Goodbye From OneSpot!"));
 
 app.post('/captureEmail', function(request, response) {
+    if(!validator.validate(request.body.emailAddress)) {
+        return response.sendStatus(400);
+    }
     return response.sendStatus(200);
 });
 
