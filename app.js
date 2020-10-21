@@ -5,7 +5,7 @@ const port = process.env.PORT || 3001;
 app.get("/", (req, res) => res.send("Goodbye From OneSpot!"));
 
 app.post('/captureEmail', function(request, response) {
-    return response.status(200).send(request.body.emailAddress);
+    return response.status(200).send(request.body);
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
