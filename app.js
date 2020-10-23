@@ -15,8 +15,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.get("/", (req, res) => res.send("Goodbye From OneSpot!"));
-
 app.post('/captureEmail', function(request, response) {
     const client = new MongoClient(process.env.MongoConnectionString, { useNewUrlParser: true });
     const dbName = "CustomerAcquisition_DB";
@@ -25,44 +23,32 @@ app.post('/captureEmail', function(request, response) {
     if(!validator.validate(request.body.emailAddress)) {
         return response.sendStatus(400);
     }
-    // TODO: Where to put the call to MailChimp to subscribe?
-    // should it be after we successfully insert into the DB?
-    // at that point we'll at least have the email captured in our DB?
-    // is it necessary to save the email to our DB too?
-    // def, want it after the validator call.
-    subscribeToMailchimpList(request.body.emailAddress).then(() => {
-        console.log('mail chimp again');
-    });
 
-    client.connect(err => {
-        if (err) {
-          throw err;
-        }
-        const collection = client.db(dbName).collection(collectionName);
-          collection.insertOne({ ...request.body })
-          .then((item) => {
-            if (item.insertedCount === 1){
-              return response.sendStatus(201);
-            }
-          }).catch((err) => {
-            return response.sendStatus(500, err);
-          });
-          client.close();
+    subscribeToMailchimpList(request.body.emailAddress).then(() => {
+        saveToOneSpotDatabase(client, dbName, collectionName, request, response).then(() => {
+        });
     });
 });
 
-async function mailchimpTest() {
-    mailchimp.setConfig({
-        apiKey: process.env.MailChimpAPIKey,
-        server: 'us2',
+async function saveToOneSpotDatabase(client, dbName, collectionName, request, response) {
+    client.connect(err => {
+        if (err) {
+            throw err;
+        }
+        const collection = client.db(dbName).collection(collectionName);
+        collection.insertOne({ ...request.body })
+            .then((item) => {
+                if (item.insertedCount === 1) {
+                    return response.sendStatus(201);
+                }
+            }).catch((err) => {
+                return response.sendStatus(500, err);
+            });
+        client.close();
     });
-
-    const response = await mailchimp.ping.get();
-    console.log(response);
 }
 
 async function subscribeToMailchimpList(emailAddress) {
-    console.log('attempting to sub an email');
     const listId = process.env.MailChimpListID;
     mailchimp.setConfig({
         apiKey: process.env.MailChimpAPIKey,
@@ -75,11 +61,8 @@ async function subscribeToMailchimpList(emailAddress) {
         email_address: subscribingUser.email,
         status: "subscribed"
     });
-    console.log(
-        `Successfully added contact as an audience member. The contact's id is ${
-          response.id
-        }.`
-    );
 }
 
+
+app.get("/", (req, res) => res.send("Goodbye From OneSpot!"));
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
