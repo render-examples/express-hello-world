@@ -15,7 +15,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-
 app.get("/", (req, res) => res.send("Goodbye From OneSpot!"));
 
 app.post('/captureEmail', function(request, response) {
@@ -31,7 +30,7 @@ app.post('/captureEmail', function(request, response) {
     // at that point we'll at least have the email captured in our DB?
     // is it necessary to save the email to our DB too?
     // def, want it after the validator call.
-    mailchimpTest().then(() => {
+    subscribeToMailchimpList(request.body.emailAddress).then(() => {
         console.log('mail chimp again');
     });
 
@@ -60,6 +59,27 @@ async function mailchimpTest() {
 
     const response = await mailchimp.ping.get();
     console.log(response);
+}
+
+async function subscribeToMailchimpList(emailAddress) {
+    console.log('attempting to sub an email');
+    const listId = process.env.MailChimpListID;
+    mailchimp.setConfig({
+        apiKey: process.env.MailChimpAPIKey,
+        server: process.env.MailChimpServer,
+    });
+    const subscribingUser = {
+        email: emailAddress
+    };
+    const response = await mailchimp.lists.addListMember(listId, {
+        email_address: subscribingUser.email,
+        status: "subscribed"
+    });
+    console.log(
+        `Successfully added contact as an audience member. The contact's id is ${
+          response.id
+        }.`
+    );
 }
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
