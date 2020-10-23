@@ -20,12 +20,21 @@ app.post('/captureEmail', function(request, response) {
     const dbName = "CustomerAcquisition_DB";
     const collectionName = "EmailAcquisitionCollection";
 
+    if(!validator.validate(request.body.emailAddress)) {
+        return response.sendStatus(400);
+    }
+
+    // TODO: Where to put the call to MailChimp to subscribe?
+    // should it be after we successfully insert into the DB?
+    // at that point we'll at least have the email captured in our DB?
+    // is it necessary to save the email to our DB too?
+    // def, want it after the validator call.
+    // Actually, I might want to move the validator call up
+    // so that is the first thing we do?
+
     client.connect(err => {
         if (err) {
           throw err;
-        }
-        if(!validator.validate(request.body.emailAddress)) {
-            return response.sendStatus(400);
         }
         const collection = client.db(dbName).collection(collectionName);
           collection.insertOne({ ...request.body })
