@@ -5,6 +5,9 @@ const port = process.env.PORT || 3001;
 const validator = require('email-validator');
 const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
+const mailchimp = require('@mailchimp/mailchimp_marketing');
+const { response } = require("express");
+require('dotenv').config()
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -23,14 +26,14 @@ app.post('/captureEmail', function(request, response) {
     if(!validator.validate(request.body.emailAddress)) {
         return response.sendStatus(400);
     }
-
     // TODO: Where to put the call to MailChimp to subscribe?
     // should it be after we successfully insert into the DB?
     // at that point we'll at least have the email captured in our DB?
     // is it necessary to save the email to our DB too?
     // def, want it after the validator call.
-    // Actually, I might want to move the validator call up
-    // so that is the first thing we do?
+    mailchimpTest().then(() => {
+        console.log('mail chimp again');
+    });
 
     client.connect(err => {
         if (err) {
@@ -48,5 +51,15 @@ app.post('/captureEmail', function(request, response) {
           client.close();
     });
 });
+
+async function mailchimpTest() {
+    mailchimp.setConfig({
+        apiKey: process.env.MailChimpAPIKey,
+        server: 'us2',
+    });
+
+    const response = await mailchimp.ping.get();
+    console.log(response);
+}
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

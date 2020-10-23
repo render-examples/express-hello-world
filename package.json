@@ -11,8 +11,10 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "@mailchimp/mailchimp_marketing": "^3.0.22",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "email-validator": "^2.0.4",
     "express": "^4.16.3",
     "mongodb": "^3.6.2"
