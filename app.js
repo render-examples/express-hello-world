@@ -20,6 +20,8 @@ app.post('/captureEmail', function(request, response) {
     const dbName = "CustomerAcquisition_DB";
     const collectionName = "EmailAcquisitionCollection";
 
+    // adding a comment
+
     if(!validator.validate(request.body.emailAddress)) {
         return response.sendStatus(400);
     }
