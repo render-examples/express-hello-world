@@ -19,14 +19,16 @@ app.post('/captureEmail', function(request, response) {
     const client = new MongoClient(process.env.MongoConnectionString, { useNewUrlParser: true });
     const dbName = "CustomerAcquisition_DB";
     const collectionName = "EmailAcquisitionCollection";
-
-    // adding a comment
+    let userFeedbackCheckboxValue = 'No';
 
     if(!validator.validate(request.body.emailAddress)) {
         return response.sendStatus(400);
     }
+    if(request.body.userFeedbackCheckbox === true){
+        userFeedbackCheckboxValue = 'Yes'
+    }
 
-    subscribeToMailchimpList(request.body.emailAddress).then(() => {
+    subscribeToMailchimpList(request.body.emailAddress, userFeedbackCheckboxValue).then(() => {
         saveToOneSpotDatabase(client, dbName, collectionName, request, response).then(() => {
         });
     });
@@ -50,18 +52,22 @@ async function saveToOneSpotDatabase(client, dbName, collectionName, request, re
     });
 }
 
-async function subscribeToMailchimpList(emailAddress) {
+async function subscribeToMailchimpList(emailAddress, userFeedbackCheckbox) {
     const listId = process.env.MailChimpListID;
     mailchimp.setConfig({
         apiKey: process.env.MailChimpAPIKey,
         server: process.env.MailChimpServer,
     });
     const subscribingUser = {
-        email: emailAddress
+        email: emailAddress,
+        checkboxValue: userFeedbackCheckbox
     };
     const response = await mailchimp.lists.addListMember(listId, {
         email_address: subscribingUser.email,
-        status: "subscribed"
+        status: "subscribed",
+        merge_fields: {
+            USERFEEDBK: subscribingUser.checkboxValue
+          }
     });
 }
 
