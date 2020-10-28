@@ -25,12 +25,17 @@ app.post('/captureEmail', function(request, response) {
         return response.sendStatus(400);
     }
     if(request.body.userFeedbackCheckbox === true){
-        userFeedbackCheckboxValue = 'Yes'
+        userFeedbackCheckboxValue = 'Yes';
     }
 
     subscribeToMailchimpList(request.body.emailAddress, userFeedbackCheckboxValue).then(() => {
         saveToOneSpotDatabase(client, dbName, collectionName, request, response).then(() => {
+        }).catch((err) => {
+            return response.sendStatus(500, err);
         });
+    }).catch((err) => {
+        console.log(err);
+        return response.sendStatus(500, err);
     });
 });
 
