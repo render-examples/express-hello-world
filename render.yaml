@@ -5,7 +5,3 @@ services:
     repo: https://github.com/hieurender/express-hello-world
     buildCommand: yarn
     startCommand: node app.js
-    disk:
-      name: test-data
-      mountPath: /opt/test
-      sizeGB: 1
