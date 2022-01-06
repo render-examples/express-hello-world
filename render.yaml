@@ -5,3 +5,7 @@ services:
     repo: https://github.com/hieurender/express-hello-world
     buildCommand: yarn
     startCommand: node app.js
+    scaling:
+      minInstances: 2
+      maxInstances: 4
+      targetMemoryPercent: 50
