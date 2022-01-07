@@ -7,5 +7,5 @@ services:
     startCommand: node app.js
     scaling:
       minInstances: 2
-      maxInstances: 4
+      maxInstances: 5
       targetMemoryPercent: 50
