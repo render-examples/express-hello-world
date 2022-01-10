@@ -9,7 +9,7 @@ services:
     startCommand: node app.js
     envVars:
       - fromGroup: prod-secrets
-      - previewGroup: staging-secrets
+        previewGroup: staging-secrets
 
 envVarGroups:
   - name: prod-secrets
