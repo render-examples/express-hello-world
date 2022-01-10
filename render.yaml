@@ -1,3 +1,5 @@
+previewsEnabled: true
+
 services:
   - type: web
     name: iac-test
@@ -5,17 +7,19 @@ services:
     repo: https://github.com/hieurender/express-hello-world
     buildCommand: yarn
     startCommand: node app.js
-    scaling:
-      minInstances: 2
-      maxInstances: 5
-      targetMemoryPercent: 50
-  - type: web
-    name: hieu-express
-    env: node
-    repo: https://github.com/hieurender/express-hello-world
-    buildCommand: yarn
-    startCommand: node app.js
-    scaling:
-      minInstances: 1
-      maxInstances: 2
-      targetMemoryPercent: 50
+    envVars:
+      - fromGroup: prod-secrets
+      - previewGroup: staging-secrets
+
+envVarGroups:
+  - name: prod-secrets
+    envVars:
+      - key: SECRET
+        sync: false
+        # Should also not show up in previews
+      - key: SECRET_2
+        sync: false
+  - name: staging-secrets
+    envVars:
+      - key: SECRET
+        sync: false
