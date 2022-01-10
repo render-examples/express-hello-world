@@ -2,7 +2,7 @@ previewsEnabled: true
 
 services:
   - type: web
-    name: iac-test
+    name: iac-test-2
     env: node
     repo: https://github.com/hieurender/express-hello-world
     buildCommand: yarn
