@@ -19,7 +19,7 @@ app.listen(port, async () => {
   console.log(`Webserver up. Listening on ${port}!`);
 
   //Schedule all tasks
-  const myFirstQueue = new Queue('my-third-queue', REDIS_URL);
+  const myFirstQueue = getQueue('my-third-queue', REDIS_URL);
 
   //Scheduler
   const jobData = { foo : 'bar' };
