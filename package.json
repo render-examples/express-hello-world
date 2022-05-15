@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "bull": "^4.8.3",
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "ioredis": "^5.0.4"
   },
   "engines": {
     "node": ">=14"

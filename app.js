@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3001;
 const Bull = require('bull');
-//const Redis = require('ioredis');
+const Redis = require('ioredis');
 
 /*
 const client = new Redis({
@@ -12,7 +12,7 @@ const client = new Redis({
   password: 'F6Mb3VxfSF4PATLSzl0z1Y1JJNzGxyeh'
 });
 */
-const myFirstQueue = new Bull('my-second-queue', 'redis://red-ca01lds6fj35fniee9ig:6379');
+const myFirstQueue = new Bull('my-third-queue', 'rediss://red-ca01lds6fj35fniee9ig:F6Mb3VxfSF4PATLSzl0z1Y1JJNzGxyeh@oregon-redis.render.com:6379');
 
 app.listen(port, async () => {
   console.log(`Example app listening YO on port ${port}!`)
@@ -24,8 +24,12 @@ app.listen(port, async () => {
 
   //Consumers
   myFirstQueue.process(async (job) => {
-    console.log(`the job ran finally! ${job.data}`);
+    console.log(`the job ran finally WITH THE EXTERNAL REDIS CLIENT! ${job.data}`);
   });
+
+  const client = new Redis('rediss://red-ca01lds6fj35fniee9ig:F6Mb3VxfSF4PATLSzl0z1Y1JJNzGxyeh@oregon-redis.render.com:6379');
+  const reply = await client.get('bull');
+  console.log(`Got a reply from my Redis client! ${reply}`);
 
   //const Bull = require('bull');
   //const redisUrl = 'rediss://red-ca01lds6fj35fniee9ig:F6Mb3VxfSF4PATLSzl0z1Y1JJNzGxyeh@oregon-redis.render.com:6379'
