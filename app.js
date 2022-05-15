@@ -7,6 +7,7 @@ const _ = require('lodash');
 const REDIS_URL = process.env.INTERNAL_REDIS_URL || process.env.REDIS_URL;
 
 const getQueue = (queueName, redisUrl) => {
+  console.log(`The redisUrl is ${redisUrl}`);
   let redisOpts = {};
   if (_.startsWith(redisUrl, 'rediss')) {
     redisOpts = { redis: { tls: true, enableTLSForSentinelMode : false } };
