@@ -12,8 +12,9 @@ app.listen(port, async () => {
   const cronSchedule = { repeat: { cron: '* * * * *' } };
   const job = await myFirstQueue.add(jobData, cronSchedule);
 
-  myFirstQueue.process(async (job) => {
-    console.log(`the job ran! ${job.data}`);
-  });
+  //Remove consumers
+  //myFirstQueue.process(async (job) => {
+  //  console.log(`the job ran! ${job.data}`);
+  //});
 
 });
