@@ -1,51 +1,29 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 const port = process.env.PORT || 3001;
-const Bull = require('bull');
-const Redis = require('ioredis');
+const Queue = require('bull');
+const _ = require('lodash');
 
-/*
-const client = new Redis({
-  host: 'oregon-redis.render.com',
-  port: 6379,
-  username: 'red-ca01lds6fj35fniee9ig',
-  password: 'F6Mb3VxfSF4PATLSzl0z1Y1JJNzGxyeh'
-});
-*/
-const myFirstQueue = new Bull('my-third-queue', 'rediss://red-ca01lds6fj35fniee9ig:F6Mb3VxfSF4PATLSzl0z1Y1JJNzGxyeh@oregon-redis.render.com:6379');
+const REDIS_URL = process.env.INTERNAL_REDIS_URL || process.env.REDIS_URL;
+
+const getQueue(queueName, redisUrl) => {
+  let redisOpts = {};
+  if (_.startsWith(redisUrl, 'rediss')) {
+    redisOpts = { redis: { tls: true, enableTLSForSentinelMode : false } };
+  }
+  const queue = new Queue(queueName, redisUrl, redisOpts);
+  return queue;
+}
 
 app.listen(port, async () => {
-  console.log(`Example app listening YO on port ${port}!`)
+  console.log(`Webserver up. Listening on ${port}!`);
+
+  //Schedule all tasks
+  const myFirstQueue = new Queue('my-third-queue', REDIS_URL);,
 
   //Scheduler
   const jobData = { foo : 'bar' };
   const cronSchedule = { repeat: { cron: '* * * * *' } };
   const job = await myFirstQueue.add(jobData, cronSchedule);
 
-  //Consumers
-  myFirstQueue.process(async (job) => {
-    console.log(`the job ran finally WITH THE EXTERNAL REDIS CLIENT! ${job.data}`);
-  });
-
-  const client = new Redis('rediss://red-ca01lds6fj35fniee9ig:F6Mb3VxfSF4PATLSzl0z1Y1JJNzGxyeh@oregon-redis.render.com:6379');
-  const reply = await client.get('bull');
-  console.log(`Got a reply from my Redis client! ${reply}`);
-
-  //const Bull = require('bull');
-  //const redisUrl = 'rediss://red-ca01lds6fj35fniee9ig:F6Mb3VxfSF4PATLSzl0z1Y1JJNzGxyeh@oregon-redis.render.com:6379'
-  //const redisUrl = 'some junk';
-  /*
-  const reply = await client.get('bull:my-first-queue:repeat');
-  console.log(reply);
-
-  console.log("hello world testing bull!!!");
-  const myFirstQueue = new Bull('my-first-queue', client);
-  console.log("did this happen? creating the new bull queue");
-
-  myFirstQueue.process(async (job) => {
-    console.log(`processing from strapi API! ${job.data}`);
-  });
-  console.log("did this happen? oblierating the queue");
-
-  */
 });
