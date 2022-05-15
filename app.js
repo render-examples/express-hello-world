@@ -8,12 +8,12 @@ const myFirstQueue = new Bull('my-first-queue', 'redis://red-ca01lds6fj35fniee9i
 app.listen(port, async () => {
   console.log(`Example app listening YO on port ${port}!`)
 
-  const job = await myFirstQueue.add({
-    foo: 'bar'
-  });
+  const jobData = { foo : 'bar' };
+  const cronSchedule = { repeat: { cron: '* * * * *' } };
+  const job = await myFirstQueue.add(jobData, cronSchedule);
 
   myFirstQueue.process(async (job) => {
-    return console.log(`the job ran! ${job.data}`);
+    console.log(`the job ran! ${job.data}`);
   });
 
 });
