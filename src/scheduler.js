@@ -13,7 +13,7 @@ const JOBS = {
   'order-queue': [
     {
       jobData: { name: 'autoAcceptOrders' },
-      cronSchedule: { repeat: { cron: '*/1 * * * *' } }
+      cronSchedule: { repeat: { cron: '* * * * *' } }
     },
   ]
 }
