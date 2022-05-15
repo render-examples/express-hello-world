@@ -23,7 +23,7 @@ app.listen(port, async () => {
     for (const job of orderQueueJobDefinitions) {
       const jobData = _.clone(job['jobData']);
       jobData['location'] = location;
-      await orderQueue.add(jobData, job.cronSchedule);
+      await orderQueue.add(jobData.name, jobData, job.cronSchedule);
       console.log(`Job ${JSON.stringify(jobData)} enqueued in ${scheduler.ORDER_QUEUE}`);
     }
   }
