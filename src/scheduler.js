@@ -1,7 +1,7 @@
 const Queue = require('bull');
 const _ = require('lodash');
 
-const redisUrl = process.env.INTERNAL_REDIS_URL || process.env.REDIS_URL;
+const REDIS_URL = process.env.INTERNAL_REDIS_URL || process.env.REDIS_URL;
 
 const ORDER_QUEUE = 'order-queue';
 const MENU_QUEUE = 'menu-queue';
@@ -18,7 +18,7 @@ const JOBS = {
   ]
 }
 
-const getQueue = (queueName, redisUrl) => {
+const getQueue = (queueName, redisUrl = REDIS_URL) => {
   if (!redisUrl) {
     console.log('Note: redisUrl is missing');
   }
