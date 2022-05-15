@@ -12,18 +12,6 @@ const OTHER_QUEUE = 'other-queue';
 const JOBS = {
   'order-queue': [
     {
-      jobData: { name: 'syncAllCompletedOrders' },
-      cronSchedule: { repeat: { cron: '45 * * * *' } }
-    },
-    {
-      jobData: { name: 'syncAllPendingOrders' },
-      cronSchedule: { repeat: { cron: '*/2 * * * *' } }
-    },
-    {
-      jobData: { name: 'autoReadyOrders' },
-      cronSchedule: { repeat: { cron: '*/2 * * * *' } }
-    },
-    {
       jobData: { name: 'autoAcceptOrders' },
       cronSchedule: { repeat: { cron: '*/1 * * * *' } }
     },
