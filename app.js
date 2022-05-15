@@ -14,7 +14,7 @@ const client = new Redis({
 */
 
 //const myFirstQueue = new Bull('my-first-queue', 'redis://red-ca01lds6fj35fniee9ig:6379');
-const myFirstQueue = new Bull('my-first-queue', 'redis://red-ca01lds6fj35fniee9ig:6379');
+const myFirstQueue = new Bull('my-first-queue', 'rediss://red-ca01lds6fj35fniee9ig:F6Mb3VxfSF4PATLSzl0z1Y1JJNzGxyeh@oregon-redis.render.com:6379');
 
 app.listen(port, async () => {
   console.log(`Example app listening YO on port ${port}!`)
