@@ -2,14 +2,17 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3001;
 const Bull = require('bull');
-const Redis = require('ioredis');
+//const Redis = require('ioredis');
 
+/*
 const client = new Redis({
   host: 'oregon-redis.render.com',
   port: 6379,
   username: 'red-ca01lds6fj35fniee9ig',
   password: 'F6Mb3VxfSF4PATLSzl0z1Y1JJNzGxyeh'
 });
+*/
+
 //const myFirstQueue = new Bull('my-first-queue', 'redis://red-ca01lds6fj35fniee9ig:6379');
 const myFirstQueue = new Bull('my-first-queue', 'redis://red-ca01lds6fj35fniee9ig:6379');
 
