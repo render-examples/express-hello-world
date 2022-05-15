@@ -6,7 +6,7 @@ const _ = require('lodash');
 
 const REDIS_URL = process.env.INTERNAL_REDIS_URL || process.env.REDIS_URL;
 
-const getQueue(queueName, redisUrl) => {
+const getQueue = (queueName, redisUrl) => {
   let redisOpts = {};
   if (_.startsWith(redisUrl, 'rediss')) {
     redisOpts = { redis: { tls: true, enableTLSForSentinelMode : false } };
@@ -19,7 +19,7 @@ app.listen(port, async () => {
   console.log(`Webserver up. Listening on ${port}!`);
 
   //Schedule all tasks
-  const myFirstQueue = new Queue('my-third-queue', REDIS_URL);,
+  const myFirstQueue = new Queue('my-third-queue', REDIS_URL);
 
   //Scheduler
   const jobData = { foo : 'bar' };
