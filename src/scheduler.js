@@ -15,6 +15,18 @@ const JOBS = {
       jobData: { name: 'autoAcceptOrders' },
       cronSchedule: { repeat: { cron: '* * * * *' } }
     },
+    {
+      jobData: { name: 'autoReadyOrders' },
+      cronSchedule: { repeat: { cron: '*/2 * * * *' } }
+    },
+    {
+      jobData: { name: 'syncAllCompletedOrders' },
+      cronSchedule: { repeat: { cron: '45 * * * *' } }
+    },
+    {
+      jobData: { name: 'syncAllPendingOrders' },
+      cronSchedule: { repeat: { cron: '*/2 * * * *' } }
+    },
   ]
 }
 
