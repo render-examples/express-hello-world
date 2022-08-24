@@ -6,7 +6,7 @@ myVideo.muted = true;
 var peer = new Peer(undefined, {
     path: '/peerjs',
     host: '/',
-    port: '3000'
+    port: '443'
 });
 
 let myVideoStream;
@@ -96,7 +96,7 @@ let text = $('input');
     });
 
     socket.on('createMessage', message => {
-        $('.messages').append(`<li class="message"><b>user</b><br />${message}</li>`)
+        $('ul').append(`<li class="message"><b>user</b><br />${message}</li>`)
         scrollToBottom();
     })
 
