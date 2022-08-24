@@ -9,21 +9,21 @@ const app = express();
 
 const createHttpsServer = () => {
   return createServer({
-    cert: readFileSync(resolve(__dirname, './../ssl/cert.pem')),
-    key: readFileSync(resolve(__dirname, './../ssl/cert.key'))
+    cert: readFileSync(resolve(__dirname, './ssl/cert.pem')),
+    key: readFileSync(resolve(__dirname, './ssl/cert.key'))
   });
 };
 
 const appServer = createServer({
-  cert: readFileSync(resolve(__dirname, './../ssl/cert.pem')),
-  key: readFileSync(resolve(__dirname, './../ssl/cert.key'))
+  cert: readFileSync(resolve(__dirname, './ssl/cert.pem')),
+  key: readFileSync(resolve(__dirname, './ssl/cert.key'))
 }, app).listen(process.env.PORT || 3000);
 
-app.use(express.static(resolve(__dirname, './../public')));
+app.use(express.static(resolve(__dirname, './public')));
 
 const wsServer = createServer({
-  cert: readFileSync(resolve(__dirname, './../ssl/cert.pem')),
-  key: readFileSync(resolve(__dirname, './../ssl/cert.key'))
+  cert: readFileSync(resolve(__dirname, './ssl/cert.pem')),
+  key: readFileSync(resolve(__dirname, './ssl/cert.key'))
 });
 const wss = new WebSocketServer({ server: wsServer });
 
