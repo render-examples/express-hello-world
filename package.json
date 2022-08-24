@@ -14,7 +14,7 @@
     "ejs": "^3.1.3",
     "express": "^4.18.1",
     "nodemo": "^1.0.0",
-    "socket.io": "^2.5.0",
+    "socket.io": "^4.5.0",
     "uuid": "^8.3.2"
   },
   "engines": {
