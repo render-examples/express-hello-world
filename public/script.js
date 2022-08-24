@@ -1,11 +1,11 @@
-const socket = io('https://myharmony.herokuapp.com');
+const socket = io('/');
 const videoGrid = document.getElementById('video-grid');
 const myVideo = document.createElement('video');
 myVideo.muted = true;
 
 var peer = new Peer(undefined, {
     path: '/peerjs',
-    host: 'https://myharmony.herokuapp.com',
+    host: '/',
     port: '3000'
 });
 
@@ -60,7 +60,7 @@ const muteUnmute = () => {
 }
 
 navigator.mediaDevices.getUserMedia({
-
+    video: true,
     audio: true
 }).then(stream => {
     myVideoStream = stream;
