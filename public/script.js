@@ -1,12 +1,12 @@
-const socket = io('/');
+const socket = io('https://myharmony.herokuapp.com');
 const videoGrid = document.getElementById('video-grid');
 const myVideo = document.createElement('video');
 myVideo.muted = true;
 
 var peer = new Peer(undefined, {
     path: '/peerjs',
-    host: '/',
-    port: '443'
+    host: 'https://myharmony.herokuapp.com',
+    port: '3000'
 });
 
 let myVideoStream;
@@ -56,11 +56,11 @@ const muteUnmute = () => {
         myVideoStream.getAudioTracks()[0].enabled = true;
     }
 
-    
+
 }
 
 navigator.mediaDevices.getUserMedia({
-    video: true,
+
     audio: true
 }).then(stream => {
     myVideoStream = stream;
@@ -78,7 +78,7 @@ navigator.mediaDevices.getUserMedia({
         connectToNewUser(userId, stream);
     })
 
-    
+
 
 })
 
@@ -96,7 +96,7 @@ let text = $('input');
     });
 
     socket.on('createMessage', message => {
-        $('ul').append(`<li class="message"><b>user</b><br />${message}</li>`)
+        $('.messages').append(`<li class="message"><b>user</b><br />${message}</li>`)
         scrollToBottom();
     })
 
