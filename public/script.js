@@ -65,7 +65,7 @@ const muteUnmute = () => {
 }
 
 navigator.mediaDevices.getUserMedia({
-    video: true,
+    video: false,
     audio: true
 }).then(stream => {
     myVideoStream = stream;
