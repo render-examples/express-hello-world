@@ -29,23 +29,23 @@ app.get('/room/:room', (req, res) => {
     if(user.rooms.includes(req.params.room)){
 
         res.render('room', { roomId: req.param.room })
-        io.on('connection', socket => {
-            socket.on('join-room', (roomId, userId) => {
 
-                socket.join(roomId);
-                socket.to(roomId).broadcast.emit('user-connected', userId);
-                socket.on('message', message => {
-                    io.to(roomId).emit('createMessage', message)
-                })
-            })
-        })
     } else {
         res.redirect('/error');
     }
 });
 
 
+io.on('connection', socket => {
+    socket.on('join-room', (roomId, userId) => {
 
+        socket.join(roomId);
+        socket.to(roomId).broadcast.emit('user-connected', userId);
+        socket.on('message', message => {
+            io.to(roomId).emit('createMessage', message)
+        })
+    })
+});
 
 
 
