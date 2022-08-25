@@ -13,28 +13,39 @@ app.use('/peerjs', peerServer);
 app.set('view engine', 'ejs');
 
 
+let user = {
+    id: 1,
+    name : "Jonathan",
+    rooms : ["1",3],
 
+}
 
 app.get('/', (req, res) => {
     res.redirect(`/${uuidv4()}`);
 });
 
-app.get('/:room', (req, res) => {
+app.get('/room/:room', (req, res) => {
+    // check if user contains the room
+    if(user.rooms.includes(req.params.room)){
 
-    res.render('room', { roomId: req.param.room })
+        res.render('room', { roomId: req.param.room })
+        io.on('connection', socket => {
+            socket.on('join-room', (roomId, userId) => {
+
+                socket.join(roomId);
+                socket.to(roomId).broadcast.emit('user-connected', userId);
+                socket.on('message', message => {
+                    io.to(roomId).emit('createMessage', message)
+                })
+            })
+        })
+    } else {
+        res.redirect('/error');
+    }
 });
 
 
-io.on('connection', socket => {
-    socket.on('join-room', (roomId, userId) => {
 
-        socket.join(roomId);
-        socket.to(roomId).broadcast.emit('user-connected', userId);
-        socket.on('message', message => {
-            io.to(roomId).emit('createMessage', message)
-        })
-    })
-})
 
 
 
