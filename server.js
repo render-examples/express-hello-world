@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
     res.redirect(`/${uuidv4()}`);
 });
 
-app.get('/room/:room', (req, res) => {
+app.get('/:room', (req, res) => {
     // check if user contains the room
     if(user.rooms.includes(req.params.room)){
 
