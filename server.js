@@ -15,7 +15,7 @@ app.set('view engine', 'ejs');
 
 let user = {
     id: 1,
-    name : "Jonathan",
+    name : "Bob",
     rooms : ["1",3],
 
 }
@@ -28,7 +28,7 @@ app.get('/room/:room', (req, res) => {
     // check if user contains the room
     if(user.rooms.includes(req.params.room)){
 
-        res.render('room', { roomId: req.param.room })
+        res.render('room', { roomId: req.param.room, userName: user.name });
 
     } else {
         res.redirect('/error');

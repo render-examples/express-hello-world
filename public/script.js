@@ -97,12 +97,13 @@ let text = $('input');
         if (e.which == 13 && text.val().length !== 0) {
             socket.emit('message', text.val());
             console.log(text.val());
+            console.log(USER_NAME);
             text.val('')
         }
     });
 
     socket.on('createMessage', message => {
-        $('ul').append(`<li class="message"><b>user</b><br />${message}</li>`)
+        $('ul').append(`<li class="message"><b>${USER_NAME}</b><br />${message}</li>`)
         scrollToBottom();
     })
 
