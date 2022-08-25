@@ -16,7 +16,12 @@ const addVideoStream = (video, stream) => {
     video.addEventListener('loadedmetadata', () => {
         video.play();
     })
-    videoGrid.append(video);
+    // check if videogrid contains a video with the same id
+    if(videoGrid.querySelector(`[id="${stream.id}"]`) === null){
+        console.log(stream);
+        videoGrid.append(video);
+    }
+
 };
 
 const connectToNewUser = (userId, stream) => {
