@@ -1,15 +1,25 @@
-# README
+# Zoom-Clone
 
-This is the [Express](https://expressjs.com) [Hello world](https://expressjs.com/en/starter/hello-world.html) example on [Render](https://render.com).
+A Real-time working Zoom Web App made using purely NodeJs.
 
-The app in this repo is deployed at [https://express.onrender.com](https://express.onrender.com).
-
-## Deployment
-
-See https://render.com/docs/deploy-node-express-app or follow the steps below:
-
-Create a new web service with the following values:
-  * Build Command: `yarn`
-  * Start Command: `node app.js`
-
-That's it! Your web service will be live on your Render URL as soon as the build finishes.
+**Setup Procedures (local usage):**
+  1. Clone the repository.
+  2. **npm i**.
+  3. Change the Port no in **public/script.js** according to your localhost port.
+  4. Navigate to your project.
+  5. Run nodemon **server.js**
+  
+  
+  
+  
+**Deploy into heroku:**
+  1. Clone the repository.
+  2. Navigate to your project.
+  3. Follow the commands in **CLI**:
+- git add .
+- git commit -m"message"
+- heroku login
+- heroku create
+- git push heroku master
+      
+4. Open the deployed Link. 
