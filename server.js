@@ -20,6 +20,7 @@ let user = {
 
 }
 
+
 app.get('/', (req, res) => {
     res.redirect(`/${uuidv4()}`);
 });
