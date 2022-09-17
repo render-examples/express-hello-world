@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <h1>Latitude - <h4 id="latitude"></h4>
+        </h1>
+        <h1>Longitude - <h4 id="longitude"></h4>
+        </h1>
+    </div>
+    <script>
+        navigator.geolocation.getCurrentPosition(getLatLon);
+        function getLatLon(position) {
+            let latitude = position.coords.latitude;
+            let longitude = position.coords.longitude;
+            document.getElementById("latitude").innerHTML = latitude
+            document.getElementById("longitude").innerHTML = longitude
+        };
+    </script>
+</body>
+
+</html>
