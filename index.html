@@ -11,8 +11,14 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
         video {
-            width: fit-content;
-            height: fit-content;
+            width: 100%;
+            height: auto;
+        }
+
+        @media (min-width: 400px) {
+            .container {
+                max-width: 400px;
+            }
         }
     </style>
 
@@ -29,10 +35,10 @@
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
-                <div class="d-flex justify-content-center flex-nowrap">
+                <div class="container">
                     <video id="peer-video" playsinline autoplay></video>
                 </div>
-                <div class="d-flex justify-content-center flex-nowrap">
+                <div class="container">
                     <video id="your-video" playsinline autoplay></video>
                 </div>
                 <div class="d-flex justify-content-center flex-nowrap">
