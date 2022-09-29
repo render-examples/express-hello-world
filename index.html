@@ -13,15 +13,31 @@
     <style>
         #video-container {
             height: 100vh;
+            margin: 0 auto;
         }
 
         video {
+            object-fit: fill;
+            width: 40vw;
             height: 45vh;
-            width: 100%;
+            border-radius: 10px;
+        }
+
+        #button-content {
+            height: 10vh;
         }
 
         #exampleModal {
             background-color: aqua;
+        }
+
+        @media all and (max-width:500px) {
+            video {
+                object-fit: fill;
+                width: 100vw;
+                height: 45vh;
+                border-radius: 0px;
+            }
         }
     </style>
 
@@ -43,8 +59,7 @@
             <div class="d-flex justify-content-center flex-nowrap" style="height: 45vh;">
                 <video id="your-video" playsinline autoplay id="video"></video>
             </div>
-            <div class="d-flex justify-content-center flex-nowrap" style="height: 10vh; background-color: white;"
-                id="button-content">
+            <div class="d-flex justify-content-center flex-nowrap" id="button-content">
                 <div style="margin: 20px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
                         class="bi bi-camera-video" viewBox="0 0 16 16">
