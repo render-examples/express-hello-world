@@ -10,7 +10,7 @@ const config = require('../../webpack.config.js');
 const app = express();
 const port = 8080;
 
-const devServerEnabled = false;
+const devServerEnabled = true;
 
 if (devServerEnabled) {
     config.entry.app.unshift('webpack-hot-middleware/client?reload=true&timeout=1000');
@@ -25,7 +25,6 @@ if (devServerEnabled) {
 
     app.use(webpackHotMiddleware(compiler));
 }
-
 
 app.use(express.static('./public'));
 
