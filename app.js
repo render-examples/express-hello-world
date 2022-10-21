@@ -4,6 +4,13 @@ const port = process.env.PORT || 3001;
 
 app.get("/", (req, res) => res.type('html').send(html));
 
+app.post('/api/add', multipart.any(), function (req, res) {
+  const firstValue = parseInt(req.body.firstValue);
+  const secondValue = parseInt(req.body.secondValue);
+  const sum = firstValue + secondValue;
+  res.json({sum: sum, firstValue: firstValue, secondValue: secondValue});
+});
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 
