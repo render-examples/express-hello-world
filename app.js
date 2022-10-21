@@ -1,10 +1,15 @@
 const express = require("express");
+const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 3001;
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
 app.get("/", (req, res) => res.type('html').send(html));
 
-app.post('/api/add', multipart.any(), function (req, res) {
+app.post('/api/add/',(req, res) =>  {
   const firstValue = parseInt(req.body.firstValue);
   const secondValue = parseInt(req.body.secondValue);
   const sum = firstValue + secondValue;
