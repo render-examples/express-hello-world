@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "sourceMap": false,
+    "target": "ES5",
+    "module": "ES2015",
+    "strict": true,
+    "outDir": "./dist"
+  },
+  "include": ["ts/**/*"]
+}

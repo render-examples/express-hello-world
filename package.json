@@ -1,19 +1,25 @@
 {
-  "name": "express-hello-world",
+  "name": "jar-book",
   "version": "1.0.0",
-  "description": "Express Hello World on Render",
-  "main": "app.js",
-  "repository": "https://github.com/render-examples/express-hello-world",
-  "author": "Render Developers",
+  "description": "jar-book",
+  "main": "index.js",
+  "author": "aseruneko",
   "license": "MIT",
-  "private": false,
   "scripts": {
-    "start": "node app.js"
+    "start": "babel-watch ./dist/src_server/server.js"
   },
-  "dependencies": {
-    "express": "^4.16.3"
-  },
-  "engines": {
-    "node": ">=14"
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "babel-loader": "^8.0.6",
+    "babel-watch": "^7.0.0",
+    "core-js": "^3.1.4",
+    "express": "^4.17.1",
+    "multer": "^1.4.1",
+    "webpack": "^4.34.0",
+    "webpack-cli": "^3.3.4",
+    "webpack-dev-middleware": "^3.7.0",
+    "webpack-dev-server": "^3.7.1",
+    "webpack-hot-middleware": "^2.25.0"
   }
 }
