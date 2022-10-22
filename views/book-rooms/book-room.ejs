@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css" />
+    </head>
+    <body>
+        <header>
+            <h1>jar-book online beta</h1>
+        </header>
+        <section>
+            <dl>
+                <dt>
+                    部屋名
+                </dt>
+                <dd>
+                    <%- roomTitle %>
+                </dd>
+                <dt>
+                    ID
+                </dt>
+                <dd>
+                    <%- roomId %>
+                </dd>
+                <dt>
+                    status
+                </dt>
+                <dd>
+                    <%- status %>
+                </dd>
+            </dl>
+            <h1>プレイヤー</h1>
+            <ul>
+                <% players.forEach(function(player) { %>
+                    <li>
+                        <%= player.name %>
+                    </li>
+                <% }); %>
+            </ul>
+            <button>
+                始める
+            </button>
+        </section>
+        <footer>
+            <a href="http://twitter.com/aseruneko">@aseruneko</a>
+        </footer>
+    </body>
+</html>

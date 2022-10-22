@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css" />
+    </head>
+    <body>
+        <header>
+            <h1>jar-book online beta</h1>
+        </header>
+        <section>
+            <h1>部屋を作成する</h1>
+            <div>
+                room title
+                <input type="text" id="room-title">
+            </div>
+            <div>
+                player name
+                <input type="text" id="player-name">
+            </div>
+            <div>
+                minute max
+                <input type="number" id="minute-max">
+            </div>
+            <div>
+                page num
+                <input type="number" id="page-num">
+            </div>
+            <div>
+                <button type="button" onclick="onClickButton()">
+                    部屋を作成する
+                </button>
+            </div>
+        </section>
+        <footer>
+            <a href="http://twitter.com/aseruneko">@aseruneko</a>
+        </footer>
+        <script>
+            function onClickButton() {
+                console.log( document.getElementById("room-title"));
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "../api/book-rooms/create", true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = function() {
+                    if ((xhr.readyState == 4) && (xhr.status == 200)) {
+                        console.log(JSON.parse(xhr.response))
+                        window.location.href = `${JSON.parse(xhr.response).bookRoomId}`
+                    }
+                }
+                xhr.send(JSON.stringify(
+                    {
+                        roomTitle: document.getElementById("room-title").value,
+                        playerName: document.getElementById("player-name").value,
+                        minuteMax: document.getElementById("minute-max").value,
+                        pageNum: document.getElementById("page-num").value
+                    }
+                ));
+            };
+        </script>
+    </body>
+</html>

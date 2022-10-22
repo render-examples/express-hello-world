@@ -11,6 +11,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "ejs": "^3.1.8",
     "express": "^4.16.3"
   },
   "engines": {
