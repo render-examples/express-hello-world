@@ -54,7 +54,7 @@ const html = `
     <section>
       Hello Limon from Render!
     </section>
-    <p> Successfully Host my project </p>
+    <p> Successfully Host my project on Render </p>
   </body>
 </html>
 `
