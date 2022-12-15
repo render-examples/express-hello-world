@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/css/bootstrap.css" type="text/css">
+  </head>
+
+  <body>
+    <div class="container">
+      <span>{{timestamp}}</span>
+      <h1>Profiles</h1>
+      <ol>
+        {{#profiles}}
+          <li><a href="/profile/{{username}}">{{name}}</a></li>
+        {{/profiles}}
+      </ol>
+    </div>
+  </body>
+</html>
