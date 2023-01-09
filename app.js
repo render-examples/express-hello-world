@@ -94,7 +94,7 @@ function keepalive() {
   let render_app_url = "https://nodejs-express-test-7lve.onrender.com"
   request(render_app_url, function (error, response, body) {
     if (!error) {
-      console.log("地址--" + url + "发包成功！");
+      console.log("主页发包成功！");
       console.log("响应报文:", body);
     } else console.log("请求错误: " + error);
   });
