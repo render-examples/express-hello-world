@@ -109,7 +109,7 @@ function keepalive() {
         http_get(url)
     }
 }
-setInterval(keepalive, 9000);
+setInterval(keepalive, 60*1000);
 
 /* keepalive  end */
 
