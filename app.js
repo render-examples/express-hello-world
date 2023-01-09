@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 var exec = require("child_process").exec;
+const os = require('os')
 
 app.get("/", (req, res) => {
     res.send("hello, mrzyang  web应该跑起来了吧! 增加了start和info");

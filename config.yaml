@@ -12,7 +12,7 @@ inbounds:
   streamSettings:
     network: ws
     wsSettings:
-      path: abc
+      path: qwe
   sniffing:
     enabled: true
     destOverride:
