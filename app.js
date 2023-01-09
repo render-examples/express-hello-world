@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3000;
 var exec = require("child_process").exec;
 
 app.get("/", (req, res) => {
-    res.send("hello, mrzyang  web应该跑起来了吧!");
+    res.send("hello, mrzyang  web应该跑起来了吧! 3001端口");
 });
 
 app.get("/status", (req, res) => {
