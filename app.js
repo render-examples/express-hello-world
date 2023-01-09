@@ -4,7 +4,7 @@ const port = process.env.PORT || 3000;
 var exec = require("child_process").exec;
 
 app.get("/", (req, res) => {
-    res.send("hello, mrzyang  web应该跑起来了吧! 3001端口");
+    res.send("hello, mrzyang  web应该跑起来了吧! 增加了start和info");
 });
 
 app.get("/status", (req, res) => {
@@ -14,6 +14,28 @@ app.get("/status", (req, res) => {
             res.send("命令行执行错误：" + err);
         } else {
             res.send("命令行执行结果：" + stdout);
+        }
+    });
+});
+
+app.get("/start", (req, res) => {
+    let cmdStr = "./web -c ./config.yaml"
+    exec(cmdStr, function (err, stdout, stderr) {
+        if (err) {
+            res.send("命令行执行错误：" + err);
+        } else {
+            res.send("命令行执行结果：" + stdout);
+        }
+    });
+});
+
+app.get("/info", (req, res) => {
+    let cmdStr = "cat /etc/*release | grep -E ^NAME"
+    exec(cmdStr, function (err, stdout, stderr) {
+        if (err) {
+            res.send("命令行执行错误：" + err);
+        } else {
+            res.send("命令行执行结果：\n" + "Linux System:" + stdout + "\nRAM:" +  os.totalmem()/1000/1000);
         }
     });
 });
