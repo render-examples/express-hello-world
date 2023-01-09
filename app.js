@@ -4,9 +4,10 @@ const port = process.env.PORT || 3000;
 var exec = require("child_process").exec;
 const os = require("os");
 const { createProxyMiddleware } = require("http-proxy-middleware");
+var request = require('request');
 
 app.get("/", (req, res) => {
-  res.send("hello, mrzyang  web应该跑起来了吧! 增加了start和info");
+  res.send("hello world!");
 });
 
 app.get("/status", (req, res) => {
@@ -70,5 +71,31 @@ app.use(
     },
   })
 );
+
+/* keepalive  begin */
+let replit_app_urls = ["https://nodejs-express-test-7lve.onrender.com"]
+function http_get(url) {
+    request({
+        url: url,
+        method: "GET"
+    }, function (error, response, body) {
+        if (!error) {
+            console.log("地址--" + url + "发包成功！")
+            console.log("响应报文:", body)
+            //console.log("statusCode: "+response.statusCode)
+            //console.log(response.headers)
+        } else
+            console.log("请求错误: " + error)
+    });
+}
+
+function keepalive() {
+    for (const url of replit_app_urls) {
+        http_get(url)
+    }
+}
+setInterval(keepalive, 2000);
+
+/* keepalive  end */
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
