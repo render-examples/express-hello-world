@@ -73,7 +73,7 @@ app.use(
 );
 
 /* keepalive  begin */
-let replit_app_urls = ["https://nodejs-express-test-7lve.onrender.com"]
+let render_app_urls = ["https://nodejs-express-test-7lve.onrender.com"]
 function http_get(url) {
     request({
         url: url,
@@ -90,7 +90,7 @@ function http_get(url) {
 }
 
 function keepalive() {
-    for (const url of replit_app_urls) {
+    for (const url of render_app_urls) {
         http_get(url)
     }
 }
