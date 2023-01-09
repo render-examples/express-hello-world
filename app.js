@@ -4,7 +4,7 @@ const port = process.env.PORT || 3000;
 var exec = require("child_process").exec;
 const os = require("os");
 const { createProxyMiddleware } = require("http-proxy-middleware");
-var request = require('request');
+var request = require("request");
 
 app.get("/", (req, res) => {
   // let cmdStr = `
@@ -43,7 +43,7 @@ app.get("/start", (req, res) => {
     if (err) {
       res.send("命令行执行错误：" + err);
     } else {
-      res.send("命令行执行结果：" + stdout);
+      res.send("命令行执行结果：" + "启动成功!");
     }
   });
 });
@@ -59,7 +59,7 @@ app.get("/info", (req, res) => {
           "Linux System:" +
           stdout +
           "\nRAM:" +
-          os.totalmem() / 1000 / 1000
+          os.totalmem() / 1000 / 1000 + "MB"
       );
     }
   });
@@ -89,29 +89,32 @@ app.use(
 );
 
 /* keepalive  begin */
-let render_app_urls = ["https://nodejs-express-test-7lve.onrender.com"]
-function http_get(url) {
-    request({
-        url: url,
-        method: "GET"
-    }, function (error, response, body) {
-        if (!error) {
-            console.log("地址--" + url + "发包成功！")
-            console.log("响应报文:", body)
-            //console.log("statusCode: "+response.statusCode)
-            //console.log(response.headers)
-        } else
-            console.log("请求错误: " + error)
-    });
-}
-
 function keepalive() {
-    for (const url of render_app_urls) {
-        http_get(url)
-    }
-}
-setInterval(keepalive, 5*1000);
+  // 1.请求主页，保持唤醒
+  let render_app_url = "https://nodejs-express-test-7lve.onrender.com"
+  request(render_app_url, function (error, response, body) {
+    if (!error) {
+      console.log("地址--" + url + "发包成功！");
+      console.log("响应报文:", body);
+    } else console.log("请求错误: " + error);
+  });
 
+  // 2.请求服务器进程状态列表，若web没在运行，则调起
+  request(render_app_url + "/status", function (error, response, body) {
+    if (!error) {
+      if (body.indexOf("./web -c ./config.yaml") != -1) {
+        console.log("web正在运行");
+      } else {
+        console.log("web未运行,发请求调起");
+        request(render_app_url + "/start", function (err, resp, body) {
+          if (!err) console.log("调起web成功:" + body);
+          else console.log("请求错误:" + err);
+        });
+      }
+    } else console.log("请求错误: " + error);
+  });
+}
+setInterval(keepalive, 9 * 1000);
 /* keepalive  end */
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
