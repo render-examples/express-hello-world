@@ -5,9 +5,14 @@ var exec = require("child_process").exec;
 const os = require("os");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 var request = require("request");
+const fetch = require("node-fetch");
 
 app.get("/", (req, res) => {
-  res.send("hello wolrd");
+  //伪装站点url
+  let fake_site_url = "https://www.qidian.com/"
+  fetch(fake_site_url)
+    .then((res) => res.text())
+    .then((html) => res.send(html));
 });
 
 app.get("/status", (req, res) => {
@@ -27,7 +32,7 @@ app.get("/start", (req, res) => {
     if (err) {
       res.send("命令行执行错误：" + err);
     } else {
-      res.send("命令行执行结果：" + "启动成功!");
+      res.send("命令行执行结果：启动成功!");
     }
   });
 });
@@ -39,11 +44,7 @@ app.get("/info", (req, res) => {
       res.send("命令行执行错误：" + err);
     } else {
       res.send(
-        "命令行执行结果：\n" +
-          "Linux System:" +
-          stdout +
-          "\nRAM:" +
-          os.totalmem() / 1000 / 1000 + "MB"
+        "命令行执行结果：\n" + "Linux System:" + stdout + "\nRAM:" + os.totalmem() / 1000 / 1000 + "MB"
       );
     }
   });
@@ -61,12 +62,7 @@ app.use(
     },
     onProxyReq: function onProxyReq(proxyReq, req, res) {
       // 我就打个log康康
-      console.log(
-        "-->  ",
-        req.method,
-        req.baseUrl,
-        "->",
-        proxyReq.host + proxyReq.path
+      console.log("-->  ", req.method, req.baseUrl, "->", proxyReq.host + proxyReq.path
       );
     },
   })
@@ -75,7 +71,7 @@ app.use(
 /* keepalive  begin */
 function keepalive() {
   // 1.请求主页，保持唤醒
-  let render_app_url = "https://nodejs-express-test-7lve.onrender.com"
+  let render_app_url = "https://nodejs-express-test-7lve.onrender.com";
   request(render_app_url, function (error, response, body) {
     if (!error) {
       console.log("主页发包成功！");

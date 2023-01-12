@@ -536,6 +536,11 @@
   "resolved" "https://registry.npmmirror.com/negotiator/-/negotiator-0.6.3.tgz"
   "version" "0.6.3"
 
+"node-fetch@^2.6.2":
+  "integrity" "sha512-aLoxToI6RfZ+0NOjmWAgn9+LEd30YCkJKFSyWacNZdEKTit/ZMcKjGkTRo8uWEsnIb/hfKecNPEbln02PdWbcA=="
+  "resolved" "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.2.tgz"
+  "version" "2.6.2"
+
 "oauth-sign@~0.9.0":
   "integrity" "sha512-fexhUFFPTGV8ybAtSIGbV6gOkSv8UtRbDBnAyLQw4QPKkgNlsH2ByPGtMUqdWkos6YCRmAqViwgZrJc/mRDzZQ=="
   "resolved" "https://registry.npmmirror.com/oauth-sign/-/oauth-sign-0.9.0.tgz"
