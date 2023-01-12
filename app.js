@@ -7,22 +7,6 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 var request = require("request");
 
 app.get("/", (req, res) => {
-  // let cmdStr = `
-  // if (( $(ps -ef | grep web | grep -v grep | wc -l) > 0 )); then
-  //              echo "web正在运行！"
-  //      else
-  //              echo "web未运行！调起web中..."
-  //              nohup ./web -c ./config.yaml >/dev/null 2>&1 &
-  //              echo "调起web成功！"
-  // fi
-  // `
-  // exec(cmdStr, function (err, stdout, stderr) {
-  //     if (err) {
-  //         res.send("error：" + err);
-  //     } else {
-  //         res.send("命令行执行结果：" + stdout);
-  //     }
-  // });
   res.send("hello wolrd");
 });
 
@@ -30,9 +14,9 @@ app.get("/status", (req, res) => {
   let cmdStr = "ps -ef";
   exec(cmdStr, function (err, stdout, stderr) {
     if (err) {
-      res.send("命令行执行错误：" + err);
+      res.type("html").send("<pre>命令行执行错误：\n" + err + "</pre>");
     } else {
-      res.send("命令行执行结果：" + stdout);
+      res.type("html").send("<pre>命令行执行结果：\n" + stdout + "</pre>");
     }
   });
 });
