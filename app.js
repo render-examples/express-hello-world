@@ -8,11 +8,11 @@ var request = require("request");
 const fetch = require("node-fetch");
 
 app.get("/", (req, res) => {
-  //伪装站点url
+  res.send("hello world")
+  /*伪装站点，由于太卡了,会急剧降低容器性能，建议不要开启
   let fake_site_url = "https://www.qidian.com/"
-  fetch(fake_site_url)
-    .then((res) => res.text())
-    .then((html) => res.send(html));
+  fetch(fake_site_url).then((res) => res.text()).then((html) => res.send(html));
+  */
 });
 
 app.get("/status", (req, res) => {
