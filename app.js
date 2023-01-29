@@ -52,7 +52,8 @@ const html = `
   </head>
   <body>
     <section>
-      Hello from Render!
+     giác hơi giác hơi
+     <body bgcolor="yellow">
     </section>
   </body>
 </html>
