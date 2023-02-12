@@ -6,7 +6,36 @@ app.get("/", (req, res) => res.type('html').send(html));
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
+app.get('/hello', (req, res) => {
+  res.send('Hello World!')
+})
 
+// or respond with html
+app.get('/big', (req, res) => {
+  res.send('<h1>Hello World!</h1>')
+})
+
+// or respond with JSON
+app.get('/json', (req, res) => {
+  res.send('{"name" : "ArT"}')
+})
+
+// :name indicates a parameter at this location in the URI
+app.get('/greeting/:id', (req, res) => {
+  res.send(`Hello! The id provided was ${req.params.id}.`)
+})
+
+// combine your skills and get creative
+app.get('/yo/:buddy', (req, res) => {
+  res.send(`<h1>Yo, ${req.params.buddy}!</h1>`)
+})
+
+// provide multiple query parameters (named first and last) with ? and &
+app.get('/fancy', (req, res) => {
+  const first = req.query.first
+  const last = req.query.last
+  res.send(`Hello ${first} ${last}!`)
+})
 const html = `
 <!DOCTYPE html>
 <html>
