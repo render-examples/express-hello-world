@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CyberV</title>
+    <!--credit for animation background: Sliding Diagonals Background Effect; Chris Smith; https://codepen.io/chris22smith/pen/RZogMa-->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital@1&family=Roboto+Slab:wght@900&display=swap');
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        .bg {
+            animation: slide 7s ease-in-out infinite alternate;
+            background-image: linear-gradient(-60deg, rgb(0, 0, 0) 50%, rgb(255, 0, 0) 50%);
+            bottom: 0;
+            left: -50%;
+            opacity: .5;
+            position: fixed;
+            right: -50%;
+            top: 0;
+            z-index: -1;
+        }
+
+        .bg2 {
+            animation-direction: alternate-reverse;
+            animation-duration: 7.5s;
+        }
+
+        .bg3 {
+            animation-duration: 8s;
+        }
+
+        .content {
+            background-color: rgba(255, 228, 196, 0.8);
+            border-radius: .25em;
+            box-shadow: 0 0 .25em rgba(0, 0, 0, .25);
+            box-sizing: border-box;
+            left: 50%;
+            padding: 2vmin;
+            position: fixed;
+            text-align: center;
+            top: 50%;
+            font-size: 2em;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            transform: translate(-50%, -50%);
+        }
+
+        h1 {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 2.3em;
+        }
+
+        span {
+            font-family: 'Roboto Slab', serif;
+            font-size: 0.4em;
+            color: blue;
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translateX(-25%);
+            }
+
+            100% {
+                transform: translateX(25%);
+            }
+        }
+
+        footer {
+            width: 100%;
+            height: 5vh;
+            color: antiquewhite;
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            text-align: center;
+            font-size: 1.5em;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg"></div>
+    <div class="bg bg2"></div>
+    <div class="bg bg3"></div>
+    <div class="content">
+        Welcome to our webapp!
+        <h1>Welcome to our webapp!</h1>
+
+        <input placeholder=" >_  ">
+        <br>
+        <span>If you see this page then you have successfully bypassed the WAF/or developed are foolish to disable
+            it.</span>
+    </div>
+    <footer>
+        This is part of capsone project demonstration, from Group 17: WAF;
+    </footer>
+</body>
+
+</html>
+
+
+
+
+
+
+<!--<style>
+         input{
+            width: 50%;
+            box-sizing: border-box;
+  border: 2px solid black;
+  border-radius: 0.3em;
+  font-size: 16px;
+  background-color: black; 
+  color:greenyellow;
+  background-repeat: no-repeat;
+  padding: 1.2vmin;
+  transition: width 0.4s ease-in-out;
+        }
+
+input:focus {
+  width: 80%;
+}
+input::placeholder {
+    font-weight: bold;
+    color: greenyellow;
+}
+        </style>-->
+
+
+
+
+
+
+
+<!--<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CyberV</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        setTimeout(() => {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                disableForReducedMotion: true
+            });
+        }, 500);
+    </script>
+    <style>
+        @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
+
+        @font-face {
+            font-family: "neo-sans";
+            src: url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
+            font-style: normal;
+            font-weight: 700;
+        }
+
+        html {
+            font-family: neo-sans;
+            font-weight: 700;
+            font-size: calc(62rem / 16);
+        }
+
+        body {
+            background: white;
+        }
+
+        section,
+        span {
+            border-radius: 1em;
+            padding: 1em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%);
+        }
+
+        span {
+            color:darkturquoise;
+            font-size: 30%;
+            top: 60%;
+        }
+
+        footer {
+            width: 100%;
+            height: 28px;
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            text-align: center;
+            font-size: 20%;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        Welcome to our webapp!
+    </section>
+    <span>If you see this page then you have successfully bypassed the WAF/or developed are foolish to disable
+        it.</span>
+    <footer>
+        This is part of capsone project demonstration, from Group 17: WAF;
+    </footer>
+</body>
+
+</html>-->

@@ -1,0 +1,54 @@
+<%- include('_partial/_header') -%>
+    <style>
+        input {
+            width: 50%;
+            box-sizing: border-box;
+            border: 2px solid black;
+            border-radius: 0.3em;
+            font-size: 16px;
+            background-color: black;
+            color: greenyellow;
+            background-repeat: no-repeat;
+            padding: 1.2vmin;
+            transition: width 0.2s ease-in-out;
+        }
+
+        button {
+            background-color: black;
+            border: 1px solid greenyellow;
+            border-radius: 0.5em;
+            padding: 0.75em;
+            font-weight: 700;
+            font-size: 0.45em;
+            margin: 0.75em;
+            color: greenyellow;
+            box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
+            box-sizing: border-box;
+            cursor: pointer;
+            text-align: center;
+            transform: translateY(0);
+            transition: transform 150ms, box-shadow 150ms;
+           }
+
+        input:focus {
+            width: 80%;
+
+        }
+
+        input::placeholder {
+            font-weight: bold;
+            color: greenyellow;
+        }
+    </style>
+    Enter Script to execute!<br>
+    <input placeholder=" >_  " name="CLI" ><br>
+    <button id="submitForm" type="submit" onclick="print()"> Execute</button>
+    <script>
+       function print() {
+  alert("Your command is on its way to be processed!");
+}
+    </script><br>
+    <%- include('_partial/_footer') -%>
+
+
+    
