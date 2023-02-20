@@ -27,6 +27,9 @@ router.get('/yo/:buddy', (req, res) => {
   res.send(`<h1>Yo, ${req.params.buddy}!</h1>`)
 })
 
+router.get('/login', (req, res) => {
+  res.render('login',{uname:'CyberV',pass:`The4As`})
+})
 // provide multiple query parameters (named first and last) with ? and &
 router.get('/fancy', (req, res) => {
   const first = req.query.first
