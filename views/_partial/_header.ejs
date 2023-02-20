@@ -7,7 +7,7 @@
     <script>
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital@1&family=Roboto+Slab:wght@900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Recursive:wght@300;400;500;600;700&family=Rubik:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
 
         html {
             height: 100%;
@@ -38,24 +38,39 @@
             animation-duration: 8s;
         }
 
-        .content {
-            background-color: rgba(255, 228, 196, 0.8);
-            border-radius: .25em;
-            box-shadow: 0 0 .25em rgba(0, 0, 0, .25);
-            box-sizing: border-box;
-            left: 50%;
+        .content{ 
             padding: 2vmin;
-            position: fixed;
+            overflow: hidden;
             text-align: center;
+            position: fixed;
+            color: rgb(255, 255, 255);
+            transform: translate(55%);
+            min-height: 40%;
+            height: fit-content;
+            width: 40%;
+            left: 50%;
             top: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: .25em;
+            box-shadow: 0 5px 40px rgba(255, 255, 255, 0.1);
+            box-sizing: border-box;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 10;
+            backdrop-filter: blur(13px);
+            font-family: 'Recursive', sans-serif;     
+            transform: translate(-50%, -50%);      
+            display: flex;
+            flex-direction: column;
+            align-items:center;
+        justify-content:center;
             font-size: 2em;
-            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-            transform: translate(-50%, -50%);
         }
-
         h1 {
-            font-family: 'Roboto Condensed', sans-serif;
+            font-family: 'Recursive', sans-serif;
             font-size: 2.3em;
+            font-weight: 500;
+            margin: 0.3em;
         }
 
         span {
@@ -85,11 +100,23 @@
             font-size: 1.5em;
             position: absolute;
         }
+        .logo{
+            text-align: left;
+            padding-left: 29px;
+            font-size: 1.7em;
+            font-family: 'Kanit', sans-serif;
+            font-family: 'Noto Sans JP', sans-serif;
+            color: aliceblue;
+        }
     </style>
 </head>
 
 <body>
+
     <div class="bg"></div>
     <div class="bg bg2"></div>
     <div class="bg bg3"></div>
+    <div class="logo">
+        <h3>CyberV</h3>
+    </div>
     <div class="content">
