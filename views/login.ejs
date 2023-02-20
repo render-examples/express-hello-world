@@ -1,0 +1,73 @@
+<%- include('_partial/_header') -%>
+
+<style>
+p{
+    color:#9f2020;
+    margin: 0px;
+}
+label{
+font-size: 0.5em;
+font-weight: 500;
+}
+input{
+    height: 2em;  
+    width: 50%;
+  padding: 12px 20px;
+  background-color: #ffffff00;
+  margin: 2% 0;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 0.5em;
+  border-bottom: 2px solid rebeccapurple;
+
+}
+input:focus{
+    height: 2.5em;  
+    width: 70%;
+  margin: 2% 0;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 0.5em;
+  border-bottom: 2px solid rebeccapurple;
+}
+button{
+  background: rebeccapurple;
+  border-radius: 0.25em;
+  color: #fff;
+  box-shadow: rebeccapurple 0 10px 20px -10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  outline: 0 solid transparent;
+  user-select: none;
+  touch-action: manipulation;
+  width: 40%;
+  height: 2em;
+    border: 0;
+}
+</style>
+<h1>Login</h1>
+<form method="b" onsubmit="validation()" action="login">
+    <label name="uname">Username</label>
+    <input type="text" id="uname" placeholder="username" required><br>
+    <label name="pass">Password</label>
+    <input type="password" id="pswd" placeholder="password" required><br>
+    <button type="submit" value="Submit" id="sub">Submit</button>
+</form>
+
+<script>
+    function validation(){
+        var uname=document.getElementById('uname').value;
+        var pass=document.getElementById('pswd').value;
+        if (uname == '<%- uname %>' && pass == '<%- pass %>'){
+            window.alert("Login Successful");
+        }
+        else{
+            window.alert("Login Failed");
+        }
+        
+    }
+</script>
+<script>        console.log("ddddd");
+console.log('<%- uname %>');
+console.log('<%- pass %>');</script>
+<%- include('_partial/_footer') -%>
