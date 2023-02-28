@@ -1,0 +1,43 @@
+Web Directory Brute Force Prevention using WAF
+
+This project is a web application firewall (WAF) that provides brute-force protection for web directories. 
+
+Prerequisites:
+- Node.js installed
+- MySQL server running
+- Internet connection
+- npm installed
+
+Installation instructions:
+1. Clone the repository:
+   git clone https://github.com/yourusername/yourproject.git
+
+2. Navigate to the project directory:
+   cd yourproject
+
+3. Install the required dependencies:
+   npm install
+
+4. Set the following environment variables:
+   - DB_HOST: the hostname of the MySQL server
+   - DB_USER: the MySQL username
+   - DB_PASSWORD: the MySQL password
+   - DB_NAME: the name of the MySQL database
+
+   You can set these variables by running:
+   export DB_HOST=localhost
+   export DB_USER=root
+   export DB_PASSWORD=password
+   export DB_NAME=yourdatabase
+
+   Or you can set them in a .env file in the project directory:
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASSWORD=password
+   DB_NAME=yourdatabase
+
+5. Start the application:
+   npm start
+
+6. Access the application by opening a web browser and navigating to:
+   http://localhost:3000/

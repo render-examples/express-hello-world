@@ -1,27 +1,16 @@
 {
-  "name": "dummywebapp",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app"
-  },
-  "author": "ArT",
-  "license": "ISC",
   "dependencies": {
     "ejs": "^3.1.8",
     "express": "^4.18.2",
     "fs": "^0.0.1-security",
     "helmet": "^6.0.1",
+    "http": "^0.0.1-security",
     "http-proxy": "^1.18.1",
     "http-proxy-middleware": "^2.0.6",
+    "https": "^1.0.0",
     "morgan": "^1.10.0",
     "mysql2": "^3.1.2",
     "path": "^0.12.7",
-    "sequelize": "^6.28.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.20"
+    "request": "^2.88.2"
   }
 }

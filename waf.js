@@ -27,8 +27,7 @@ const accessLogStream = fs.createWriteStream(
 
 // Create an instance of the express application
 const app = express();
-app.set('views', path.join(__dirname,"views"));
-app.set('view engine','ejs');
+
 // Use the morgan middleware to log HTTP requests
 app.use(
   morgan('combined', {
@@ -36,21 +35,8 @@ app.use(
   })
 );
 
-// Define the database connection properties
-const dbProperties = {
-  connectionLimit: 10,  // Maximum number of connections to create in the pool
-  host: process.env.DB_HOST,  // Hostname of the database server
-  user: process.env.DB_USER,  // Database username
-  password: process.env.DB_PASSWORD,  // Database password
-  database: process.env.DB_NAME  // Name of the database to connect to
-};
-
-// Create a connection pool for the database using the defined properties
-const pool = sql.createPool(dbProperties);
-
 let requestCounts = {};
 let bannedIPs = [];
-
 // Function to increment the request count for a given IP
 function increment_request_count(ip) {
   return new Promise((resolve, reject) => {
@@ -77,7 +63,7 @@ function is_ip_banned(ip) {
   });
 }
 
-// Function to ban an IP
+//Function to ban an IP
 function ban_ip(ip) {
   return new Promise((resolve, reject) => {
     // Add the IP to the bannedIPs array
@@ -85,11 +71,6 @@ function ban_ip(ip) {
     resolve();
   });
 }
-
-// Apply the helmet middleware to add various security-related HTTP headers
-app.use(async (req, res, next) => {
-  await helmet()(req, res, next);
-});
 
 // Add custom middleware for rate limiting
 const limiter = async (req, res, next) => {
@@ -106,6 +87,7 @@ const limiter = async (req, res, next) => {
     // Check if the IP is banned
     const isBanned = await is_ip_banned(ip);
     if (isBanned) {
+      console.log(`IP ${ip} is banned`);
       // Return error with status code 429 (Too Many Requests) if IP is banned
       res.statusCode = 429;
       return res.end(`Too many requests from IP ${ip}`);
@@ -115,6 +97,7 @@ const limiter = async (req, res, next) => {
     await increment_request_count(ip);
     const count = requestCounts[ip];
     if (count > rateLimit) {
+      console.log(`IP ${ip} exceeded the rate limit`);
       // Ban the IP if request count exceeds rate limit
       await ban_ip(ip);
       // Return error with status code 429 (Too Many Requests) if IP exceeds rate limit
@@ -127,12 +110,49 @@ const limiter = async (req, res, next) => {
   next();
 };
 
-// Apply the rate-limiting middleware to the root route "/"
-app.use("/", limiter);
+// Apply the rate-limiting middleware
+app.use(limiter);
 
-// Import the Sequelize library
+// Custom middleware to prevent directory traversal attacks
+const sensitiveDirectories = [ "/pwd", "/secret", "/private", "/confidential", "/admin", "/root", "/config", "/backup", "/cli"];
+
+app.use((req, res, next) => {
+// Normalize the requested path to prevent encoding attacks
+const path = decodeURIComponent(req.path).split('.')[0];
+console.log('path: ',path);
+// Check if the requested path is in the list of sensitive directories
+if (sensitiveDirectories.some(sensitiveDirectories => path.startsWith(sensitiveDirectories))) {
+// If it is, return a 401 Unauthorized status
+console.log('Unauthorized access attempt: ', req.method, req.originalUrl);
+res.status(401).send("401 Unauthorized");
+} else {
+// If not, continue to the next middleware
+next();
+}
+});
+
+// Apply the helmet middleware to add various security-related HTTP headers
+app.use((req, res, next) => {
+  helmet()(req, res, () => {
+    console.log(`Helmet middleware ran for request with URL: ${req.url}`);
+    next();
+  });
+});
+
+/* Define the database connection properties
+const dbProperties = {
+  connectionLimit: 10,  // Maximum number of connections to create in the pool
+  host: process.env.DB_HOST,  // Hostname of the database server
+  user: process.env.DB_USER,  // Database username
+  password: process.env.DB_PASSWORD,  // Database password
+  database: process.env.DB_NAME  // Name of the database to connect to
+};
+
+// Create a connection pool for the database using the defined properties
+const pool = sql.createPool(dbProperties);
+
+//Import the Sequelize library
 const Sequelize = require('sequelize');
-const { render } = require('ejs');
 
 // Create a new Sequelize instance, connecting to a MySQL database
 const sequelize = new Sequelize('database', 'username', 'password', {
@@ -149,9 +169,8 @@ password: Sequelize.STRING
 // Add a custom middleware to prevent SQL injections
 app.use((req, res, next) => {
 // Get the username and password from the request body
-if (res.body==null)
-res.render('login',{uname:'CyberV',pass:`The4As`});
-let { username, password } = req.body;
+const { username, password } = req.body;
+
 // Use Sequelize to automatically escape any potentially dangerous input
 User.findOne({
 where: {
@@ -173,41 +192,27 @@ res.status(400).send('Bad Request');
 res.status(500).send(error.message);
 });
 });
-
-// Custom middleware to prevent directory traversal attacks
-const sensitiveDirectories = [  "/pwd",  "/secret",  "/private",  "/confidential",  "/admin",  "/root",  "/config",  "/backup", "/cli"];
-
-app.use((req, res, next) => {
-  // Normalize the requested path to prevent encoding attacks
-  const path = decodeURIComponent(req.path);
-
-  // Check if the requested path is in the list of sensitive directories
-  if (sensitiveDirectories.some(sensitiveDirectory => path.startsWith(sensitiveDirectory))) {
-    // If it is, return a 401 Unauthorized status
-    res.status(401).send("401 Unauthorized");
-  } else {
-    // If not, continue to the next middleware
-    next();
-  }
-});
+*/
 
 // Custom middleware to sanitize query parameters
 app.use((req, res, next) => {
-  const { query } = req;
-  const parameters = Object.keys(query);
-  const parametrizedQuery = {};
-  parameters.forEach(parameter => {
-  // Escaping potentially dangerous characters in the query values using encodeURIComponent
-  parametrizedQuery[parameter] = encodeURIComponent(query[parameter]);
-  });
-  req.parametrizedQuery = parametrizedQuery;
-  next();
+const { query } = req;
+const parameters = Object.keys(query);
+const parametrizedQuery = {};
+parameters.forEach(parameter => {
+// Escaping potentially dangerous characters in the query values using encodeURIComponent
+parametrizedQuery[parameter] = encodeURIComponent(query[parameter]);
+});
+req.parametrizedQuery = parametrizedQuery;
+console.log('Sanitized query parameters:', req.parametrizedQuery);
+next();
 });
 
-// Set up the reverse proxy to route requests from WAF to localhost:3002
-app.use('/', createProxyMiddleware({ target: 'http://localhost:3002', changeOrigin: true }));
+app.use((req,res)=>{
+  res.status(200).send("ok");
+});
 
 // Start the server and log a message to indicate that it's listening on port 3001
-const server = app.listen(3001, () => {
+const server = app.listen(3001, 'localhost', () => {
   console.log("WAF listening on port 3001");
 });

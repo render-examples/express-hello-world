@@ -38,6 +38,7 @@ router.get('/fancy', (req, res) => {
 })
 router.get("*", (req, res) => {
   res.render('404page');
+  
 })
 
 module.exports =router;
