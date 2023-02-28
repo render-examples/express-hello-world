@@ -32,7 +32,10 @@ app.use((req,res,next)=>{
 
 app.use(indexRoutes)
 
-// Start the server
-app.listen(3002, 'localhost', () => {
-  console.log('Backend server listening on port 3002');
-});
+// // Start the server
+// in case using localhost uncomment the below code and comment the next one.
+// app.listen(3002, 'localhost', () => {
+//   console.log('Backend server listening on port 3002');
+// });
+
+app.listen(3002, () => console.log(`Backend server listening on port 3002`));
