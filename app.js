@@ -8,10 +8,11 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 app.set('views', path.join(__dirname,"views"));
 app.set('view engine','ejs');
 //console.log(indexRoutes)
+var site = 'http://localhost:3001';
 // Forward all requests to the WAF on port 3001
 app.use((req,res,next)=>{
   const appReq = request({
-    uri: 'http://localhost:3001' + req.url,
+    uri: site + req.url,
     headers: req.headers
   });
   req.pipe(appReq);
