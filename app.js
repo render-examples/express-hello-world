@@ -1,11 +1,63 @@
 const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+require("dotenv").config();
+
+const doctorsRouter = require("./routes/doctors.routes");
+const hospitalsRouter = require("./routes/hospitals.routes");
+
+const { auth } = require("express-oauth2-jwt-bearer");
+
 const app = express();
 const port = process.env.PORT || 3001;
+const dbConnectionString = process.env.MongoURI;
 
-app.get("/", (req, res) => res.type('html').send(html));
+const jwtCheck = auth({
+  audience: "https://nehlc.org",
+  issuerBaseURL: "https://dev-tiokiwpanv8xk8a2.us.auth0.com/",
+  tokenSigningAlg: "RS256",
+});
+
+mongoose
+  .connect(dbConnectionString, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("DB Connected"))
+  .catch((err) => console.log(err));
+
+mongoose.Promise = global.Promise;
+
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+
+// enforce on all endpoints
+app.use(jwtCheck);
+
+app.use("/doctors", doctorsRouter);
+app.use("/hospitals", jwtCheck, hospitalsRouter);
+
+app.get("/", (req, res) => res.type("html").send(html));
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+  res.status(404).json({
+    message: "No such route exists",
+  });
+});
+
+// error handler
+app.use(function (err, req, res, next) {
+  res.status(err.status || 500).json({
+    message: "Error Message",
+  });
+});
 
 const html = `
 <!DOCTYPE html>
@@ -56,4 +108,4 @@ const html = `
     </section>
   </body>
 </html>
-`
+`;

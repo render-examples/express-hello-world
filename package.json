@@ -1,19 +1,29 @@
 {
-  "name": "express-hello-world",
+  "name": "omahahlc-api",
   "version": "1.0.0",
-  "description": "Express Hello World on Render",
+  "description": "Omaha HLC Api on render",
   "main": "app.js",
-  "repository": "https://github.com/render-examples/express-hello-world",
-  "author": "Render Developers",
+  "repository": "https://github.com/erowe-dev/omahahlc-api",
+  "author": "erowe",
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "node app.js"
+    "start": "nodemon app.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "express-oauth2-jwt-bearer": "^1.5.0",
+    "mongodb": "^5.6.0",
+    "mongoose": "^7.2.2",
+    "yarn": "^1.22.19"
   },
   "engines": {
     "node": ">=14"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }
