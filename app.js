@@ -38,7 +38,7 @@ app.use(
 // enforce on all endpoints
 app.use(jwtCheck);
 
-app.use("/doctors", doctorsRouter);
+app.use("/doctors", jwtCheck, doctorsRouter);
 app.use("/hospitals", jwtCheck, hospitalsRouter);
 
 app.get("/", (req, res) => res.type("html").send(html));
