@@ -1,5 +1,4 @@
 const Hospital = require('../models/hospital.model');
-const opts = { toJSON: { virtuals: true } };
 
 const getHospitals = async (req, res) => {
     let hospitals = await Hospital.find();

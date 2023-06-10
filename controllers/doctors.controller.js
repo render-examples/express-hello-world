@@ -1,8 +1,7 @@
 const Doctor = require('../models/doctor.model');
-const opts = { toJSON: { virtuals: true } };
 
 const getDoctors = async (req, res) => {
-    let doctors = await Doctor.find();
+    let doctors = await Doctor.find().populate('primaryFacility');
 
     if(doctors) {
         res.status(200).json(doctors);
