@@ -56,6 +56,9 @@ const html = `
     <section>
       Hello from Render!
     </section>
+    <section>
+    日本語も行けそうです！
+    </section>
   </body>
 </html>
 `
