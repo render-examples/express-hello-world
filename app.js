@@ -50,15 +50,24 @@ const html = `
         margin-right: -50%;
         transform: translate(-50%, -50%);
       }
-    </style>
+      subsection {
+        border-radius: 1em;
+        padding: 1em;
+        position: absolute;
+        top: 80%;
+        left: 50%;
+        margin-right: -50%;
+        transform: rotate(3deg);
+      }
+      </style>
   </head>
   <body>
     <section>
       Hello from Render!
     </section>
-    <section>
+    <subsection>
     日本語も行けそうです！
-    </section>
+    </subsection>
   </body>
 </html>
 `
