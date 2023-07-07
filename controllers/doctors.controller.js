@@ -10,6 +10,16 @@ const getDoctors = async (req, res) => {
     }
 }
 
+const getDoctor = async (req, res) => {
+    let doctor = await Doctor.findById(req.params.id).populate('primaryFacility');
+
+    if(doctor) {
+        res.status(200).json(doctor);
+    } else {
+        res.status(400).json()
+    }
+}
+
 module.exports = {
-    getDoctors,
+    getDoctors, getDoctor
 }
