@@ -3,5 +3,6 @@ export default function chart(req, res) {
 
   res.json({
     chartId,
+    "status": "ok",
   });
 };
