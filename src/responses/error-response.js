@@ -1,5 +1,11 @@
+const IndexNotFoundError = require("../errors/index-not-found-error");
+const UnableToDetermineValueError = require("../errors/unable-to-determine-value-error");
+
 function isHandledError(err) {
-  return false;
+  return (
+    err instanceof UnableToDetermineValueError ||
+    err instanceof IndexNotFoundError
+  );
 }
 
 function errorResponse(err, res) {
