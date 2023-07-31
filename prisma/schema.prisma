@@ -1,0 +1,62 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserType {
+  CLIENT
+  WORKER
+  ADMIN
+}
+
+model Worker {
+  id                String    @id @default(uuid()) @map("_id")
+  role              UserType  @default(WORKER)
+  name              String
+  email             String    @unique
+  password          String
+  phone             String
+  occupation        String
+  city              String
+  location          String?
+  bio               String?
+  profileImage      String?
+  services          Service[] @relation("WorkerServices")
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  deleted           Boolean   @default(false)
+  verified          Boolean   @default(false)
+  verificationToken String    @unique
+}
+
+model Client {
+  id                String   @id @default(uuid()) @map("_id")
+  role              UserType @default(CLIENT)
+  name              String
+  email             String   @unique
+  password          String
+  profileImage      String?
+  location          String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  deleted           Boolean  @default(false)
+  verified          Boolean  @default(false)
+  verificationToken String   @unique
+}
+
+model Service {
+  id          String   @id @default(uuid()) @map("_id")
+  title       String
+  description String
+  image       String?
+  hourlyRate  Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deleted     Boolean  @default(false)
+  userId      String
+  worker      Worker   @relation("WorkerServices", fields: [userId], references: [id])
+}
