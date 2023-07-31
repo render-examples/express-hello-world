@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "npm i && tsc",
+    "build": "npx prisma generate && npm i && tsc",
     "start": "node build/app.js"
   },
   "dependencies": {
