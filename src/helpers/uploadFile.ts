@@ -8,4 +8,4 @@ const generateFileName = (req: Request, file: Express.Multer.File, callback: (er
   callback(null, fileName);
 };
 
-export const upload = multer({ storage: multer.diskStorage({ destination: 'uploads/', filename: generateFileName }) });
+export const upload = multer({ storage: multer.diskStorage({ destination: 'src/uploads/', filename: generateFileName }) });

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import path from "path";
 import fs from "fs";
-const uploadsPath = path.join(__dirname, "..", "..", "uploads");
+const uploadsPath = path.join(__dirname, "..", "uploads");
 
 export const getImage = (req: Request, res: Response) => {
   const { imageName } = req.params;
