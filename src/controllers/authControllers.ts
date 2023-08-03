@@ -1,6 +1,6 @@
 import { Client, Worker } from "@prisma/client";
 import { Request, Response } from "express";
-import { login } from "../services/authServices";
+import { login, signUp } from "../services/authServices";
 import { prisma } from "../services/prismaService";
 
 export const loginWithEmailAndPassword = async (
@@ -10,6 +10,17 @@ export const loginWithEmailAndPassword = async (
   const newUser: Client | Worker = req.body;
   try {
     const user = await login(newUser);
+    res.json(user);
+  } catch (error) {
+    res.status(error.statusCode).json({ msg: error.message });
+  }
+};
+
+export const signUpWithEmailAndPassword = async (req: Request, res: Response) => {
+  const newUser: Client = req.body;
+  newUser.role = "CLIENT";
+  try {
+    const user = await signUp(newUser);
     res.json(user);
   } catch (error) {
     res.status(error.statusCode).json({ msg: error.message });
