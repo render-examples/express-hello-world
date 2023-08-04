@@ -47,15 +47,21 @@ export const login = async (userData: emailAndPassword) => {
 
 export const signUp = async (userData: Client) => {
   try {
-    const user: Client | Worker | null = await clientEmailExists(
-      userData.email
-    );
+    let user: Client | Worker | null = null;
 
-    if (user && user.verified)
-      throw new CustomError(
-        `El correo ${userData.email} ya se encuentra registrado`,
-        400
-      );
+  if (userData.role === "CLIENT") {
+    user = await clientEmailExists(userData.email);
+  } else if (userData.role === "WORKER") {
+    user = await workerEmailExists(userData.email);
+  }
+
+  if (user && user.verified) {
+    console.log(`El correo ${userData.email} ya se encuentra registrado`)
+    throw new CustomError(
+      `El correo ${userData.email} ya se encuentra registrado`,
+      400
+    );
+  }
 
     const verificationToken = generateAuthToken(userData);
 
@@ -82,7 +88,7 @@ export const signUp = async (userData: Client) => {
           verified: false,
           verificationToken,
         },
-      })
+      });
     }
 
     if (!createdUser)
