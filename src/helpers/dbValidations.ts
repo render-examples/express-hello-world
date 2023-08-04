@@ -1,8 +1,8 @@
-import { Client } from "@prisma/client";
+import { User } from "@prisma/client";
 import { prisma } from "../services/prismaService";
 
-export const clientIdExists = async (userId: string) => {
-  const user = await prisma.client.findUnique({
+export const userIdExists = async (userId: string) => {
+  const user: User | null = await prisma.user.findUnique({
     where: {
       id: userId,
     },
@@ -10,8 +10,8 @@ export const clientIdExists = async (userId: string) => {
   return user;
 };
 
-export const clientEmailExists = async (userEmail: string) => {
-  const user = await prisma.client.findUnique({
+export const userEmailExists = async (userEmail: string) => {
+  const user: User | null = await prisma.user.findUnique({
     where: {
       email: userEmail,
     },
@@ -19,26 +19,8 @@ export const clientEmailExists = async (userEmail: string) => {
   return user;
 };
 
-export const workerIdExists = async (userId: string) => {
-  const user = await prisma.worker.findUnique({
-    where: {
-      id: userId,
-    },
-  });
-  return user;
-};
-
-export const workerEmailExists = async (userEmail: string) => {
-  const user = await prisma.worker.findUnique({
-    where: {
-      email: userEmail,
-    },
-  });
-  return user;
-};
-
-export const findClientverificationToken = async (verificationToken: string): Promise<Client | null> => {
-  const user: Client | null = await prisma.client.findUnique({
+export const findUserverificationToken = async (verificationToken: string) => {
+  const user: User | null = await prisma.user.findUnique({
     where: { 
       verificationToken
      },

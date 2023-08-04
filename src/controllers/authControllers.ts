@@ -1,4 +1,4 @@
-import { Client, Worker } from "@prisma/client";
+import { User } from "@prisma/client";
 import { Request, Response } from "express";
 import { login, signUp } from "../services/authServices";
 import { prisma } from "../services/prismaService";
@@ -7,7 +7,7 @@ export const loginWithEmailAndPassword = async (
   req: Request,
   res: Response
 ) => {
-  const newUser: Client | Worker = req.body;
+  const newUser: User = req.body;
   try {
     const user = await login(newUser);
     res.json(user);
@@ -16,8 +16,11 @@ export const loginWithEmailAndPassword = async (
   }
 };
 
-export const signUpWithEmailAndPassword = async (req: Request, res: Response) => {
-  const newUser: Client = req.body;
+export const signUpWithEmailAndPassword = async (
+  req: Request,
+  res: Response
+) => {
+  const newUser: User = req.body;
   try {
     const user = await signUp(newUser);
     res.json(user);
@@ -30,36 +33,18 @@ export const accountVerification = async (req: Request, res: Response) => {
   const verificationToken = req.params.token;
 
   try {
-    // Find the user with the given verification token
-    const client = await prisma.client.findUnique({
+    const user = await prisma.user.findUnique({
       where: { verificationToken },
     });
-
-    if (!client) {
-      const worker = await prisma.worker.findUnique({
-        where: { verificationToken },
-      });
-      if (!worker) {
-        return res
-          .status(404)
-          .json({ msg: "Token de verificación inválido o expirado." });
-      }
-      const updatedWorker = await prisma.worker.update({
-        where: { id: worker.id },
-        data: { verified: true, verificationToken: "" },
-      });
+    if (!user) {
       return res
-        .status(200)
-        .json(
-          "¡Cuenta verificada correctamente! Ahora puede iniciar sesión :)"
-        );
+        .status(404)
+        .json({ msg: "Token de verificación inválido o expirado." });
     }
-
-    const updatedClient = await prisma.client.update({
-      where: { id: client.id },
+    await prisma.user.update({
+      where: { id: user.id },
       data: { verified: true, verificationToken: "" },
     });
-
     return res
       .status(200)
       .json("¡Cuenta verificada correctamente! Ahora puede iniciar sesión :)");

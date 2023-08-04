@@ -13,27 +13,7 @@ enum UserType {
   ADMIN
 }
 
-model Worker {
-  id                String    @id @default(uuid()) @map("_id")
-  role              UserType  @default(WORKER)
-  name              String
-  email             String    @unique
-  password          String
-  phone             String?
-  occupation        String?
-  city              String?
-  location          String?
-  bio               String?
-  profileImage      String?
-  services          Service[] @relation("WorkerServices")
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  deleted           Boolean   @default(false)
-  verified          Boolean   @default(false)
-  verificationToken String    @unique
-}
-
-model Client {
+model User {
   id                String   @id @default(uuid()) @map("_id")
   role              UserType @default(CLIENT)
   name              String
@@ -41,11 +21,16 @@ model Client {
   password          String
   profileImage      String?
   location          String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  deleted           Boolean  @default(false)
-  verified          Boolean  @default(false)
-  verificationToken String   @unique
+  phone             String?
+  occupation        String?
+  city              String?
+  bio               String?
+  services          Service[] @relation("UserServices")
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  deleted           Boolean   @default(false)
+  verified          Boolean   @default(false)
+  verificationToken String    @unique
 }
 
 model Service {
@@ -58,5 +43,5 @@ model Service {
   updatedAt   DateTime @updatedAt
   deleted     Boolean  @default(false)
   userId      String
-  worker      Worker   @relation("WorkerServices", fields: [userId], references: [id])
+  worker      User   @relation("UserServices", fields: [userId], references: [id])
 }

@@ -1,8 +1,7 @@
-import { Client, Worker } from "@prisma/client";
+import { User } from "@prisma/client";
 import {
-  clientEmailExists,
-  findClientverificationToken,
-  workerEmailExists,
+  findUserverificationToken,
+  userEmailExists,
 } from "../helpers/dbValidations";
 import { CustomError } from "../helpers/CustomError";
 import bcrypt from "bcryptjs";
@@ -21,10 +20,12 @@ const APP_URL = process.env.APP_URL;
 
 export const login = async (userData: emailAndPassword) => {
   try {
-    let user: Client | Worker | null = await clientEmailExists(userData.email);
-    if (!user) user = await workerEmailExists(userData.email);
+    const user: User | null = await userEmailExists(userData.email);
     if (!user || !user.verified)
-      throw new CustomError("El correo proporcionado no existe o no ha sido activado. Por favor, verifica que has ingresado la dirección de correo correcta o activa tu cuenta antes de continuar.", 404);
+      throw new CustomError(
+        "El correo proporcionado no existe o no ha sido activado. Por favor, verifica que has ingresado la dirección de correo correcta o activa tu cuenta antes de continuar.",
+        404
+      );
 
     const validPassword = await bcrypt.compare(
       userData.password,
@@ -45,51 +46,29 @@ export const login = async (userData: emailAndPassword) => {
   }
 };
 
-export const signUp = async (userData: Client) => {
+export const signUp = async (userData: User) => {
   try {
-    let user: Client | Worker | null = null;
-
-  if (userData.role === "CLIENT") {
-    user = await clientEmailExists(userData.email);
-  } else if (userData.role === "WORKER") {
-    user = await workerEmailExists(userData.email);
-  }
-  console.log(user)
-  if (user && user.verified) {
-    console.log(`El correo ${userData.email} ya se encuentra registrado`)
-    throw new CustomError(
-      `El correo ${userData.email} ya se encuentra registrado`,
-      400
-    );
-  }
+    const user: User | null = await userEmailExists(userData.email);
+    if (user && user.verified) {
+      console.log(`El correo ${userData.email} ya se encuentra registrado`);
+      throw new CustomError(
+        `El correo ${userData.email} ya se encuentra registrado`,
+        400
+      );
+    }
 
     const verificationToken = generateAuthToken(userData);
 
-    let createdUser: Client | Worker | null = null;
-
-    if (userData.role === "CLIENT") {
-      createdUser = await prisma.client.create({
-        data: {
-          name: userData.name,
-          email: userData.email,
-          password: hashPassword(userData.password),
-          role: userData.role,
-          verified: false,
-          verificationToken,
-        },
-      });
-    } else if (userData.role === "WORKER") {
-      createdUser = await prisma.worker.create({
-        data: {
-          name: userData.name,
-          email: userData.email,
-          password: hashPassword(userData.password),
-          role: userData.role,
-          verified: false,
-          verificationToken,
-        },
-      });
-    }
+    const createdUser = await prisma.user.create({
+      data: {
+        name: userData.name,
+        email: userData.email,
+        password: hashPassword(userData.password),
+        role: userData.role,
+        verified: false,
+        verificationToken,
+      },
+    });
 
     if (!createdUser)
       throw new CustomError("No se ha podido registrar el usuario", 500);
@@ -115,11 +94,9 @@ export const signUp = async (userData: Client) => {
   }
 };
 
-export const verifyAccount = async (
-  verificationToken: string
-): Promise<Client | null> => {
+export const verifyAccount = async (verificationToken: string) => {
   try {
-    const user: Client | null = await findClientverificationToken(
+    const user: User | null = await findUserverificationToken(
       verificationToken
     );
 
@@ -127,7 +104,7 @@ export const verifyAccount = async (
       throw new CustomError("Token de verificación inválido o expirado.", 404);
     }
 
-    const updatedUser = await prisma.client.update({
+    const updatedUser = await prisma.user.update({
       where: { id: user.id },
       data: { verified: true, verificationToken: "" },
     });
