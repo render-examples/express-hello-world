@@ -24,7 +24,7 @@ export const login = async (userData: emailAndPassword) => {
     let user: Client | Worker | null = await clientEmailExists(userData.email);
     if (!user) user = await workerEmailExists(userData.email);
     if (!user || !user.verified)
-      throw new CustomError("Correo electrónico inválido", 404);
+      throw new CustomError("El correo proporcionado no existe o no ha sido activado. Por favor, verifica que has ingresado la dirección de correo correcta o activa tu cuenta antes de continuar.", 404);
 
     const validPassword = await bcrypt.compare(
       userData.password,
@@ -54,7 +54,7 @@ export const signUp = async (userData: Client) => {
   } else if (userData.role === "WORKER") {
     user = await workerEmailExists(userData.email);
   }
-
+  console.log(user)
   if (user && user.verified) {
     console.log(`El correo ${userData.email} ya se encuentra registrado`)
     throw new CustomError(
