@@ -39,6 +39,11 @@ export const login = async (userData: emailAndPassword) => {
 
     return {
       msg: `Iniciaste sesión con ${user.email}`,
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role
+      },
       token: token,
     };
   } catch (error) {
