@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 
-const doctorsRouter = require("./routes/doctors.routes");
+const cooperativeDoctorsRouter = require("./routes/cooperative-doctors.routes");
+const prospectiveDoctorsRouter = require("./routes/prospective-doctors.routes");
 const hospitalsRouter = require("./routes/hospitals.routes");
 
 const { auth } = require("express-oauth2-jwt-bearer");
@@ -38,7 +39,8 @@ app.use(
 // enforce on all endpoints
 app.use(jwtCheck);
 
-app.use("/doctors", jwtCheck, doctorsRouter);
+app.use("/cooperative-doctors", jwtCheck, cooperativeDoctorsRouter);
+app.use("/prospective-doctors", jwtCheck, prospectiveDoctorsRouter);
 app.use("/hospitals", jwtCheck, hospitalsRouter);
 
 app.get("/", (req, res) => res.type("html").send(html));
