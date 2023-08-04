@@ -6,7 +6,6 @@ import {
   findClientById,
   getManyClients,
 } from "../services/clientServices";
-import { CustomError } from "../helpers/CustomError";
 
 export const getClients = async (req: Request, res: Response) => {
   try {

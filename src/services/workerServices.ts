@@ -1,66 +1,16 @@
-import { Worker } from "@prisma/client";
-import { workerIdExists, workerEmailExists } from "../helpers/dbValidations";
+import { User } from "@prisma/client";
+import { userIdExists, userEmailExists } from "../helpers/dbValidations";
 import { CustomError } from "../helpers/CustomError";
 import { prisma } from "./prismaService";
-import { generateAuthToken, hashPassword } from "../helpers/auth";
+import { hashPassword } from "../helpers/auth";
 import { isAValidRole, isAdmin } from "../helpers/roleValidators";
 import sgMail from "@sendgrid/mail";
 
-const APP_URL = process.env.APP_URL;
-
 sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
-
-export const signUpWorker = async (userData: Worker) => {
-  try {
-    const user: Worker | null = await workerEmailExists(userData.email);
-
-    if (user && user.verified)
-      throw new CustomError(
-        `El correo ${userData.email} ya se encuentra registrado`,
-        400
-      );
-
-    const verificationToken = generateAuthToken(userData);
-
-    const createdWorker = await prisma.worker.create({
-      data: {
-        ...userData,
-        password: hashPassword(userData.password),
-        role: "WORKER",
-        verified: false,
-        verificationToken,
-      },
-    });
-
-    if (!createdWorker)
-      throw new CustomError("No se ha podido registrar el usuario", 500);
-
-    const verificationLink = `${APP_URL}/auth/verify/${verificationToken}`;
-    const msg = {
-      to: userData.email,
-      from: "ignaciojsoler@gmail.com",
-      subject: "Verifica tu cuenta",
-      text: `Haz click en el siguiente link para verificar tu cuenta: ${verificationLink}`,
-      html: `<p>Haz click en el siguiente link para verificar tu cuenta: <a href="${verificationLink}">${verificationLink}</a></p>`,
-    };
-    await sgMail.send(msg);
-
-    return { 
-      msg: "Usuario registrado correctamente", 
-      user: {
-        id: createdWorker.id,
-        name: createdWorker.name,
-        email: createdWorker.email,
-      } 
-    };
-  } catch (error) {
-    throw new CustomError(error.message, error.statusCode);
-  }
-};
 
 export const getManyWorkers = async () => {
   try {
-    const workers = await prisma.worker.findMany({
+    const workers = await prisma.user.findMany({
       where: {
         role: "WORKER",
       },
@@ -73,7 +23,7 @@ export const getManyWorkers = async () => {
 
 export const findWorkerById = async (id: string) => {
   try {
-    const user = await prisma.worker.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: id,
       },
@@ -91,8 +41,8 @@ export const findWorkerById = async (id: string) => {
 
 export const findWorkerAndUpdate = async (
   id: string,
-  userData: Worker,
-  token: Worker
+  userData: User,
+  token: User
 ) => {
   if (userData.password) userData.password = hashPassword(userData.password);
 
@@ -100,7 +50,7 @@ export const findWorkerAndUpdate = async (
     if (id !== token.id && !isAdmin(token.role))
       throw new CustomError("Acceso no autorizado", 401);
 
-    const user = await workerIdExists(id);
+    const user = await userIdExists(id);
 
     if (!user)
       throw new CustomError(
@@ -117,13 +67,13 @@ export const findWorkerAndUpdate = async (
     if (userData.role && !isAValidRole(userData.role))
       throw new CustomError("El rol ingresado no es válido", 400);
 
-    if (userData.email && (await workerEmailExists(userData.email)))
+    if (userData.email && (await userEmailExists(userData.email)))
       throw new CustomError(
         "El correo electrónico ya se encuentra registrado",
         400
       );
 
-    const updatedUser = await prisma.worker.update({
+    const updatedUser = await prisma.user.update({
       where: {
         id: id,
       },
@@ -139,12 +89,12 @@ export const findWorkerAndUpdate = async (
   }
 };
 
-export const findWorkerAndDelete = async (id: string, token: Worker) => {
+export const findWorkerAndDelete = async (id: string, token: User) => {
   try {
     if (id !== token.id && !isAdmin(token.role))
       throw new CustomError("Acceso no autorizado", 401);
 
-    const user = await workerIdExists(id);
+    const user = await userIdExists(id);
 
     if (!user)
       throw new CustomError(
@@ -152,7 +102,7 @@ export const findWorkerAndDelete = async (id: string, token: Worker) => {
         404
       );
 
-    const updatedUser = await prisma.worker.update({
+    const updatedUser = await prisma.user.update({
       where: {
         id: id,
       },

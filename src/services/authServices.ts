@@ -80,7 +80,7 @@ export const signUp = async (userData: User) => {
       text: `Activa tu cuenta con el siguiente tóken de verificación: ${verificationToken}`,
       html: `<p>Copia el siguiente tóken de verificación y utilízalo para activar tu cuenta: <h3><b>${verificationToken}</b></h3></p>`,
     };
-    const email = await sgMail.send(msg);
+    await sgMail.send(msg);
     return {
       msg: "Usuario registrado correctamente. Se ha enviado un enlace de verificación a su correo electrónico. Verifique su bandeja de entrada, y en caso de no encontrar el mensaje de confirmación, por favor, revise también su bandeja de spam, ya que es posible que el mensaje se encuentre allí.",
       user: {
