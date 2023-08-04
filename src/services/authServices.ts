@@ -10,7 +10,7 @@ import { generateAuthToken, hashPassword } from "../helpers/auth";
 import { prisma } from "./prismaService";
 import sgMail from "@sendgrid/mail";
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY || ""); 
+sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
 
 interface emailAndPassword {
   email: string;
@@ -47,7 +47,9 @@ export const login = async (userData: emailAndPassword) => {
 
 export const signUp = async (userData: Client) => {
   try {
-    const user: Client | Worker | null = await clientEmailExists(userData.email);
+    const user: Client | Worker | null = await clientEmailExists(
+      userData.email
+    );
 
     if (user && user.verified)
       throw new CustomError(
@@ -57,17 +59,33 @@ export const signUp = async (userData: Client) => {
 
     const verificationToken = generateAuthToken(userData);
 
-    const createdClient = await prisma.client.create({
-      data: {
-        name: userData.name,
-        email: userData.email,
-        password: hashPassword(userData.password),
-        verified: false,
-        verificationToken,
-      },
-    });
+    let createdUser: Client | Worker | null = null;
 
-    if (!createdClient)
+    if (userData.role === "CLIENT") {
+      createdUser = await prisma.client.create({
+        data: {
+          name: userData.name,
+          email: userData.email,
+          password: hashPassword(userData.password),
+          role: userData.role,
+          verified: false,
+          verificationToken,
+        },
+      });
+    } else if (userData.role === "WORKER") {
+      createdUser = await prisma.worker.create({
+        data: {
+          name: userData.name,
+          email: userData.email,
+          password: hashPassword(userData.password),
+          role: userData.role,
+          verified: false,
+          verificationToken,
+        },
+      })
+    }
+
+    if (!createdUser)
       throw new CustomError("No se ha podido registrar el usuario", 500);
 
     const verificationLink = `${APP_URL}/auth/verify/${verificationToken}`;
@@ -78,14 +96,13 @@ export const signUp = async (userData: Client) => {
       text: `Haz click en el siguiente link para verificar tu cuenta: ${verificationLink}`,
       html: `<p>Haz click en el siguiente link para verificar tu cuenta: <a href="${verificationLink}">${verificationLink}</a></p>`,
     };
-    await sgMail.send(msg);
-
+    const email = await sgMail.send(msg);
     return {
       msg: "Usuario registrado correctamente. Se ha enviado un enlace de verificación a su correo electrónico.",
       user: {
-        id: createdClient.id,
-        name: createdClient.name,
-        email: createdClient.email,
+        id: createdUser.id,
+        name: createdUser.name,
+        email: createdUser.email,
       },
     };
   } catch (error) {

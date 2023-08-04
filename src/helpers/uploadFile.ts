@@ -7,7 +7,6 @@ const uploadsPath = path.join(__dirname, "..", "uploads");
 const generateFileName = (req: Request, file: Express.Multer.File, callback: (error: Error | null, filename: string) => void) => {
   const fileFormat = file.mimetype.split('/').pop();
   const fileName = `${uuidv4()}.${fileFormat}`;
-  console.log(uploadsPath);
   callback(null, fileName);
 };
 

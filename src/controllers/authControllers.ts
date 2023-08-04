@@ -18,7 +18,6 @@ export const loginWithEmailAndPassword = async (
 
 export const signUpWithEmailAndPassword = async (req: Request, res: Response) => {
   const newUser: Client = req.body;
-  newUser.role = "CLIENT";
   try {
     const user = await signUp(newUser);
     res.json(user);

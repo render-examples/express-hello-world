@@ -19,9 +19,9 @@ model Worker {
   name              String
   email             String    @unique
   password          String
-  phone             String
-  occupation        String
-  city              String
+  phone             String?
+  occupation        String?
+  city              String?
   location          String?
   bio               String?
   profileImage      String?
