@@ -58,7 +58,6 @@ export const signUp = async (userData: Client) => {
       );
 
     const verificationToken = generateAuthToken(userData);
-    const encodedverificationToken = encodeURIComponent(verificationToken);
 
     let createdUser: Client | Worker | null = null;
 
@@ -89,13 +88,12 @@ export const signUp = async (userData: Client) => {
     if (!createdUser)
       throw new CustomError("No se ha podido registrar el usuario", 500);
 
-    const verificationLink = `${APP_URL}/auth/verify/${encodedverificationToken}`;
     const msg = {
       to: userData.email,
       from: "ignaciojsoler@gmail.com",
       subject: "Verifica tu cuenta",
-      text: `Haz click en el siguiente link para verificar tu cuenta: ${verificationLink}`,
-      html: `<p>Para verificar tu cuenta: <a href="${verificationLink}">haz click aquí</a></p>`,
+      text: `Activa tu cuenta con el siguiente tóken de verificación: ${verificationToken}`,
+      html: `<p>Copia el siguiente tóken de verificación y utilízalo para activar tu cuenta: <h3><b>${verificationToken}</b></h3></p>`,
     };
     const email = await sgMail.send(msg);
     return {
