@@ -57,5 +57,6 @@ const html = `
       Hello from Render!AAA
     </section>
   </body>
+  <script src="three.min.js"></script>
 </html>
 `
