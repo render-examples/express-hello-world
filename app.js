@@ -54,9 +54,20 @@ const html = `
   </head>
   <body>
     <section>
-      Hello from Render!AAACC
+      Hello from Render!AAACCVV
     </section>
   </body>
   <script src="three.min.js"></script>
+<script>
+
+	document.title='3d!';
+	var can=document.createElement('canvas');
+	document.body.append(can);
+	con=can.getContext('2d');
+	con.fillRect(0,0,100,100);
+
+
+
+</script>
 </html>
 `
