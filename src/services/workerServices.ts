@@ -8,14 +8,21 @@ import sgMail from "@sendgrid/mail";
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
 
-export const getManyWorkers = async () => {
+export const getManyWorkers = async (skip: number, take: number) => {
   try {
     const workers = await prisma.user.findMany({
+      skip: skip,
+      take: take,
       where: {
         role: "WORKER",
       },
     });
-    return workers;
+    const totalWorkersUsers = await prisma.user.count({
+      where: {
+        role: "WORKER",
+      },
+    });
+    return {totalWorkersUsers, workers};
   } catch (error) {
     throw new CustomError("Algo ha salido mal");
   }
