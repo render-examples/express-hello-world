@@ -15,6 +15,7 @@ export const getManyWorkers = async (skip: number, take: number) => {
       take: take,
       where: {
         role: "WORKER",
+        verified: true
       },
     });
     const totalWorkersUsers = await prisma.user.count({
