@@ -15,15 +15,22 @@ export const getManyWorkers = async (skip: number, take: number) => {
       take: take,
       where: {
         role: "WORKER",
-        verified: true
+        verified: true,
+        updatedAt: {
+          not: null,
+        },
       },
     });
     const totalWorkersUsers = await prisma.user.count({
       where: {
         role: "WORKER",
+        verified: true,
+        updatedAt: {
+          not: null,
+        },
       },
     });
-    return {totalWorkersUsers, workers};
+    return { totalWorkersUsers, workers };
   } catch (error) {
     throw new CustomError("Algo ha salido mal");
   }
