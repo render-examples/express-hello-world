@@ -81,12 +81,12 @@ export const signUp = async (userData: User) => {
       to: userData.email,
       from: "ignaciojsoler@gmail.com",
       subject: "Verifica tu cuenta",
-      text: `Activa tu cuenta con el siguiente tóken de verificación: ${verificationCode}`,
-      html: `<p>Copia el siguiente tóken de verificación y utilízalo para activar tu cuenta: <h3><b>${verificationCode}</b></h3></p>`,
+      text: `Activa tu cuenta con el siguiente código de verificación: ${verificationCode}`,
+      html: `<p>Copia el siguiente código de verificación y utilízalo para activar tu cuenta: <h3><b>${verificationCode}</b></h3></p>`,
     };
     await sgMail.send(msg);
     return {
-      msg: "Usuario registrado correctamente. Se ha enviado un enlace de verificación a su correo electrónico. Verifique su bandeja de entrada, y en caso de no encontrar el mensaje de confirmación, por favor, revise también su bandeja de spam, ya que es posible que el mensaje se encuentre allí.",
+      msg: "Usuario registrado correctamente. Se ha enviado un código de verificación a su correo electrónico. Verifique su bandeja de entrada, y en caso de no encontrar el mensaje de confirmación, por favor, revise también su bandeja de spam, ya que es posible que el mensaje se encuentre allí.",
       user: {
         id: createdUser.id,
         name: createdUser.name,
