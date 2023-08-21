@@ -5,7 +5,12 @@ import {
 } from "../helpers/dbValidations";
 import { CustomError } from "../helpers/CustomError";
 import bcrypt from "bcryptjs";
-import { generateAuthToken, generateVerificationCode, generateVerificationToken, hashPassword } from "../helpers/auth";
+import {
+  generateAuthToken,
+  generateVerificationCode,
+  generateVerificationToken,
+  hashPassword,
+} from "../helpers/auth";
 import { prisma } from "./prismaService";
 import sgMail from "@sendgrid/mail";
 
@@ -55,24 +60,35 @@ export const login = async (userData: emailAndPassword) => {
 export const signUp = async (userData: User) => {
   try {
     const user: User | null = await userEmailExists(userData.email);
+    const verificationCode = generateVerificationCode();
+
     if (user && user.verified) {
       throw new CustomError(
         `El correo ${userData.email} ya se encuentra registrado`,
         400
       );
     }
-    const verificationCode = generateVerificationCode();
 
-    const createdUser = await prisma.user.create({
-      data: {
-        name: userData.name,
-        email: userData.email,
-        password: hashPassword(userData.password),
-        role: userData.role,
-        verified: false,
-        verificationCode,
-      },
-    });
+    const createdUser =
+      user && !user.verified
+        ? await prisma.user.update({
+            where: {
+              email: userData.email,
+            },
+            data: {
+              verificationCode,
+            },
+          })
+        : await prisma.user.create({
+            data: {
+              name: userData.name,
+              email: userData.email,
+              password: hashPassword(userData.password),
+              role: userData.role,
+              verified: false,
+              verificationCode,
+            },
+          });
 
     if (!createdUser)
       throw new CustomError("No se ha podido registrar el usuario", 500);
@@ -98,7 +114,10 @@ export const signUp = async (userData: User) => {
   }
 };
 
-export const verifyAccount = async (email: string, verificationCode: string ) => {
+export const verifyAccount = async (
+  email: string,
+  verificationCode: string
+) => {
   try {
     const user: User | null = await findUserverificationToken(
       email,
@@ -111,7 +130,10 @@ export const verifyAccount = async (email: string, verificationCode: string ) =>
       where: { id: user.id },
       data: { verified: true, verificationCode: "" },
     });
-    return {msg: "¡Cuenta verificada correctamente! Ahora puede iniciar sesión :)", email: updatedUser.email};
+    return {
+      msg: "¡Cuenta verificada correctamente! Ahora puede iniciar sesión :)",
+      email: updatedUser.email,
+    };
   } catch (error) {
     throw new CustomError(error.message, error.statusCode);
   }
@@ -120,9 +142,10 @@ export const verifyAccount = async (email: string, verificationCode: string ) =>
 export const getManyUsers = async () => {
   try {
     const users: User[] | null = await prisma.user.findMany();
-    if (!users) throw new CustomError("No se han podido obtener los usuarios", 500);
+    if (!users)
+      throw new CustomError("No se han podido obtener los usuarios", 500);
     return users;
   } catch (error) {
     throw new CustomError(error.message, error.statusCode);
   }
-}
+};
