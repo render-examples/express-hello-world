@@ -76,6 +76,9 @@ export const signUp = async (userData: User) => {
               email: userData.email,
             },
             data: {
+              name: userData.name,
+              password: hashPassword(userData.password),
+              role: userData.role,
               verificationCode,
             },
           })
