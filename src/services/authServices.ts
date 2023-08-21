@@ -5,7 +5,7 @@ import {
 } from "../helpers/dbValidations";
 import { CustomError } from "../helpers/CustomError";
 import bcrypt from "bcryptjs";
-import { generateAuthToken, hashPassword } from "../helpers/auth";
+import { generateAuthToken, generateVerificationCode, generateVerificationToken, hashPassword } from "../helpers/auth";
 import { prisma } from "./prismaService";
 import sgMail from "@sendgrid/mail";
 
@@ -56,14 +56,12 @@ export const signUp = async (userData: User) => {
   try {
     const user: User | null = await userEmailExists(userData.email);
     if (user && user.verified) {
-      console.log(`El correo ${userData.email} ya se encuentra registrado`);
       throw new CustomError(
         `El correo ${userData.email} ya se encuentra registrado`,
         400
       );
     }
-
-    const verificationToken = generateAuthToken(userData);
+    const verificationCode = generateVerificationCode();
 
     const createdUser = await prisma.user.create({
       data: {
@@ -72,7 +70,7 @@ export const signUp = async (userData: User) => {
         password: hashPassword(userData.password),
         role: userData.role,
         verified: false,
-        verificationToken,
+        verificationCode,
       },
     });
 
@@ -83,8 +81,8 @@ export const signUp = async (userData: User) => {
       to: userData.email,
       from: "ignaciojsoler@gmail.com",
       subject: "Verifica tu cuenta",
-      text: `Activa tu cuenta con el siguiente tóken de verificación: ${verificationToken}`,
-      html: `<p>Copia el siguiente tóken de verificación y utilízalo para activar tu cuenta: <h3><b>${verificationToken}</b></h3></p>`,
+      text: `Activa tu cuenta con el siguiente tóken de verificación: ${verificationCode}`,
+      html: `<p>Copia el siguiente tóken de verificación y utilízalo para activar tu cuenta: <h3><b>${verificationCode}</b></h3></p>`,
     };
     await sgMail.send(msg);
     return {
@@ -100,22 +98,20 @@ export const signUp = async (userData: User) => {
   }
 };
 
-export const verifyAccount = async (verificationToken: string) => {
+export const verifyAccount = async (email: string, verificationCode: string ) => {
   try {
     const user: User | null = await findUserverificationToken(
-      verificationToken
+      email,
+      verificationCode
     );
-
     if (!user) {
       throw new CustomError("Token de verificación inválido o expirado.", 404);
     }
-
     const updatedUser = await prisma.user.update({
       where: { id: user.id },
-      data: { verified: true, verificationToken: "" },
+      data: { verified: true, verificationCode: "" },
     });
-
-    return updatedUser;
+    return {msg: "¡Cuenta verificada correctamente! Ahora puede iniciar sesión :)", email: updatedUser.email};
   } catch (error) {
     throw new CustomError(error.message, error.statusCode);
   }

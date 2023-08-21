@@ -1,5 +1,7 @@
 import { User } from "@prisma/client";
 import { prisma } from "../services/prismaService";
+import bcrypt from "bcryptjs";
+import { CustomError } from "./CustomError";
 
 export const userIdExists = async (userId: string) => {
   const user: User | null = await prisma.user.findUnique({
@@ -19,11 +21,13 @@ export const userEmailExists = async (userEmail: string) => {
   return user;
 };
 
-export const findUserverificationToken = async (verificationToken: string) => {
-  const user: User | null = await prisma.user.findUnique({
-    where: { 
-      verificationToken
-     },
-  });
+export const findUserverificationToken = async (
+  email: string,
+  verificationCode: string,
+) => {
+  const user: User | null = await userEmailExists(email);
+  if (!user) return null;
+  const validCode = verificationCode === user?.verificationCode;
+  if (!validCode) return null;
   return user;
-}
+};

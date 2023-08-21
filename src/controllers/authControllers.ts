@@ -1,6 +1,11 @@
 import { User } from "@prisma/client";
 import { Request, Response } from "express";
-import { getManyUsers, login, signUp } from "../services/authServices";
+import {
+  getManyUsers,
+  login,
+  signUp,
+  verifyAccount,
+} from "../services/authServices";
 import { prisma } from "../services/prismaService";
 
 export const loginWithEmailAndPassword = async (
@@ -30,35 +35,16 @@ export const signUpWithEmailAndPassword = async (
 };
 
 export const accountVerification = async (req: Request, res: Response) => {
-  const verificationToken = req.params.token;
-
+  const { verificationCode, email } = req.body;
   try {
-    const user = await prisma.user.findUnique({
-      where: { verificationToken },
-    });
-    if (!user) {
-      return res
-        .status(404)
-        .json({ msg: "Token de verificación inválido o expirado." });
-    }
-    await prisma.user.update({
-      where: { id: user.id },
-      data: { verified: true, verificationToken: "" },
-    });
-    return res
-      .status(200)
-      .json("¡Cuenta verificada correctamente! Ahora puede iniciar sesión :)");
+    const userVerified = await verifyAccount(email, verificationCode);
+    res.json(userVerified);
   } catch (error) {
-    res
-      .status(500)
-      .json({ msg: "Ha ocurrido un error al verificar la cuenta." });
+    res.status(error.statusCode).json({ msg: error.message });
   }
 };
 
-export const getAllUsers = async (
-  req: Request,
-  res: Response
-) => {
+export const getAllUsers = async (req: Request, res: Response) => {
   try {
     const user = await getManyUsers();
     res.json(user);

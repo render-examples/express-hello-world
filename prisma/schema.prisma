@@ -30,7 +30,7 @@ model User {
   updatedAt         DateTime?
   deleted           Boolean   @default(false)
   verified          Boolean   @default(false)
-  verificationToken String    @unique
+  verificationCode String    @unique
 }
 
 model Service {
