@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
 import { Request, Response } from "express";
-import { login, signUp } from "../services/authServices";
+import { getManyUsers, login, signUp } from "../services/authServices";
 import { prisma } from "../services/prismaService";
 
 export const loginWithEmailAndPassword = async (
@@ -52,5 +52,17 @@ export const accountVerification = async (req: Request, res: Response) => {
     res
       .status(500)
       .json({ msg: "Ha ocurrido un error al verificar la cuenta." });
+  }
+};
+
+export const getAllUsers = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const user = await getManyUsers();
+    res.json(user);
+  } catch (error) {
+    res.status(error.statusCode).json({ msg: error.message });
   }
 };

@@ -37,7 +37,7 @@ model Service {
   id          String   @id @default(uuid()) @map("_id")
   title       String
   description String
-  category    String?
+  category    String
   hourlyRate  Float
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

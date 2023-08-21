@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { check } from 'express-validator';
-import { accountVerification, loginWithEmailAndPassword, signUpWithEmailAndPassword } from "../controllers/authControllers";
+import { accountVerification, getAllUsers, loginWithEmailAndPassword, signUpWithEmailAndPassword } from "../controllers/authControllers";
 import { validateFields } from "../middlewares/validateFields";
 
 export const authRouter = Router();
@@ -20,3 +20,5 @@ authRouter.post('/signup', [
 ], signUpWithEmailAndPassword);
 
 authRouter.get('/verify/:token', accountVerification);
+
+authRouter.get('/users', getAllUsers);
