@@ -7,6 +7,8 @@ import {
 //   findServiceById,
   getManyServices,
 } from "../services/serviceServices";
+import { v4 } from "uuid";
+import { prisma } from "../services/prismaService";
 
 export const getServices = async (req: Request, res: Response) => {
   const { skip: skipParam = "0", take: takeParam = "5" } = req.query;
@@ -17,6 +19,30 @@ export const getServices = async (req: Request, res: Response) => {
     res.json(services);
   } catch (error) {
     res.status(error.statusCode).json({ msg: error.message });
+  }
+};
+
+export const createService = async (req: Request, res: Response) => {
+  const service: Service = req.body;
+
+  const serviceId = v4();
+
+  const user: User = res.locals.authenticatedUser;
+
+  try {
+    const result = await prisma.service.create({
+      data: {
+        ...service,
+        id: serviceId,
+        userId: user.id,
+      },
+    });
+    res.json({
+      msg: "Servicio agregado",
+      result,
+    });
+  } catch (e) {
+    res.status(500).json({ error: "No se pudo crear el gasto correctamente." });
   }
 };
 

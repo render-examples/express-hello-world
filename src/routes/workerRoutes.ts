@@ -13,9 +13,11 @@ workerRouter.get('/:id', getWorkerById);
 
 workerRouter.put("/:id", [
     verifyAuthToken,
-    notEmptyBody
+    notEmptyBody,
+    validateFields
 ], updateWorker);
 
 workerRouter.delete("/:id", [
     verifyAuthToken,
+    validateFields
 ], deleteWorker);

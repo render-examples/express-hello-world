@@ -2,6 +2,7 @@ import { userEmailExists, userIdExists } from "../helpers/dbValidations";
 import { CustomError } from "../helpers/CustomError";
 import { prisma } from "./prismaService";
 import { isAValidRole, isAdmin } from "../helpers/roleValidators";
+import { Service } from "@prisma/client";
 
 export const getManyServices = async (skip: number, take: number) => {
   try {
@@ -14,6 +15,20 @@ export const getManyServices = async (skip: number, take: number) => {
     throw new CustomError("Algo ha salido mal");
   }
 };
+
+export const createNewService = async (userId: string, userInput: Service) => {
+  try {
+    const service = await prisma.service.create({
+      data: {
+        ...userInput,
+        userId
+      }
+    })
+    return service;
+  } catch (error) {
+    throw new CustomError("Algo ha salido mal");
+  }
+}
 
 // export const findServiceById = async (id: string) => {
 //   try {
