@@ -38,9 +38,12 @@ export const getManyWorkers = async (skip: number, take: number) => {
 
 export const findWorkerById = async (id: string) => {
   try {
-    const user = await prisma.user.findUnique({
+    let user = await prisma.user.findUnique({
       where: {
         id: id,
+      },
+      include: {
+        services: true,
       },
     });
     if (!user)
@@ -48,18 +51,11 @@ export const findWorkerById = async (id: string) => {
         "No existe ningún usuario con el id ingresado",
         400
       );
+
+    const { password, deleted, verified, verificationCode, ...userData } = user;
+
     return {
-      id: user.id,
-      role: user.role,
-      name: user.name,
-      email: user.email,
-      profileImage: user.profileImage,
-      location: user.location,
-      phone: user.phone,
-      occupation: user.occupation,
-      city: user.city,
-      bio: user.bio,
-      createdAt: user.createdAt
+      userData,
     };
   } catch (error) {
     throw new CustomError(error.message, error.statusCode);
