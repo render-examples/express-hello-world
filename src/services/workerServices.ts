@@ -48,7 +48,19 @@ export const findWorkerById = async (id: string) => {
         "No existe ningún usuario con el id ingresado",
         400
       );
-    return user;
+    return {
+      id: user.id,
+      role: user.role,
+      name: user.name,
+      email: user.email,
+      profileImage: user.profileImage,
+      location: user.location,
+      phone: user.phone,
+      occupation: user.occupation,
+      city: user.city,
+      bio: user.bio,
+      createdAt: user.createdAt
+    };
   } catch (error) {
     throw new CustomError(error.message, error.statusCode);
   }
