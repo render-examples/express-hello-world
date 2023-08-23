@@ -5,6 +5,7 @@ import { clientRouter } from "./src/routes/clientRoutes";
 import { authRouter } from "./src/routes/authRoutes";
 import { workerRouter } from "./src/routes/workerRoutes";
 import { imagesRouter } from "./src/routes/imageRouter";
+import { serviceRouter } from "./src/routes/serviceRoutes";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(cors());
 app.use("/api/auth", authRouter);
 app.use("/api/client", clientRouter);
 app.use("/api/worker", workerRouter);
+app.use("/api/services", serviceRouter);
 app.use("/api/images", imagesRouter);
 
 const server = app.listen(PORT, () => {
