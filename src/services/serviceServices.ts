@@ -9,6 +9,14 @@ export const getManyServices = async (skip: number, take: number) => {
     const services = await prisma.service.findMany({
       skip: skip,
       take: take,
+      include: {
+        worker: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      }
     });
     return services;
   } catch (error) {
