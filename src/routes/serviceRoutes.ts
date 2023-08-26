@@ -2,14 +2,14 @@ import { Router } from "express";
 import { check } from "express-validator";
 import { verifyAuthToken } from "../middlewares/verifyAuthToken";
 import { notEmptyBody } from "../middlewares/notEmptyBody";
-import { createService, getServices } from "../controllers/serviceControllers";
+import { createService, getServiceById, getServices } from "../controllers/serviceControllers";
 import { validateFields } from "../middlewares/validateFields";
 
 export const serviceRouter = Router();
 
 serviceRouter.get("/", getServices);
 
-serviceRouter.get("/:id");
+serviceRouter.get("/:id", getServiceById);
 
 serviceRouter.post(
   "/",

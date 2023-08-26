@@ -38,23 +38,23 @@ export const createNewService = async (userId: string, userInput: Service) => {
   }
 }
 
-// export const findServiceById = async (id: string) => {
-//   try {
-//     const user = await prisma.user.findUnique({
-//       where: {
-//         id: id,
-//       },
-//     });
-//     if (!user)
-//       throw new CustomError(
-//         "No existe ningún usuario con el id ingresado",
-//         400
-//       );
-//     return user;
-//   } catch (error) {
-//     throw new CustomError(error.message, error.statusCode);
-//   }
-// };
+export const findServiceById = async (id: string) => {
+  try {
+    const service = await prisma.service.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!service)
+      throw new CustomError(
+        "No existe ningún servicio con el id ingresado",
+        400
+      );
+    return service;
+  } catch (error) {
+    throw new CustomError(error.message, error.statusCode);
+  }
+};
 
 // export const findServiceAndUpdate = async (
 //   id: string,

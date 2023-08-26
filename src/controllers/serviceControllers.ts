@@ -2,6 +2,7 @@ import { Service, User } from "@prisma/client";
 import { Request, Response } from "express";
 import { CustomError } from "../helpers/CustomError";
 import {
+  findServiceById,
 //   findServiceAndDelete,
 //   findServiceAndUpdate,
 //   findServiceById,
@@ -46,15 +47,15 @@ export const createService = async (req: Request, res: Response) => {
   }
 };
 
-// export const getServiceById = async (req: Request, res: Response) => {
-//   const { id } = req.params;
-//   try {
-//     const service = await findServiceById(id);
-//     res.json(service);
-//   } catch (error) {
-//     res.status(error.statusCode).json({ msg: error.message });
-//   }
-// };
+export const getServiceById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const service = await findServiceById(id);
+    res.json(service);
+  } catch (error) {
+    res.status(error.statusCode).json({ msg: error.message });
+  }
+};
 
 // export const updateService = async (req: Request, res: Response) => {
 //   const { id } = req.params;
