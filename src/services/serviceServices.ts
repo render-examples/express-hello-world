@@ -44,6 +44,20 @@ export const findServiceById = async (id: string) => {
       where: {
         id: id,
       },
+      include: {
+        worker: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            bio: true,
+            occupation: true,
+            profileImage: true,
+            phone: true,
+            createdAt: true
+          }
+        }
+      }
     });
     if (!service)
       throw new CustomError(
