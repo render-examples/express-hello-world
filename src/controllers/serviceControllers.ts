@@ -3,20 +3,24 @@ import { Request, Response } from "express";
 import { CustomError } from "../helpers/CustomError";
 import {
   findServiceById,
-//   findServiceAndDelete,
-//   findServiceAndUpdate,
-//   findServiceById,
+  //   findServiceAndDelete,
+  //   findServiceAndUpdate,
+  //   findServiceById,
   getManyServices,
 } from "../services/serviceServices";
 import { v4 } from "uuid";
 import { prisma } from "../services/prismaService";
 
 export const getServices = async (req: Request, res: Response) => {
-  const { skip: skipParam = "0", take: takeParam = "5" } = req.query;
+  const { skip: skipParam = "0", take: takeParam = "5", category } = req.query;
   const skip: number = parseInt(skipParam as string, 0) || 0;
   const take: number = parseInt(takeParam as string, 5) || 5;
   try {
-    const services = await getManyServices(skip, take);
+    const services = await getManyServices(
+      skip,
+      take,
+      typeof category === "string" ? category : null
+    );
     res.json(services);
   } catch (error) {
     res.status(error.statusCode).json({ msg: error.message });

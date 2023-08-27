@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 import { userIdExists, userEmailExists } from "../helpers/dbValidations";
 import { CustomError } from "../helpers/CustomError";
 import { prisma } from "./prismaService";
@@ -8,27 +8,32 @@ import sgMail from "@sendgrid/mail";
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
 
-export const getManyWorkers = async (skip: number, take: number) => {
+export const getManyWorkers = async (
+  skip: number,
+  take: number,
+  occupation: string | null
+) => {
   try {
+    const where: Prisma.UserWhereInput = {
+      role: "WORKER",
+      verified: true,
+      updatedAt: {
+        not: null,
+      },
+    };
+
+    if (occupation) {
+      where.occupation = occupation;
+    }
+
     const workers = await prisma.user.findMany({
       skip: skip,
       take: take,
-      where: {
-        role: "WORKER",
-        verified: true,
-        updatedAt: {
-          not: null,
-        },
-      },
+      where: where,
     });
+
     const totalWorkersUsers = await prisma.user.count({
-      where: {
-        role: "WORKER",
-        verified: true,
-        updatedAt: {
-          not: null,
-        },
-      },
+      where: where,
     });
     return { totalWorkersUsers, workers };
   } catch (error) {

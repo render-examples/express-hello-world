@@ -4,11 +4,20 @@ import { prisma } from "./prismaService";
 import { isAValidRole, isAdmin } from "../helpers/roleValidators";
 import { Service } from "@prisma/client";
 
-export const getManyServices = async (skip: number, take: number) => {
+export const getManyServices = async (skip: number, take: number, category: string | null ) => {
   try {
+    let where = {};
+
+    if (category) {
+      where = {
+        category: category,
+      };
+    }
+
     const services = await prisma.service.findMany({
       skip: skip,
       take: take,
+      where: where,
       include: {
         worker: {
           select: {

@@ -9,11 +9,11 @@ import {
 } from "../services/workerServices";
 
 export const getWorkers = async (req: Request, res: Response) => {
-  const { skip: skipParam = "0", take: takeParam = "5" } = req.query;
+  const { skip: skipParam = "0", take: takeParam = "5", occupation } = req.query;
   const skip: number = parseInt(skipParam as string, 0) || 0;
   const take: number = parseInt(takeParam as string, 5) || 5;
   try {
-    const workers = await getManyWorkers(skip, take);
+    const workers = await getManyWorkers(skip, take , typeof occupation === "string" ? occupation : null);
     res.json(workers);
   } catch (error) {
     res.status(error.statusCode).json({ msg: error.message });
