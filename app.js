@@ -38,6 +38,7 @@ app.use(
 
 // enforce on all endpoints
 app.use(jwtCheck);
+app.use(bodyParser.json())
 
 app.use("/cooperative-doctors", jwtCheck, cooperativeDoctorsRouter);
 app.use("/prospective-doctors", jwtCheck, prospectiveDoctorsRouter);

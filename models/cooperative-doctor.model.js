@@ -10,6 +10,7 @@ const cooperativeDoctorSchema = new mongoose.Schema({
     specialty: String,
     primaryFacilityId: String,
     phoneNumbers: Array,
+    otherFacilites: Array
 }, opts);
 
 cooperativeDoctorSchema.virtual('id').get(function() {

@@ -20,6 +20,16 @@ const getCooperativeDoctor = async (req, res) => {
     }
 }
 
+const createCooperativeDoctor = async (req, res) => {
+    let doctor = await CooperativeDoctor.create(req.body);
+    res.status(201).json(doctor);
+}
+
+const updateCooperativeDoctor = async (req, res) => {
+    let doctor = await CooperativeDoctor.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.status(200).json(doctor);
+}
+
 module.exports = {
-    getCooperativeDoctors, getCooperativeDoctor
+    getCooperativeDoctors, getCooperativeDoctor, createCooperativeDoctor, updateCooperativeDoctor
 }

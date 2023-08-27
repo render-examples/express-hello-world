@@ -20,6 +20,16 @@ const getProspectiveDoctor = async (req, res) => {
     }
 }
 
+const createProspectiveDoctor = async (req, res) => {
+    let doctor = await ProspectiveDoctor.create(req.body);
+    res.status(201).json(doctor);
+}
+
+const updateProspectiveDoctor = async (req, res) => {
+    let doctor = await ProspectiveDoctor.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.status(200).json(doctor);
+}
+
 module.exports = {
-    getProspectiveDoctors, getProspectiveDoctor
+    getProspectiveDoctors, getProspectiveDoctor, createProspectiveDoctor, updateProspectiveDoctor
 }
