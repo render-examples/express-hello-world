@@ -14,34 +14,46 @@ enum UserType {
 }
 
 model User {
-  id                String    @id @default(uuid()) @map("_id")
-  role              UserType  @default(CLIENT)
-  name              String
-  email             String    @unique
-  password          String
-  profileImage      String?
-  location          String?
-  phone             String?
-  occupation        String?
-  city              String?
-  bio               String?
-  services          Service[] @relation("UserServices")
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime?
-  deleted           Boolean   @default(false)
-  verified          Boolean   @default(false)
-  verificationCode String    @unique
+  id               String            @id @default(uuid()) @map("_id")
+  role             UserType          @default(CLIENT)
+  name             String
+  email            String            @unique
+  password         String
+  profileImage     String?
+  location         String?
+  phone            String?
+  occupation       String?
+  city             String?
+  bio              String?
+  services         Service[]         @relation("UserServices")
+  favoriteServices FavoriteService[] @relation("UserFavoriteServices")
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime?
+  deleted          Boolean           @default(false)
+  verified         Boolean           @default(false)
+  verificationCode String            @unique
 }
 
 model Service {
-  id          String   @id @default(uuid()) @map("_id")
-  title       String
-  description String
-  category    String
-  hourlyRate  Float
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  deleted     Boolean  @default(false)
-  userId      String
-  worker      User     @relation("UserServices", fields: [userId], references: [id])
+  id               String            @id @default(uuid()) @map("_id")
+  title            String
+  description      String
+  category         String
+  hourlyRate       Float
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  deleted          Boolean           @default(false)
+  userId           String
+  worker           User              @relation("UserServices", fields: [userId], references: [id])
+  favoriteServices FavoriteService[] @relation("FavoriteServices")
+}
+
+model FavoriteService {
+  id        String   @id @default(uuid()) @map("_id")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  serviceId String
+  user      User     @relation("UserFavoriteServices", fields: [userId], references: [id])
+  service   Service  @relation("FavoriteServices", fields: [serviceId], references: [id])
 }
