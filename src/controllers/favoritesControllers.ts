@@ -31,8 +31,9 @@ export const createFavorite = async (req: Request, res: Response) => {
 
 export const removeFavorite = async (req: Request, res: Response) => {
   const { favoriteId } = req.params;
+  const token: User = res.locals.authenticatedUser;
   try {
-    const result = await findFavoriteAndRemove(favoriteId);
+    const result = await findFavoriteAndRemove(favoriteId, token);
     res.json({ msg: "Servicio eliminado de favoritos", result });
   } catch (error) {
     res.status(500).json({ msg: error.message });

@@ -2,7 +2,7 @@ import { userEmailExists, userIdExists } from "../helpers/dbValidations";
 import { CustomError } from "../helpers/CustomError";
 import { prisma } from "./prismaService";
 import { isAValidRole, isAdmin } from "../helpers/roleValidators";
-import { Service } from "@prisma/client";
+import { Service, User } from "@prisma/client";
 
 export const getFavoritesByUser = async (userId: string) => {
   try {
@@ -37,22 +37,35 @@ export const saveServiceAsFavorite = async (
   }
 };
 
-export const findFavoriteAndRemove = async (favoriteId: string) => {
+export const findFavoriteAndRemove = async (
+  favoriteId: string,
+  token: User
+) => {
   try {
-    const favorite = await prisma.favoriteService.delete({
+    const existingFavorite = await prisma.favoriteService.findUnique({
       where: {
         id: favoriteId,
       },
     });
 
-    if (!favorite)
+    if (!existingFavorite) {
       throw new CustomError(
-        "No se ha podido eliminar el servicio de favoritos",
-        500
+        "No existe ningún servicio guardado en favoritos con el id proporcionado",
+        404
       );
+    }
+
+    if (existingFavorite.userId !== token.id && !isAdmin(token.role))
+      throw new CustomError("Acceso no autorizado", 401);
+
+    const favorite = await prisma.favoriteService.delete({
+      where: {
+        id: favoriteId
+      },
+    });
 
     return favorite;
   } catch (error) {
-    throw new CustomError(error.message, error.statusCode);
+    throw new CustomError(error.message, error.statusCode || 500);
   }
 };
