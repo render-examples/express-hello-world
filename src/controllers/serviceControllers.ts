@@ -47,7 +47,7 @@ export const createService = async (req: Request, res: Response) => {
       result,
     });
   } catch (e) {
-    res.status(500).json({ error: "No se pudo crear el gasto correctamente." });
+    res.status(500).json({ error: "No se pudo crear el servicio correctamente." });
   }
 };
 

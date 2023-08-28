@@ -1,34 +1,25 @@
 import { Router } from "express";
 import { verifyAuthToken } from "../middlewares/verifyAuthToken";
+import { createFavorite, getFavorites } from "../controllers/favoritesControllers";
 import { check } from "express-validator";
-import { notEmptyBody } from "../middlewares/notEmptyBody";
 import { validateFields } from "../middlewares/validateFields";
 
 export const favoriteRouter = Router();
 
-favoriteRouter.get('/', getFavorites);
+favoriteRouter.get('/:userId',verifyAuthToken, getFavorites);
 
 favoriteRouter.post(
     "/",
     [
-      verifyAuthToken,
-      check("title").notEmpty().withMessage("El título es obligatorio"),
-      check("description")
-        .notEmpty()
-        .withMessage("La descripción es obligatoria"),
-      check("category").notEmpty().withMessage("La categoría es obligatoria"),
-      check("hourlyRate")
-        .notEmpty()
-        .withMessage("La tarifa por hora es obligatoria")
-        .isFloat({ min: 0 })
-        .withMessage("La tarifa por hora debe ser un número positivo"),
-      notEmptyBody,
-      validateFields,
+        verifyAuthToken,
+        check("userId").notEmpty().isUUID(),
+        check("serviceId").notEmpty().isUUID(),
+        validateFields
     ],
-    createfavorite
-  );
+    createFavorite
+)
   
 
-favoriteRouter.delete("/:id", [
-    verifyAuthToken,
-], deletefavorite);
+// favoriteRouter.delete("/:favoriteId", [
+//     verifyAuthToken,
+// ], deleteFavorite);

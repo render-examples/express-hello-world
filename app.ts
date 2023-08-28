@@ -6,6 +6,7 @@ import { authRouter } from "./src/routes/authRoutes";
 import { workerRouter } from "./src/routes/workerRoutes";
 import { imagesRouter } from "./src/routes/imageRouter";
 import { serviceRouter } from "./src/routes/serviceRoutes";
+import { favoriteRouter } from "./src/routes/favoriteRoutes";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/client", clientRouter);
 app.use("/api/worker", workerRouter);
 app.use("/api/services", serviceRouter);
+app.use("/api/favorites", favoriteRouter);
 app.use("/api/images", imagesRouter);
 
 const server = app.listen(PORT, () => {
