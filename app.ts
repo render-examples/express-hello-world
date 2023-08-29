@@ -1,9 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { clientRouter } from "./src/routes/clientRoutes";
 import { authRouter } from "./src/routes/authRoutes";
-import { workerRouter } from "./src/routes/workerRoutes";
 import { imagesRouter } from "./src/routes/imageRouter";
 import { serviceRouter } from "./src/routes/serviceRoutes";
 import { favoriteRouter } from "./src/routes/favoriteRoutes";
