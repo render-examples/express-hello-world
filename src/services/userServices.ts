@@ -34,6 +34,19 @@ export const getManyUsers = async (
       skip: skip,
       take: take,
       where: where,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        bio: true,
+        city: true,
+        createdAt: true,
+        occupation: true,
+        role: true,
+        location: true,
+        profileImage: true
+      }
     });
 
     const totalUsersUsers = await prisma.user.count({
@@ -41,6 +54,7 @@ export const getManyUsers = async (
     });
     return { totalUsersUsers, users };
   } catch (error) {
+    console.log(error)
     throw new CustomError("Algo ha salido mal");
   }
 };
