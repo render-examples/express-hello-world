@@ -2,7 +2,6 @@ import { Router } from "express";
 import { check } from "express-validator";
 import {
   accountVerification,
-  getAllUsers,
   loginWithEmailAndPassword,
   signUpWithEmailAndPassword,
 } from "../controllers/authControllers";
@@ -50,5 +49,3 @@ authRouter.post(
   ],
   accountVerification
 );
-
-authRouter.get("/users", getAllUsers);

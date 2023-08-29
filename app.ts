@@ -7,6 +7,7 @@ import { workerRouter } from "./src/routes/workerRoutes";
 import { imagesRouter } from "./src/routes/imageRouter";
 import { serviceRouter } from "./src/routes/serviceRoutes";
 import { favoriteRouter } from "./src/routes/favoriteRoutes";
+import { userRouter } from "./src/routes/userRoutes";
 
 dotenv.config();
 
@@ -17,8 +18,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api/auth", authRouter);
-app.use("/api/client", clientRouter);
-app.use("/api/worker", workerRouter);
+app.use("/api/user", userRouter);
 app.use("/api/services", serviceRouter);
 app.use("/api/favorites", favoriteRouter);
 app.use("/api/images", imagesRouter);

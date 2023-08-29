@@ -1,7 +1,6 @@
 import { User } from "@prisma/client";
 import { Request, Response } from "express";
 import {
-  getManyUsers,
   login,
   signUp,
   verifyAccount,
@@ -39,15 +38,6 @@ export const accountVerification = async (req: Request, res: Response) => {
   try {
     const userVerified = await verifyAccount(email, verificationCode);
     res.json(userVerified);
-  } catch (error) {
-    res.status(error.statusCode).json({ msg: error.message });
-  }
-};
-
-export const getAllUsers = async (req: Request, res: Response) => {
-  try {
-    const user = await getManyUsers();
-    res.json(user);
   } catch (error) {
     res.status(error.statusCode).json({ msg: error.message });
   }

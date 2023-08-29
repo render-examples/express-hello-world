@@ -141,14 +141,3 @@ export const verifyAccount = async (
     throw new CustomError(error.message, error.statusCode);
   }
 };
-
-export const getManyUsers = async () => {
-  try {
-    const users: User[] | null = await prisma.user.findMany();
-    if (!users)
-      throw new CustomError("No se han podido obtener los usuarios", 500);
-    return users;
-  } catch (error) {
-    throw new CustomError(error.message, error.statusCode);
-  }
-};
