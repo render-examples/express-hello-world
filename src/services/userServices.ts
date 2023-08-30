@@ -34,6 +34,9 @@ export const getManyUsers = async (
       skip: skip,
       take: take,
       where: where,
+      orderBy: {
+        createdAt: "desc"
+      },
       select: {
         id: true,
         name: true,
