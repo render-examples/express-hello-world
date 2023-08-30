@@ -10,12 +10,17 @@ export const getFavoritesByUser = async (userId: string) => {
       where: {
         userId,
       },
+      include: {
+        service: true,
+        user: true,
+      }
     });
 
     if (!favorites) throw new CustomError("El id de usuario es inválido", 400);
 
     return favorites;
   } catch (error) {
+    console.log(error)
     throw new CustomError("Algo ha salido mal");
   }
 };
