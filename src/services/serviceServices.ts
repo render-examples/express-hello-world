@@ -2,7 +2,7 @@ import { userEmailExists, userIdExists } from "../helpers/dbValidations";
 import { CustomError } from "../helpers/CustomError";
 import { prisma } from "./prismaService";
 import { isAValidRole, isAdmin } from "../helpers/roleValidators";
-import { Service } from "@prisma/client";
+import { Service, User } from "@prisma/client";
 
 export const getManyServices = async (skip: number, take: number, category: string | null ) => {
   try {
@@ -79,59 +79,33 @@ export const findServiceById = async (id: string) => {
   }
 };
 
-// export const findServiceAndUpdate = async (
-//   id: string,
-//   userData: User,
-//   token: User,
-//   profileImage: string | undefined
-// ) => {
-//   if (userData.password) userData.password = hashPassword(userData.password);
+export const findServiceAndUpdate = async (id: string, updatedServiceData: Service, token: User) => {
+  try {
+    const existingService = await prisma.service.findUnique({
+      where: {
+        id: id,
+      },
+    });
 
-//   try {
-//     if (id !== token.id && !isAdmin(token.role))
-//       throw new CustomError("Acceso no autorizado", 401);
+    if (!existingService) {
+      throw new CustomError("No existe ningún servicio con el id ingresado", 400);
+    }
 
-//     const user = await userIdExists(id);
+    if (existingService.userId !== token.id && !isAdmin(token.role))
+      throw new CustomError("Acceso no autorizado", 401);
 
-//     if (!user)
-//       throw new CustomError(
-//         "No existe ningún usuario con el id ingresado",
-//         404
-//       );
+    const updatedService = await prisma.service.update({
+      where: {
+        id: id,
+      },
+      data: updatedServiceData,
+    });
 
-//     if (userData.role && !isAdmin(token.role))
-//       throw new CustomError(
-//         "Solo los administradores pueden hacer esta modificación",
-//         401
-//       );
-
-//     if (userData.role && !isAValidRole(userData.role))
-//       throw new CustomError("El rol ingresado no es válido", 400);
-
-//     if (userData.email && (await userEmailExists(userData.email)))
-//       throw new CustomError(
-//         "El correo electrónico ya se encuentra registrado",
-//         400
-//       );
-
-//     let updatedUserData: User = userData;
-//     if (profileImage !== undefined) updatedUserData.profileImage = profileImage;
-
-//     const updatedUser = await prisma.user.update({
-//       where: {
-//         id: id,
-//       },
-//       data: {
-//         ...updatedUserData,
-//         updatedAt: new Date(),
-//       },
-//     });
-
-//     return updatedUser;
-//   } catch (error) {
-//     throw new CustomError(error.message, error.statusCode);
-//   }
-// };
+    return updatedService;
+  } catch (error) {
+    throw new CustomError("Algo ha salido mal al actualizar el servicio", error.statusCode || 500);
+  }
+};
 
 // export const findServiceAndDelete = async (id: string, token: User) => {
 //   try {

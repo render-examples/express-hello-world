@@ -2,7 +2,7 @@ import { Router } from "express";
 import { check } from "express-validator";
 import { verifyAuthToken } from "../middlewares/verifyAuthToken";
 import { notEmptyBody } from "../middlewares/notEmptyBody";
-import { createService, getServiceById, getServices } from "../controllers/serviceControllers";
+import { createService, getServiceById, getServices, updateService } from "../controllers/serviceControllers";
 import { validateFields } from "../middlewares/validateFields";
 
 export const serviceRouter = Router();
@@ -31,6 +31,6 @@ serviceRouter.post(
   createService
 );
 
-serviceRouter.put("/:id", [verifyAuthToken, notEmptyBody]);
+serviceRouter.put("/:id", [verifyAuthToken, notEmptyBody], updateService);
 
 serviceRouter.delete("/:id", [verifyAuthToken]);
