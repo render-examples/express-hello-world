@@ -18,6 +18,9 @@ export const getManyServices = async (skip: number, take: number, category: stri
       skip: skip,
       take: take,
       where: where,
+      orderBy: {
+        createdAt: "desc"
+      },
       include: {
         worker: {
           select: {
@@ -122,14 +125,14 @@ export const findServiceAndDelete = async (id: string, token: User) => {
     if (existingService.userId !== token.id && !isAdmin(token.role))
       throw new CustomError("Acceso no autorizado", 401);
 
-    const updatedService = await prisma.service.delete({
-      where: {
-        id
-      }
-    });
+      const deletedService = await prisma.service.delete({
+        where: {
+          id
+        }
+      });
 
-    return updatedService;
+    return deletedService;
   } catch (error) {
-    throw new CustomError("Algo ha salido mal al actualizar el servicio", error.statusCode || 500);
+    throw new CustomError("No se ha podido eliminar el servicio", error.statusCode || 500);
   }
 };

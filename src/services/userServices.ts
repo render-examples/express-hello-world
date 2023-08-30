@@ -66,7 +66,11 @@ export const findUserById = async (id: string) => {
         id: id,
       },
       include: {
-        services: true,
+        services: {
+          orderBy: {
+            createdAt: "desc"
+          }
+        },
       },
     });
     if (!user)
