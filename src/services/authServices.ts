@@ -127,7 +127,7 @@ export const verifyAccount = async (
       verificationCode
     );
     if (!user) {
-      throw new CustomError("Token de verificación inválido o expirado.", 404);
+      throw new CustomError("Código de verificación inválido o expirado.", 404);
     }
     const updatedUser = await prisma.user.update({
       where: { id: user.id },
