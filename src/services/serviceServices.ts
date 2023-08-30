@@ -107,33 +107,29 @@ export const findServiceAndUpdate = async (id: string, updatedServiceData: Servi
   }
 };
 
-// export const findServiceAndDelete = async (id: string, token: User) => {
-//   try {
-//     if (id !== token.id && !isAdmin(token.role))
-//       throw new CustomError("Acceso no autorizado", 401);
+export const findServiceAndDelete = async (id: string, token: User) => {
+  try {
+    const existingService = await prisma.service.findUnique({
+      where: {
+        id: id,
+      },
+    });
 
-//     const user = await userIdExists(id);
+    if (!existingService) {
+      throw new CustomError("No existe ningún servicio con el id ingresado", 400);
+    }
 
-//     if (!user)
-//       throw new CustomError(
-//         "No existe ningún usuario con el id ingresado",
-//         404
-//       );
+    if (existingService.userId !== token.id && !isAdmin(token.role))
+      throw new CustomError("Acceso no autorizado", 401);
 
-//     const updatedUser = await prisma.user.update({
-//       where: {
-//         id: id,
-//       },
-//       data: {
-//         updatedAt: new Date(),
-//         deleted: true,
-//       },
-//     });
+    const updatedService = await prisma.service.delete({
+      where: {
+        id
+      }
+    });
 
-//     if (!user) throw new CustomError("No se ha podido borrar el usuario", 500);
-
-//     return updatedUser;
-//   } catch (error) {
-//     throw new CustomError(error.message, error.statusCode);
-//   }
-// };
+    return updatedService;
+  } catch (error) {
+    throw new CustomError("Algo ha salido mal al actualizar el servicio", error.statusCode || 500);
+  }
+};
