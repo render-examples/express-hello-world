@@ -125,14 +125,21 @@ export const findServiceAndDelete = async (id: string, token: User) => {
     if (existingService.userId !== token.id && !isAdmin(token.role))
       throw new CustomError("Acceso no autorizado", 401);
 
-      const deletedService = await prisma.service.delete({
-        where: {
-          id
-        }
-      });
+    await prisma.favoriteService.deleteMany({
+      where: {
+        serviceId: id,
+      },
+    });
+
+    const deletedService = await prisma.service.delete({
+      where: {
+        id: id,
+      },
+    });
 
     return deletedService;
   } catch (error) {
+    console.error(error);
     throw new CustomError("No se ha podido eliminar el servicio", error.statusCode || 500);
   }
 };
