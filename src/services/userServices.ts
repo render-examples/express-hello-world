@@ -111,9 +111,9 @@ export const findUserAndUpdate = async (
         404
       );
 
-    if (userData.role && !isAdmin(token.role))
+    if (userData.role === "ADMIN" && !isAdmin(token.role))
       throw new CustomError(
-        "Solo los administradores pueden hacer modificar los roles de usuario.",
+        "Solo los administradores pueden modificar los roles de ADMIN.",
         401
       );
 
