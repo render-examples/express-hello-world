@@ -4,7 +4,7 @@ import { prisma } from "./prismaService";
 import { isAValidRole, isAdmin } from "../helpers/roleValidators";
 import { Service, User } from "@prisma/client";
 
-export const getManyServices = async (skip: number, take: number, category: string | null ) => {
+export const getManyServices = async (skip: number, take: number, category: string | null) => {
   try {
     let where = {};
 
@@ -17,18 +17,23 @@ export const getManyServices = async (skip: number, take: number, category: stri
     const services = await prisma.service.findMany({
       skip: skip,
       take: take,
-      where: where,
+      where: {
+        ...where,
+        worker: {
+          role: "WORKER",
+        },
+      },
       orderBy: {
-        createdAt: "desc"
+        createdAt: "desc",
       },
       include: {
         worker: {
           select: {
             id: true,
-            name: true
-          }
-        }
-      }
+            name: true,
+          },
+        },
+      },
     });
     return services;
   } catch (error) {

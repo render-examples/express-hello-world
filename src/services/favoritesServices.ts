@@ -8,19 +8,22 @@ export const getFavoritesByUser = async (userId: string) => {
   try {
     const favorites = await prisma.favoriteService.findMany({
       where: {
-        userId,
+        user: {
+          id: userId,
+          role: "WORKER",
+        },
       },
       include: {
         service: true,
         user: true,
-      }
+      },
     });
 
     if (!favorites) throw new CustomError("El id de usuario es inválido", 400);
 
     return favorites;
   } catch (error) {
-    console.log(error)
+    console.log(error);
     throw new CustomError("Algo ha salido mal");
   }
 };
