@@ -14,10 +14,16 @@ export const getFavoritesByUser = async (userId: string) => {
         },
       },
       include: {
-        service: true,
+        service: {
+          include:{
+            worker: true
+          }
+        },
         user: true,
       },
     });
+
+    console.log("Favorites:", favorites); // Add this line for debugging
 
     if (!favorites) throw new CustomError("El id de usuario es inválido", 400);
 
