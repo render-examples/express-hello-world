@@ -15,8 +15,8 @@ export const getUsers = async (req: Request, res: Response) => {
     occupation,
     role,
   } = req.query;
-  const skip: number = parseInt(skipParam as string, 0) || 0;
-  const take: number = parseInt(takeParam as string, 5) || 5;
+  const skip: number = parseInt(skipParam as string) || 0;
+  const take: number = parseInt(takeParam as string) || 50;
   const formatedRole = role?.toString().toLocaleUpperCase();
   try {
     const users = await getManyUsers(

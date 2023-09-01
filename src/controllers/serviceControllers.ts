@@ -15,8 +15,8 @@ import { prisma } from "../services/prismaService";
 
 export const getServices = async (req: Request, res: Response) => {
   const { skip: skipParam = "0", take: takeParam, category } = req.query;
-  const skip: number = parseInt(skipParam as string, 0) || 0;
-  const take: number = parseInt(takeParam as string) || 20;
+  const skip: number = parseInt(skipParam as string) || 0;
+  const take: number = parseInt(takeParam as string) || 100;
   try {
     const services = await getManyServices(
       skip,
