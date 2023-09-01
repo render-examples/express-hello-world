@@ -52,10 +52,10 @@ export const getManyUsers = async (
       }
     });
 
-    const totalUsersUsers = await prisma.user.count({
+    const totalUsers = await prisma.user.count({
       where: where,
     });
-    return { totalUsersUsers, users };
+    return { totalUsers, users };
   } catch (error) {
     console.log(error)
     throw new CustomError("Algo ha salido mal");
