@@ -11,7 +11,7 @@ import {
 export const getUsers = async (req: Request, res: Response) => {
   const {
     skip: skipParam = "0",
-    take: takeParam = "5",
+    take: takeParam = "50",
     occupation,
     role,
   } = req.query;
