@@ -23,7 +23,19 @@ export const getServices = async (req: Request, res: Response) => {
       take,
       typeof category === "string" ? category : null
     );
-    res.json(services);
+    let where = {}
+    if (typeof category === "string") {
+      where = {
+        category
+      }
+    }
+    const totalServices = await prisma.service.count({
+      where
+    });
+    res.json({
+      totalServices,
+      services
+    });
   } catch (error) {
     res.status(error.statusCode).json({ msg: error.message });
   }
