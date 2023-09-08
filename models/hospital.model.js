@@ -21,4 +21,4 @@ hospitalSchema.virtual('id').get(function() {
     return this._id.toString();
 })
 
-module.exports = mongoose.model("Hospital", hospitalSchema);
+module.exports = mongoose.model("Hospital", hospitalSchema, "hospitals");
