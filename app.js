@@ -7,6 +7,7 @@ require("dotenv").config();
 const cooperativeDoctorsRouter = require("./routes/cooperative-doctors.routes");
 const prospectiveDoctorsRouter = require("./routes/prospective-doctors.routes");
 const hospitalsRouter = require("./routes/hospitals.routes");
+const usersRouter = require("./routes/users.routes")
 
 const { auth } = require("express-oauth2-jwt-bearer");
 
@@ -43,6 +44,7 @@ app.use(bodyParser.json())
 app.use("/cooperative-doctors", jwtCheck, cooperativeDoctorsRouter);
 app.use("/prospective-doctors", jwtCheck, prospectiveDoctorsRouter);
 app.use("/hospitals", jwtCheck, hospitalsRouter);
+app.use("/users", jwtCheck, usersRouter);
 
 app.get("/", (req, res) => res.type("html").send(html));
 
