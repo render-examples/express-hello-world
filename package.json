@@ -11,7 +11,10 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "@huggingface/inference": "^2.6.3",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "node-fetch": "^3.3.2"
   },
   "engines": {
     "node": ">=14"
