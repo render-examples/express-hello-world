@@ -10,7 +10,6 @@ export const getFavoritesByUser = async (userId: string) => {
       where: {
         user: {
           id: userId,
-          role: "WORKER",
         },
       },
       include: {
@@ -23,11 +22,11 @@ export const getFavoritesByUser = async (userId: string) => {
       },
     });
 
-    console.log("Favorites:", favorites); // Add this line for debugging
-
     if (!favorites) throw new CustomError("El id de usuario es inválido", 400);
 
-    return favorites;
+    const filteredFavorites = favorites.filter(favoriteService => favoriteService.service.worker.role === "WORKER");
+
+    return filteredFavorites;
   } catch (error) {
     console.log(error);
     throw new CustomError("Algo ha salido mal");
