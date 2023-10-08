@@ -109,7 +109,7 @@ app.get("/short/:prompt", async function (req, res) {
     .removeBackgroundFromImageBase64({
       base64img,
       apiKey: `${process.env.REMOVEBG_API_KEY}`,
-      size: "regular",
+      size: "preview",
       type: "product",
     })
     .then((result) => {
