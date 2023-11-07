@@ -54,7 +54,7 @@ const html = `
   </head>
   <body>
     <section>
-      Hello from Sieve! Are you ready
+      Hello from Sieve! Are you ready to party?
     </section>
   </body>
 </html>
