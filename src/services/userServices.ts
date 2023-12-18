@@ -17,6 +17,7 @@ export const getManyUsers = async (
   try {
     const where: Prisma.UserWhereInput = {
       verified: true,
+      deleted: false,
       updatedAt: {
         not: null,
       },

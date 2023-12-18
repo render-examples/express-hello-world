@@ -11,6 +11,11 @@ export const getFavoritesByUser = async (userId: string) => {
         user: {
           id: userId,
         },
+        service: {
+          worker: {
+            deleted: false,
+          }
+        }
       },
       include: {
         service: {

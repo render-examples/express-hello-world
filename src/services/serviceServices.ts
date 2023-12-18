@@ -21,6 +21,7 @@ export const getManyServices = async (skip: number, take: number, category: stri
         ...where,
         worker: {
           role: "WORKER",
+          deleted: false,
         },
       },
       orderBy: {
