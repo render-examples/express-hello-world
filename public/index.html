@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html lang="">
+<!-- To declare your language - read more here: https://www.w3.org/International/questions/qa-html-language-declarations -->
+<head>
+    <title>The Ontario Building Code Online | BuildingCode.Online</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="../layout/styles/layout.css" rel="stylesheet" type="text/css" media="all">
+    <script src="https://unpkg.com/htmx.org"></script>
+    <style>
+        .htmx-indicator{
+            display: none;
+        }
+        .htmx-request .htmx-indicator{
+            opacity: 1;
+        }
+        .htmx-request.htmx-indicator{
+            opacity: 1;
+        }
+        .highlight {
+            background-color: #FFFF00;
+        }
+    </style>
+</head>
+<body id="top">
+
+<!-- Top Background Image Wrapper -->
+<div class="bgded overlay" style="background-image:url('/images/banner.png');">
+    <div class="wrapper row1">
+        <header id="header" class="hoc clear">
+            <div id="logo" class="fl_left">
+                <h1><a href="/">Building<font color ="#ff0000">Code.</font>Online</a></h1>
+            </div>
+            <nav id="mainav" class="fl_right">
+                <ul class="clear">
+                    <li><a class="drop" href="#">Building Codes</a>
+                        <ul>
+                            <li><a href="https://buildingcode.online" title = "Home" >Home</a></li>
+                            <li><a href="https://buildingcode.online" title = "Ontario Building Code" >Ontario Building Code</a></li>
+                            <li><a href="https://buildingcode.online/qbc" title = "Quebec Building Code" >Quebec Building Code</a></li>
+                            <li><a href="https://buildingcode.online/bcbc" title = "British Columbia Building Code" >British Columbia Building Code</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="drop" href="#">Navigation</a>
+                        <ul hx-boost="true" hx-target=".content" hx-swap="outerHTML">
+                            <li><a class="drop" hx-post="/sections/section1">Section 1</a>
+                            <li><a class="drop" hx-post="/sections/section3">Section 3</a>
+                            <li><a class="drop" hx-post="/sections/section4">Section 4</a>
+                            <li><a class="drop" hx-post="/sections/section5">Section 5</a>
+                            <li><a class="drop" hx-post="/sections/section6">Section 6</a>
+                            <li><a class="drop" hx-post="/sections/section7">Section 7</a>
+                            <li><a class="drop" hx-post="/sections/section8">Section 8</a>
+                            <li><a class="drop" hx-post="/sections/section9">Section 9</a>
+                            <li><a class="drop" hx-post="/sections/section10">Section 10</a>
+                            <li><a class="drop" hx-post="/sections/section11">Section 11</a>
+                            <li><a class="drop" hx-post="/sections/section12">Section 12</a>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <!-- ################################################################################################ -->
+        </header>
+    </div>
+    <section id="breadcrumb" class="hoc clear">
+        <!-- ################################################################################################ -->
+        <ul>
+            <li><a href="http://buildingcode.online">Home</a></li>
+            <li><a href="http://buildingcode.online/section1.html">Section 1 of the Ontario Building Code</a></li>
+        </ul>
+        <!-- ################################################################################################ -->
+        <h6 class="heading">
+            Section 1 of the Ontario Building Code
+        </h6>
+        <!-- ################################################################################################ -->
+    </section>
+    <!-- ################################################################################################ -->
+</div>
+<!-- End Top Background Image Wrapper -->
+<!-- Main -->
+<div class="wrapper row3">
+    <main class="hoc container clear" hx-boost="true" hx-target=".content" hx-swap="outerHTML" hx-push-url="true">
+        <!-- search -->
+        <div hx-push-url="false" style="padding-bottom: 1rem;">
+            <input class="form-control" type="search" id="all-content-search"
+               name="search" placeholder="Begin Typing To Search..."
+               hx-post="/search"
+               hx-trigger="input changed delay:500ms, search"
+               hx-target="#search-results"
+               hx-swap="innerHTML"
+            >
+            <div id="search-results" class="position: relative;"></div>
+        </div>
+        <!-- main body -->
+        <div class="sidebar one_quarter first">
+            <!-- ################################################################################################ -->
+            <h6>Navigate</h6>
+            <nav class="sdb_holder">
+                <ul>
+                    <li><a hx-post="/sections/section1" title = "Section 1 of the Ontario Building Code" >Section 1</a>
+                    <li><a hx-post="/sections/section3" title = "Section 3 of the Ontario Building Code" >Section 3</a>
+                    <li><a hx-post="/sections/section4" title = "Section 4 of the Ontario Building Code" >Section 4</a>
+                    <li><a hx-post="/sections/section5" title = "Section 5 of the Ontario Building Code" >Section 5</a>
+                    <li><a hx-post="/sections/section6" title = "Section 6 of the Ontario Building Code" >Section 6</a>
+                    <li><a hx-post="/sections/section7" title = "Section 7 of the Ontario Building Code" >Section 7</a>
+                    <li><a hx-post="/sections/section8" title = "Section 8 of the Ontario Building Code" >Section 8</a>
+                    <li><a hx-post="/sections/section9" title = "Section 9 of the Ontario Building Code" >Section 9</a>
+                    <li><a hx-post="/sections/section10" title = "Section 10 of the Ontario Building Code" >Section 10</a>
+                    <li><a hx-post="/sections/section11" title = "Section 11 of the Ontario Building Code" >Section 11</a>
+                    <li><a hx-post="/sections/section12" title = "Section 12 of the Ontario Building Code" >Section 12</a>
+                </ul>
+            </nav>
+
+        </div>
+        <div class="content three_quarter" hx-trigger="load once" hx-post="/sections/section1"></div>
+<!--        <div class="clear"></div>-->
+    </main>
+</div>
+
+<div class="wrapper row4">
+    <footer id="footer" class="hoc clear">
+
+    </footer>
+</div>
+
+<div class="wrapper row5">
+    <div id="copyright" class="hoc clear">
+        <p class="fl_left">This material is COPYRIGHT © KING'S PRINTER FOR ONTARIO, 2008-2023</p>
+        <p class="fl_left">This site is not an offical copy or maintitned by the Government of Ontario.</p>
+        <p class="right"><a href="http://buildingCode.online">Buildingcode.Online</a></p>
+        <p class="fl_right"></p>
+        <!-- ################################################################################################ -->
+    </div>
+</div>
+
+<a id="backtotop" href="#top"><i class="fa fa-chevron-up"></i></a>
+<!-- JAVASCRIPTS -->
+<script src="../layout/scripts/jquery.min.js"></script>
+<script src="../layout/scripts/jquery.backtotop.js"></script>
+<script src="../layout/scripts/jquery.mobilemenu.js"></script>
+<script>
+    const $content = document.querySelector(".content");
+    const pathName = window.location.pathname;
+    if(pathName.length > 1) $content.setAttribute("hx-post", pathName);
+</script>
+</body>
+</html>
