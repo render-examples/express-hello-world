@@ -144,6 +144,11 @@ app.post("/search", (req, res) => {
     });
 });
 
+app.get('/api', (req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
+    res.end(`Hello!`);
+});
 
 app.get("/scrape", (req, res) => {
     let allowScrape = false;
