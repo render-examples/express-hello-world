@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="../layout/styles/layout.css" rel="stylesheet" type="text/css" media="all">
     <script src="https://unpkg.com/htmx.org"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"></script>
     <style>
         .htmx-indicator{
             display: none;
@@ -82,10 +83,10 @@
     <main class="hoc container clear" hx-boost="true" hx-target=".content" hx-swap="outerHTML" hx-push-url="true">
         <!-- search -->
         <div hx-push-url="false" style="padding-bottom: 1rem;">
-            <input class="form-control" type="search" id="all-content-search"
+            <input class="form-control" type="search" id="content-search"
                name="search" placeholder="Begin Typing To Search..."
                hx-post="/search"
-               hx-trigger="input changed delay:500ms, search"
+               hx-trigger="input changed delay:400ms, search"
                hx-target="#search-results"
                hx-swap="innerHTML"
             >
@@ -139,9 +140,30 @@
 <script src="../layout/scripts/jquery.backtotop.js"></script>
 <script src="../layout/scripts/jquery.mobilemenu.js"></script>
 <script>
+    // Preserve URL on page reload
     const $content = document.querySelector(".content");
     const pathName = window.location.pathname;
     if(pathName.length > 1) $content.setAttribute("hx-post", pathName);
+
+    const $contentSearch = document.querySelector('#content-search');
+    const markInstance = new Mark("div.content");
+    function highlightSearchValue() {
+        markInstance.unmark();
+        const searchValue = $contentSearch.value;
+        if(searchValue && searchValue.length > 0) {
+            markInstance.mark(searchValue);
+        }
+    }
+
+    // $contentSearch.addEventListener('keydown', function() {
+    //     console.log("change");
+    //     highlightSearchValue();
+    // });
+
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+        console.log("afterSwap", evt);
+        highlightSearchValue();
+    });
 </script>
 </body>
 </html>

@@ -13,11 +13,10 @@ app .use(bodyParser.urlencoded({ extended: false })); // parse application/x-www
 app.use(bodyParser.json()); // parse application/json
 
 const index = new FlexSearch.Index({
-    preset: "memory",
-    tokenize: "forward",
-    resolution: 5
+    preset: "match",
+    tokenize: "full",
+    resolution: 9
 });
-
 
 fs.readdir("views/content", (err, files) => {
     if (err) {
@@ -55,7 +54,7 @@ const sendHtml = (req, res, filePath) => {
 }
 const searchResultDialog = (resultsHtml) => {
     return `
-        <dialog open id="search-results-dialog">
+        <div id="search-results-dialog">
             <div id="search-results-content">
                 <a id="search-results-close-button">x</a>
                 <h5>Search Results</h5>
@@ -63,13 +62,20 @@ const searchResultDialog = (resultsHtml) => {
                     ${resultsHtml}
                 </div>
             </div>
-        </dialog>
+        </div>
         <script>
             try {
                 const myDialog = document.getElementById('search-results-dialog');
                 const closeButton = document.getElementById('search-results-close-button');
-                document.addEventListener('click', () => myDialog.close());
-                closeButton.addEventListener('click', () => myDialog.close());
+                document.addEventListener('click', (e) => {
+                    const dialogClicked = myDialog.contains(e.target);
+                    if(!dialogClicked) {
+                        myDialog.classList.add('d-none');
+                    }
+                });
+                closeButton.addEventListener('click', () => {
+                    myDialog.classList.add('d-none');
+                });
                 myDialog.addEventListener('click', (event) => event.stopPropagation());
             }
             catch (e) {
@@ -77,9 +83,13 @@ const searchResultDialog = (resultsHtml) => {
             }
         </script>
         <style>
+            .d-none {
+                display: none;
+            }
             #search-results-dialog {
+                position: absolute;
                 border: none; background-color: white; 
-                margin-left: 8vw; margin-top: 0.7rem; padding: 0;
+                margin-top: 0.7rem; padding: 0;
                 z-index: 100;
             }
             #search-results-dialog #search-results-content {
