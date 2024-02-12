@@ -8,12 +8,10 @@ const brokenLinkMap = {};
 const activeLinkMap = {};
 
 function cleanBrokenLinks(contentEl, filePath) {
-
-    console.log("FINDING");
     // Bing chat magic... also this website explains it a bit https://regexr.com/
-    //const brokenLinksPattern = /(\w+)\s*=\s*"([^"]+)"\s*title\s*=\s*"([^"]+)"*>|([^"]+)"\s*title\s*=\s*"([^"]+)"*>/g;
-    const brokenLinksPattern = /(\w+)\s*=\s*"([^"]+)"\s*title\s*=\s*"([^"]+)"*>/g;
-
+    //const brokenLinksPattern = /(\s*http:[^"]+)"\s*title\s*=\s*"([^"]+)"*>/g;
+    //const brokenLinksPattern = /(\w+)\s*=\s*"([^"]+)"\s*title\s*=\s*"([^"]+)"*>/g;
+    const brokenLinksPattern = /(\w+)\s*=\s*"([^"]+)"\s*title\s*=\s*"([^"]+)"*>|([^"]+)"\s*title\s*=\s*"([^"]+)"*>/g;
     // /(\w+)\s*=\s*"([^"]+)"\s*title\s*=\s*"([^"]+)"*>/g
     // for -> venting ="http://thehandyforce.com/interior/bathroom-renovations/" title ="Toronto Bathroom renovation inspiration">
 
@@ -36,8 +34,6 @@ function cleanBrokenLinks(contentEl, filePath) {
     if(!brokenLinkFound) return;
 
     const content = contentEl.innerHTML;
-
-    console.log("FOUND", brokenLinkFound);
     // Replace matches with an empty string
     const cleanedHTML = content.replaceAll(brokenLinksPattern, "");
 
@@ -53,11 +49,11 @@ function cleanActiveLinks(contentEl, filePath) {
         const linkURL = link.getAttribute("href");
         if(linkURL?.length > 0 && !linkURL?.includes("http://")) return;
 
-        if(!activeLinkMap["u-" + linkURL]) {
-            activeLinkMap["u-" + linkURL] = 1;
+        if(!activeLinkMap["u-" + linkHTML]) {
+            activeLinkMap["u-" + linkHTML] = 1;
         }
         else {
-            activeLinkMap["u-" + linkURL] += 1;
+            activeLinkMap["u-" + linkHTML] += 1;
         }
 
         contentEl.innerHTML = contentEl.innerHTML.replaceAll(linkHTML, linkInnerText);
