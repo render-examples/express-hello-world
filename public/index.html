@@ -63,18 +63,6 @@
             <!-- ################################################################################################ -->
         </header>
     </div>
-    <section id="breadcrumb" class="hoc clear">
-        <!-- ################################################################################################ -->
-        <ul>
-            <li><a href="http://buildingcode.online">Home</a></li>
-            <li><a href="http://buildingcode.online/section1.html">Section 1 of the Ontario Building Code</a></li>
-        </ul>
-        <!-- ################################################################################################ -->
-        <h6 class="heading">
-            Section 1 of the Ontario Building Code
-        </h6>
-        <!-- ################################################################################################ -->
-    </section>
     <!-- ################################################################################################ -->
 </div>
 <!-- End Top Background Image Wrapper -->
@@ -155,13 +143,7 @@
         }
     }
 
-    // $contentSearch.addEventListener('keydown', function() {
-    //     console.log("change");
-    //     highlightSearchValue();
-    // });
-
     document.body.addEventListener('htmx:afterSwap', function(evt) {
-        console.log("afterSwap", evt);
         highlightSearchValue();
     });
 </script>

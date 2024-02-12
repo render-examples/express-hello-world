@@ -44,7 +44,9 @@ File: Layout CSS
 .container{padding:80px 0;}
 
 /* Content */
-.container .content{}
+.container .content{
+	padding-left: 3rem;
+}
 
 .sectiontitle{display:block; margin-bottom:80px; text-align:center;}
 .sectiontitle *{margin:0;}
