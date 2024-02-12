@@ -9,18 +9,34 @@ const activeLinkMap = {};
 
 function cleanBrokenLinks(contentEl, filePath) {
     // Bing chat magic... also this website explains it a bit https://regexr.com/
-    //const brokenLinksPattern = /(\s*http:[^"]+)"\s*title\s*=\s*"([^"]+)"*>/g;
-    //const brokenLinksPattern = /(\w+)\s*=\s*"([^"]+)"\s*title\s*=\s*"([^"]+)"*>/g;
+    //const brokenLinksPattern1 = /(\s*http:[^"]+)"\s*title\s*=\s*"([^"]+)"*>/g;
+    //const brokenLinksPattern2 = /(\w+)\s*=\s*"([^"]+)"\s*title\s*=\s*"([^"]+)"*>/g;
     const brokenLinksPattern = /(\w+)\s*=\s*"([^"]+)"\s*title\s*=\s*"([^"]+)"*>|(\s*http:[^"]+)"\s*title\s*=\s*"([^"]+)"*>/g;
+    //
+    // const brokenLinkMap = {
+    //     'openings="http://thehandyforce.com/windows/" title ="Window installer in Toronto">': 110,
+    //     'flooring="http://thehandyforce.com/flooring/" title ="Handyman flooring install Toronto">': 26,
+    //     'http://thehandyforce.com/insulation/" title ="Toronto home insulation">': 77,
+    //     'wireref ="http://thehandyforce.com/electrical/" title ="Electricians in East York">': 27,
+    //     'doorway ="http://thehandyforce.com/doors/" title ="Toronto Door installer">': 72,
+    //     'outdoorref ="http://thehandyforce.com/doors/" title ="Toronto Door installer">': 27,
+    //     'venting ="http://thehandyforce.com/interior/bathroom-renovations/" title ="Toronto Bathroom renovation inspiration">': 17,
+    //     'lighting="http://thehandyforce.com/electrical/" title ="East York Electrician">': 38,
+    //     'exitdoorway ="http://thehandyforce.com/doors/" title ="Toronto Door installer">': 1,
+    //     'preventing ="http://thehandyforce.com/interior/bathroom-renovations/" title ="Toronto Bathroom renovation inspiration">': 1,
+    //     'subflooring="http://thehandyforce.com/flooring/" title ="Handyman flooring install Toronto">': 13,
+    //     'Subflooring="http://thehandyforce.com/flooring/" title ="Handyman flooring install Toronto">': 4
+    // }
+
     // /(\w+)\s*=\s*"([^"]+)"\s*title\s*=\s*"([^"]+)"*>/g
     // for -> venting ="http://thehandyforce.com/interior/bathroom-renovations/" title ="Toronto Bathroom renovation inspiration">
 
     // /(\s*http:[^"]+)"\s*title\s*=\s*"([^"]+)"*>/g;
     // for -> http://thehandyforce.com/interior/bathroom-renovations/" title ="Toronto Bathroom renovation inspiration">
 
-    const brokenLinkFound = brokenLinksPattern.test(contentEl.innerText);
+    const brokenLinkFound = brokenLinksPattern.test(contentEl.textContent);
 
-    const brokenLinks = contentEl.innerText.matchAll(brokenLinksPattern);
+    const brokenLinks = contentEl.textContent.matchAll(brokenLinksPattern);
 
     [...brokenLinks].forEach(link => {
         if(!brokenLinkMap[link[0]]) {
@@ -35,6 +51,7 @@ function cleanBrokenLinks(contentEl, filePath) {
 
     const content = contentEl.innerHTML;
     // Replace matches with an empty string
+
     const cleanedHTML = content.replaceAll(brokenLinksPattern, "");
 
     fs.writeFileSync(filePath, cleanedHTML);
@@ -45,18 +62,24 @@ function cleanActiveLinks(contentEl, filePath) {
 
     links.forEach(link => {
         const linkHTML = link.outerHTML;
-        const linkInnerText = link.innerText;
+        const textContent = link.textContent;
         const linkURL = link.getAttribute("href");
-        if(linkURL?.length > 0 && !linkURL?.includes("http://")) return;
 
-        if(!activeLinkMap["u-" + linkHTML]) {
-            activeLinkMap["u-" + linkHTML] = 1;
+        const linkRemovable =
+            linkURL?.length === 0 ||
+            linkURL?.includes("http://") ||
+            linkURL?.includes("https://")
+
+        if(!linkRemovable) return;
+
+        if(!activeLinkMap[linkHTML]) {
+            activeLinkMap[linkHTML] = 1;
         }
         else {
-            activeLinkMap["u-" + linkHTML] += 1;
+            activeLinkMap[linkHTML] += 1;
         }
 
-        contentEl.innerHTML = contentEl.innerHTML.replaceAll(linkHTML, linkInnerText);
+        contentEl.innerHTML = contentEl.innerHTML.replaceAll(linkHTML, textContent);
     });
 
     fs.writeFileSync(filePath, contentEl.innerHTML);
