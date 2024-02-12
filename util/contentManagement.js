@@ -11,11 +11,11 @@ function cleanBrokenLinks(contentEl, filePath) {
     // Bing chat magic... also this website explains it a bit https://regexr.com/
     //const brokenLinksPattern = /(\s*http:[^"]+)"\s*title\s*=\s*"([^"]+)"*>/g;
     //const brokenLinksPattern = /(\w+)\s*=\s*"([^"]+)"\s*title\s*=\s*"([^"]+)"*>/g;
-    const brokenLinksPattern = /(\w+)\s*=\s*"([^"]+)"\s*title\s*=\s*"([^"]+)"*>|([^"]+)"\s*title\s*=\s*"([^"]+)"*>/g;
+    const brokenLinksPattern = /(\w+)\s*=\s*"([^"]+)"\s*title\s*=\s*"([^"]+)"*>|(\s*http:[^"]+)"\s*title\s*=\s*"([^"]+)"*>/g;
     // /(\w+)\s*=\s*"([^"]+)"\s*title\s*=\s*"([^"]+)"*>/g
     // for -> venting ="http://thehandyforce.com/interior/bathroom-renovations/" title ="Toronto Bathroom renovation inspiration">
 
-    // ([^"]+)"\s*title\s*=\s*"([^"]+)"*>/g
+    // /(\s*http:[^"]+)"\s*title\s*=\s*"([^"]+)"*>/g;
     // for -> http://thehandyforce.com/interior/bathroom-renovations/" title ="Toronto Bathroom renovation inspiration">
 
     const brokenLinkFound = brokenLinksPattern.test(contentEl.innerText);
