@@ -3,3 +3,5 @@ services:
     name: express-hello-world
     runtime: node
     repo: https://github.com/jmhwang7/express-hello-world
+    startCommand: node app.js
+    buildCommand: yarn
