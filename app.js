@@ -16,11 +16,11 @@ function error(status, msg) {
 }
 
 // example: http://localhost:3000/api/users/?api-key=foo
-app.get('/user/message', function (req, res) {
+app.get('/user/message', async function (req, res) {
   var query = req.query['query'];
-  var response = kosmos_query(query);
-
-  res.send(response);
+  const response = await kosmos_query(query);
+  console.log("main app:\n", JSON.stringify(response));
+  res.send(JSON.stringify(response));      
 });
 
 app.listen(3001);
