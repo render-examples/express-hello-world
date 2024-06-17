@@ -1,19 +1,21 @@
 {
-  "name": "express-hello-world",
+  "name": "nvidia-contest_express-web-service",
   "version": "1.0.0",
-  "description": "Express Hello World on Render",
+  "description": "Nvidia LangChain contest express web service",
   "main": "app.js",
   "repository": "https://github.com/render-examples/express-hello-world",
-  "author": "Render Developers",
+  "author": "Samuel Darkhovsky",
   "license": "MIT",
   "private": false,
   "scripts": {
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "axios": "^1.7.2",
+    "express": "^4.19.2"
   },
   "engines": {
     "node": ">=14"
-  }
+  },
+  "type": "module"
 }
