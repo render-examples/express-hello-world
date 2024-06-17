@@ -1,0 +1,17 @@
+{
+"id":"fcb7c03f-42de-498b-b391-f104767e7df3",
+"choices":
+	[
+		{
+			"index":0,
+			"message":
+			 {
+				"role":"assistant",
+				"content":"A family of three.",
+				"entities":[{"phrase":"A family of three","substring":[0,16],"bboxes":[[0.046875,0.015625,0.453125,0.984375],[0.484375,0.015625,0.984375,0.984375]]}]
+			 },
+			"finish_reason":"stop"
+		}
+	],
+"usage":{"completion_tokens":95,"prompt_tokens":81,"total_tokens":176}
+}
