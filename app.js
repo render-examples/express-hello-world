@@ -26,8 +26,8 @@ function error(status, msg) {
 app.get('/user/message', cors(corsOptions), async function (req, res) {
   var query = req.query['query'];
   const response = await kosmos_query(query);
-  //console.log("main app:\n", JSON.stringify(response));
-  res.send(JSON.stringify(response));      
+  res.send(response["message"]["content"]);
+  //res.send(JSON.stringify(response));
 });
 
 app.listen(port);
