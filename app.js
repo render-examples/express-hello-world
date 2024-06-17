@@ -7,8 +7,15 @@ import cors from "cors";
 const app = express();
 const port = process.env.PORT || 10000;
 
+const DEBUGGING_LOCAL = 1;
+
+// CORS related
+var cors_origin = "https://nvidia-contest-react-app.onrender.com";
+if (DEBUGGING_LOCAL == 1)
+  cors_origin = "http://localhost:3000"
+
 var corsOptions = {
-  origin: 'https://nvidia-contest-react-app.onrender.com',
+  origin: cors_origin,
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
@@ -26,7 +33,7 @@ function error(status, msg) {
 app.get('/user/message', cors(corsOptions), async function (req, res) {
   var query = req.query['query'];
   const response = await kosmos_query(query);
-  res.send(response["message"]["content"]);
+  res.send(response ["choices"][0]["message"]["content"]);
   //res.send(JSON.stringify(response));
 });
 
