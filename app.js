@@ -19,7 +19,7 @@ function error(status, msg) {
 app.get('/user/message', async function (req, res) {
   var query = req.query['query'];
   const response = await kosmos_query(query);
-  console.log("main app:\n", JSON.stringify(response));
+  //console.log("main app:\n", JSON.stringify(response));
   res.send(JSON.stringify(response));      
 });
 

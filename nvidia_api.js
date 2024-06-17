@@ -21,7 +21,7 @@ async function kosmos_query(query) {
     "messages": [
       {
         "role": "user",
-        "content": `Who is in this photo? <img src="data:image/png;base64,${imageB64}" />`
+        "content": `${query} <img src="data:image/png;base64,${imageB64}" />`
       }
     ],
     "max_tokens": 1024,
