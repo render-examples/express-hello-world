@@ -18,14 +18,10 @@ function error(status, msg) {
 
 // example: http://localhost:3000/api/users/?api-key=foo
 app.get('/user/message', async function (req, res) {
-  console.log("Received a request!\n");  
-  res.send('Received a request!')
-  /*
   var query = req.query['query'];
   const response = await kosmos_query(query);
   //console.log("main app:\n", JSON.stringify(response));
-  res.send(JSON.stringify(response));
-  */
+  res.send(JSON.stringify(response));      
 });
 
 app.listen(port);
