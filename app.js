@@ -4,6 +4,7 @@ import kosmos_query from "./nvidia_api.js";
 
 import express from "express";
 const app = express();
+const port = process.env.PORT || 10000;
 
 // create an error with .status. we
 // can then use the property in our
@@ -23,5 +24,5 @@ app.get('/user/message', async function (req, res) {
   res.send(JSON.stringify(response));      
 });
 
-app.listen(3001);
-console.log('Nvidia contest web services app started on port 3001');
+app.listen(port);
+console.log(`Nvidia contest web services app started on port ${port}`);
