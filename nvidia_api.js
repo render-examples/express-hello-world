@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { readFile } from 'node:fs/promises';
+import fs from 'fs'
 
-
-async function kosmos_query(query) {
+async function kosmos_query(query, imageURL) {
   const invokeUrl = "https://ai.api.nvidia.com/v1/vlm/microsoft/kosmos-2";
 
   const headers = {
@@ -11,6 +11,8 @@ async function kosmos_query(query) {
   };
 
   const data = await readFile("sample_image.jpeg");
+  //const data = await readFile(imageURL);
+  // const data = fs.readFileSync(imageURL);
 
   const imageB64 = Buffer.from(data).toString('base64');
   if (imageB64.length > 180_000) {

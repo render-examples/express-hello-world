@@ -7,10 +7,13 @@ import cors from "cors";
 const app = express();
 const port = process.env.PORT || 10000;
 
-const DEBUGGING_LOCAL = 0;
+const DEBUGGING_LOCAL = 1;
+
+var imageURL = ""
 
 // CORS related
 var cors_origin = "https://nvidia-contest-react-app.onrender.com";
+
 if (DEBUGGING_LOCAL == 1)
   cors_origin = "http://localhost:3000"
 
@@ -32,10 +35,26 @@ function error(status, msg) {
 // example: http://localhost:3000/api/users/?api-key=foo
 app.get('/user/message', cors(corsOptions), async function (req, res) {
   var query = req.query['query'];
-  const response = await kosmos_query(query);
-  res.send(response ["choices"][0]["message"]["content"]);
-  //res.send(JSON.stringify(response));
+  if (imageURL == "") {
+    res.send("Please select an image");    
+  } else {
+    const response = await kosmos_query(query, imageURL);
+    res.send(response ["choices"][0]["message"]["content"]);
+    //res.send(JSON.stringify(response));
+  }
 });
+
+app.get('/user/image', cors(corsOptions), async function (req, res) {
+  imageURL = req.query['imageURL'];
+
+  console.log("imageURL:", imageURL);
+
+  if (imageURL == "")
+    res.send("Please select an image");
+  else
+    res.send("");
+});
+
 
 app.listen(port);
 console.log(`Nvidia contest web services app started on port ${port}`);
