@@ -2,7 +2,7 @@ import axios from 'axios';
 import { readFile } from 'node:fs/promises';
 import fs from 'fs'
 
-async function kosmos_query(query, imageURL) {
+async function kosmos_query(query, image_data) {
   const invokeUrl = "https://ai.api.nvidia.com/v1/vlm/microsoft/kosmos-2";
 
   const headers = {
@@ -10,11 +10,9 @@ async function kosmos_query(query, imageURL) {
     "Accept": "application/json"
   };
 
-  const data = await readFile("sample_image.jpeg");
-  //const data = await readFile(imageURL);
-  // const data = fs.readFileSync(imageURL);
+  image_data = await readFile("sample_image.jpeg");
 
-  const imageB64 = Buffer.from(data).toString('base64');
+  const imageB64 = Buffer.from(image_data).toString('base64');
   if (imageB64.length > 180_000) {
     throw new Error("To upload larger images, use the assets API (see docs)");
   }
