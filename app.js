@@ -56,6 +56,7 @@ const html = `
     <section>
       Hello from Render! Philippe!
     </section>
+    <hr>
   </body>
 </html>
 `
