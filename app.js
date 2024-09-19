@@ -4,9 +4,12 @@ const port = process.env.PORT || 3001;
 
 app.get("/", (req, res) => res.type('html').send(html));
 
+app.get("/name", (req, res) => res.type('html').send(html2));
+
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 const html = "HELLO JOSH"
+const html2 = "THIS IS PAGE 2"
 
 // server.keepAliveTimeout = 120 * 1000;
 // server.headersTimeout = 120 * 1000;
