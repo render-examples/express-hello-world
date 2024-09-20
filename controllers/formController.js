@@ -1,6 +1,6 @@
 // const fetch = require('node-fetch');
 
-export function submitForm(req, res) {
+exports.submitForm = (req, res) => {
   const name = req.body.fname;
   const db_url = process.env.DB_URL;
   const db_auth_token = process.env.DB_AUTH_TOKEN;
@@ -32,4 +32,4 @@ export function submitForm(req, res) {
       console.log('Error:', err);
       res.status(500).send('An error occurred.');
     });
-}
+};
