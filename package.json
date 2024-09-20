@@ -11,6 +11,7 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "^5.0.0"
+    "express": "^5.0.0",
+    "dotenv": "^10.0.0"
   }
 }

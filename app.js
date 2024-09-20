@@ -1,3 +1,4 @@
+require('dotenv').config(); // Load environment variables from .env
 const express = require("express");
 const bodyParser = require('body-parser');
 const path = require('path'); 
@@ -5,6 +6,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(express.static(path.join(__dirname, 'public')));
+const config = require(path.join(__dirname, 'config.js')); // Load config settings
 
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
@@ -32,6 +34,7 @@ app.post('/x', (req, res) => {
   // const query = "create table if not exists "+name+" (id integer primary key,title varchar(255));"
   const query = "drop table movies;"
 
+  console.log(db_url)
 
   fetch(db_url, {
     method: "POST",
