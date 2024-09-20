@@ -1,98 +1,75 @@
-exports.submitForm = (req, res) => {
-    const category = req.body.category;
-    const prompt = req.body.prompt;
-    const creator = req.body.creator;
-    const items = req.body.items || []; // Get items from the body
-
-    console.log("category", category);
-    console.log("prompt", prompt);
-    console.log("creator", creator);
-    console.log("ITEMS", items);
-
-    const db_url = process.env.DB_URL;
-    const db_auth_token = process.env.DB_AUTH_TOKEN;
-
-    // Create the table with item columns
-    const createTableQuery = `
-    CREATE TABLE IF NOT EXISTS "${category}" (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      prompt TEXT,
-      creator TEXT,
-      ${items.map(item => `"${item}" INTEGER DEFAULT 0`).join(', ')}
-    );
+// Helper function to generate the CREATE TABLE query
+const generateCreateTableQuery = (category, items) => {
+    return `
+      CREATE TABLE IF NOT EXISTS "${category}" (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        prompt TEXT,
+        creator TEXT,
+        ${items.map(item => `"${item}" INTEGER DEFAULT 0`).join(', ')}
+      );
     `.trim();
-
-    // Debugging: log the create table query
-    console.log('Create Table Query:', createTableQuery);
-
-    // Execute create table query
-    fetch(db_url, {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${db_auth_token}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            requests: [
-                { type: 'execute', stmt: { sql: createTableQuery } },
-            ],
-        }),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-        console.log('Database Response:', data);
-
-        // Check for errors in the response
-        if (data.results) {
-            data.results.forEach((result, index) => {
-                if (result.type === 'error') {
-                    console.error(`Error in create table request ${index + 1}:`, result.error);
-                }
-            });
-        }
-
-        // Now insert the data
-        const insertDataQuery = `
-        INSERT INTO "${category}" (prompt, creator${items.length > 0 ? `, ${items.map(item => `"${item}"`).join(', ')}` : ''})
-        VALUES ("${prompt}", "${creator}", ${items.map(() => '0').join(', ')});
-        `.trim();
-
-        console.log('Insert Data Query:', insertDataQuery);
-
-        // Prepare params for insertion
-        const params = [prompt, creator, ...items.map(() => 0)];
-
-        // Execute insert data query
-        return fetch(db_url, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${db_auth_token}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                requests: [
-                    { type: 'execute', stmt: { sql: insertDataQuery, params } },
-                ],
-            }),
-        });
-    })
-    .then((response) => response.json())
-    .then((data) => {
-        console.log('Database Response for Insert:', data);
-
-        // Check for errors in the response
-        if (data.results) {
-            data.results.forEach((result, index) => {
-                if (result.type === 'error') {
-                    console.error(`Error in insert request ${index + 1}:`, result.error);
-                }
-            });
-        }
-
-        res.send('Table created and data inserted successfully!');
-    })
-    .catch((err) => {
-        console.error('Fetch Error:', err);
-        res.status(500).send('An error occurred.');
+ };
+  
+  // Helper function to generate the INSERT query
+  const generateInsertQuery = (prompt, creator, category, items) => {
+    return `
+      INSERT INTO "${category}" (prompt, creator${items.length > 0 ? `, ${items.map(item => `"${item}"`).join(', ')}` : ''})
+      VALUES ("${prompt}", "${creator}", ${items.map(() => '0').join(', ')});
+    `.trim();
+  };
+  
+  // Helper function to execute SQL queries
+  const executeSQLQuery = async (db_url, db_auth_token, sql, params = []) => {
+    const response = await fetch(db_url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${db_auth_token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        requests: [{ type: 'execute', stmt: { sql, params } }],
+      }),
     });
-};
+    return response.json();
+  };
+  
+  // Main form submission handler
+  exports.submitForm = async (req, res) => {
+    try {
+      const { category, prompt, creator, items = [] } = req.body;
+  
+      const db_url = process.env.DB_URL;
+      const db_auth_token = process.env.DB_AUTH_TOKEN;
+  
+      // Generate the CREATE TABLE query
+      const createTableQuery = generateCreateTableQuery(category, items);
+  
+      // Execute the CREATE TABLE query
+      const createTableResponse = await executeSQLQuery(db_url, db_auth_token, createTableQuery);
+  
+      // Check for errors in the table creation response
+      if (createTableResponse.results && createTableResponse.results.some(result => result.type === 'error')) {
+        throw new Error('Error creating table.');
+      }
+  
+      // Generate the INSERT query
+      const insertDataQuery = generateInsertQuery(prompt, creator, category, items);
+  
+      // Prepare params for insertion
+      const params = [prompt, creator, ...items.map(() => 0)];
+  
+      // Execute the INSERT query
+      const insertDataResponse = await executeSQLQuery(db_url, db_auth_token, insertDataQuery, params);
+  
+      // Check for errors in the insertion response
+      if (insertDataResponse.results && insertDataResponse.results.some(result => result.type === 'error')) {
+        throw new Error('Error inserting data.');
+      }
+  
+      res.send('Table created and data inserted successfully!');
+    } catch (err) {
+      console.error('Error:', err);
+      res.status(500).send('An error occurred.');
+    }
+  };
+  
