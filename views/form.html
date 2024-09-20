@@ -1,19 +1,306 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Group Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #6c757d; /* Gray tone for default buttons */
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #5a6268; /* Darker gray on hover */
+    }
+
+    .back-next-button {
+      background-color: #007bff; /* Blue for Back and Next buttons */
+    }
+
+    .back-next-button:hover {
+      background-color: #0069d9; /* Darker blue on hover */
+    }
+
+    .item-container {
+      margin: 15px 0;
+      padding: 10px;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      position: relative; /* To position the remove button */
+    }
+
+    .remove-button {
+      position: absolute;
+      top: 2.5px;
+      right: 10px;
+      background-color: #dc3545; /* Red for remove */
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 5px 10px;
+    }
+
+    .remove-button:hover {
+      background-color: #c82333; /* Darker red on hover */
+    }
+
+    .prompt {
+      margin-bottom: 15px;
+      color: #555;
+    }
+
+    .step {
+      display: none; /* Hide all steps initially */
+    }
+
+    .progress {
+      height: 20px;
+      background-color: #e0e0e0;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      background-color: yellow; /* Default to yellow */
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+
+    .progress-bar.complete {
+      background-color: #28a745; /* Green for the last step */
+    }
+
+    .progress-text {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .finish-button {
+      background-color: #28a745; /* Green for Finish button */
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-weight: bold; /* Make it bold to stand out */
+    }
+
+    .finish-button:hover {
+      background-color: #218838; /* Darker green on hover */
+    }
+
+    .preview {
+      margin: 15px 0;
+      padding: 10px;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  </style>
+  <script>
+    let currentStep = 0;
+
+    function showStep(step) {
+      const steps = document.querySelectorAll('.step');
+      steps.forEach((s, index) => {
+        s.style.display = (index === step) ? 'block' : 'none';
+      });
+      updateProgressBar();
+      if (step === 4) {
+        displayPreview(); // Call preview function on the 5th step
+      }
+    }
+
+    function updateProgressBar() {
+      const progressBar = document.querySelector('.progress-bar');
+      const progressText = document.querySelector('.progress-text');
+      const totalSteps = document.querySelectorAll('.step').length;
+      const progressFraction = `${currentStep + 1}/${totalSteps}`;
+      progressBar.style.width = ((currentStep + 1) / totalSteps * 100) + '%';
+      progressText.innerText = progressFraction; // Update to display fraction
+      
+      // Change color of the progress bar based on the step
+      if (currentStep === totalSteps - 1) {
+        progressBar.classList.add('complete');
+      } else {
+        progressBar.classList.remove('complete');
+      }
+    }
+
+    function nextStep() {
+      const steps = document.querySelectorAll('.step');
+      const currentInputs = steps[currentStep].querySelectorAll('input[required]');
+      let allFilled = true;
+
+      currentInputs.forEach(input => {
+        if (!input.value) {
+          allFilled = false;
+          input.style.borderColor = 'red'; // Highlight empty fields
+        } else {
+          input.style.borderColor = '#ccc'; // Reset border color if filled
+        }
+      });
+
+      if (allFilled && currentStep < steps.length - 1) {
+        currentStep++;
+        showStep(currentStep);
+      }
+    }
+
+    function previousStep() {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    }
+
+    // Function to add new input fields for items
+    function addField() {
+      const newFieldDiv = document.createElement('div');
+      newFieldDiv.classList.add('item-container');
+
+      const nameLabel = document.createElement('label');
+      nameLabel.innerText = 'Item:';
+      const nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.name = 'items[]'; // Use array notation for multiple items
+      nameInput.placeholder = 'Enter item';
+
+      const removeButton = document.createElement('button');
+      removeButton.innerText = 'Remove';
+      removeButton.classList.add('remove-button');
+      removeButton.onclick = () => {
+        newFieldDiv.remove(); // Remove the item container
+      };
+
+      newFieldDiv.appendChild(nameLabel);
+      newFieldDiv.appendChild(nameInput);
+      newFieldDiv.appendChild(removeButton);
+      document.getElementById('items-container').appendChild(newFieldDiv);
+    }
+
+    function displayPreview() {
+      const category = document.getElementById('category').value;
+      const prompt = document.getElementById('prompt').value;
+      const items = Array.from(document.getElementsByName('items[]')).map(input => input.value).filter(value => value); // Filter out empty values
+      const creator = document.getElementById('creator').value;
+
+      const previewContainer = document.getElementById('preview-container');
+      previewContainer.innerHTML = `
+        <h3>Does this look correct?</h3>
+        <div class="preview">
+          <strong>Category:</strong> ${category}<br>
+          <strong>Prompt:</strong> ${prompt}<br>
+          <strong>Items:</strong> ${items.join(', ') || 'No items added.'}<br>
+          <strong>Creator:</strong> ${creator || 'Not specified'}
+        </div>
+      `;
+    }
+
+    window.onload = () => {
+      showStep(currentStep); // Show the first step on page load
+    };
+  </script>
+</head>
 <body>
 
-<h2>HTML Forms</h2>
+<h1>Pairwise Comparison Set-Up</h1>
+<div class="progress">
+  <div class="progress-bar"></div>
+</div>
+<div class="progress-text">1/5</div> <!-- Initialize with the first step -->
 
 <form action="/x" method="POST">
-  <label for="fname">First name:</label><br>
-  <input type="text" id="fname" name="fname" value="John"><br>
-  <label for="lname">Last name:</label><br>
-  <input type="text" id="lname" name="lname" value="Doe"><br><br>
-  <input type="submit" value="Submit">
-</form> 
+  <!-- Step 1: Category -->
+  <div class="step">
+    <label for="category"><h2>Category</h2></label>
+    <p>Please enter a unique category that best describes the items you are comparing.</p>
+    <p class="prompt">Example: "Food", "Names", "Countries"</p>
+    <input type="text" id="category" name="category" placeholder="Enter category" required>
+    <button type="button" class="back-next-button" onclick="nextStep()">Next</button>
+  </div>
+  
+  <!-- Step 2: Prompt -->
+  <div class="step">
+    <p>Please enter a prompt to describe what you are trying to compare.</p>
+    <p class="prompt">Example: "Which food is the most delicious?"</p>
+    <label for="prompt">Prompt</label>
+    <input type="text" id="prompt" name="prompt" placeholder="Enter prompt" required>
+    <button type="button" class="back-next-button" onclick="previousStep()">Back</button>
+    <button type="button" class="back-next-button" onclick="nextStep()">Next</button>
+  </div>
+  
+  <!-- Step 3: Items -->
+  <div class="step">
+    <p>Please add each item you would like to compare.</p>
+    <p class="prompt">Example: "Pizza", "Hamburgers", "Poptarts"</p>
+    <div id="items-container">
+      <div class="item-container">
+        <label for="item">Item:</label>
+        <input type="text" id="item" name="items[]" placeholder="Enter item" required>
+        <button type="button" class="remove-button" onclick="this.parentElement.remove()">Remove</button>
+      </div>
+    </div>
+    <button type="button" onclick="addField()">+ Add Item</button>
+    <button type="button" class="back-next-button" onclick="previousStep()">Back</button>
+    <button type="button" class="back-next-button" onclick="nextStep()">Next</button>
+  </div>
 
-<p>If you click the "Submit" button, the form-data will be sent to a page called "/t".</p>
+  <!-- Step 4: Creator Name -->
+  <div class="step">
+    <p>Please enter the name of the creator of this category.</p>
+    <label for="creator">Creator Name</label>
+    <input type="text" id="creator" name="creator" placeholder="Enter creator name" required>
+    <button type="button" class="back-next-button" onclick="previousStep()">Back</button>
+    <button type="button" class="back-next-button" onclick="nextStep()">Next</button>
+  </div>
+
+  <!-- Step 5: Preview -->
+  <div class="step">
+    <div id="preview-container">
+      <!-- Preview content will be generated here -->
+    </div>
+    <button type="button" class="back-next-button" onclick="previousStep()">Back</button>
+    <input type="submit" value="Finish" class="finish-button">
+  </div>
+</form>
 
 </body>
 </html>
-
