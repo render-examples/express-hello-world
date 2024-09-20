@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Tables</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            transition: background-color 0.3s;
+        }
+
+        li:hover {
+            background-color: #f0f0f0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+        background-color: #6c757d; /* Gray tone for default buttons */
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+        }
+
+        button:hover {
+      background-color: #5a6268; /* Darker gray on hover */
+    }
+
+    .back-next-button {
+      background-color: #007bff; /* Blue for Back and Next buttons */
+    }
+
+    .back-next-button:hover {
+      background-color: #0069d9; /* Darker blue on hover */
+    }
+    </style>
+</head>
+<body>
+    <h1>Pairwise Comparison Categories</h1>
+
+    <ul>
+        <% tables.forEach(function(table) { %>
+            <% if (table.value !== 'sqlite_sequence') { %>
+                <li><a href="/categories/<%= table.value %>"><%= table.value %></a></li>
+            <% } %>
+        <% }); %>
+    </ul>
+    <button type="button" class="back-next-button" onclick="location.href='/'">Back</button>
+</body>
+</html>

@@ -7,9 +7,19 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
-      padding: 20px;
+      margin: 0; /* Reset margin for full height */
+      padding: 0; /* Reset padding */
       background-color: #f9f9f9;
+      display: flex;
+      flex-direction: column; /* Stack elements vertically */
+      height: 100vh; /* Full height for body */
+    }
+
+    main {
+      flex: 1; /* Allow main to take remaining space */
+      margin: 20px; /* Add margin around main content */
+      padding: 20px; /* Add padding */
+      background-color: #ffffff;
       border-radius: 8px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
@@ -135,6 +145,7 @@
     }
   </style>
   <script>
+    // JavaScript functions remain unchanged
     let currentStep = 0;
 
     function showStep(step) {
@@ -155,7 +166,7 @@
       const progressFraction = `${currentStep + 1}/${totalSteps}`;
       progressBar.style.width = ((currentStep + 1) / totalSteps * 100) + '%';
       progressText.innerText = progressFraction; // Update to display fraction
-      
+
       // Change color of the progress bar based on the step
       if (currentStep === totalSteps - 1) {
         progressBar.classList.add('complete');
@@ -191,7 +202,6 @@
       }
     }
 
-    // Function to add new input fields for items
     function addField() {
       const newFieldDiv = document.createElement('div');
       newFieldDiv.classList.add('item-container');
@@ -241,66 +251,68 @@
 </head>
 <body>
 
-<h1>Pairwise Comparison Set-Up</h1>
-<div class="progress">
-  <div class="progress-bar"></div>
-</div>
-<div class="progress-text">1/5</div> <!-- Initialize with the first step -->
+    <main>
+        <h1>Pairwise Comparison Set-Up</h1>
+        <div class="progress">
+            <div class="progress-bar"></div>
+        </div>
+        <div class="progress-text">1/5</div> <!-- Initialize with the first step -->
 
-<form action="/x" method="POST">
-  <!-- Step 1: Category -->
-  <div class="step">
-    <label for="category"><h2>Category</h2></label>
-    <p>Please enter a unique category that best describes the items you are comparing.</p>
-    <p class="prompt">Example: "Food", "Names", "Countries"</p>
-    <input type="text" id="category" name="category" placeholder="Enter category" required>
-    <button type="button" class="back-next-button" onclick="nextStep()">Next</button>
-  </div>
-  
-  <!-- Step 2: Prompt -->
-  <div class="step">
-    <p>Please enter a prompt to describe what you are trying to compare.</p>
-    <p class="prompt">Example: "Which food is the most delicious?"</p>
-    <label for="prompt">Prompt</label>
-    <input type="text" id="prompt" name="prompt" placeholder="Enter prompt" required>
-    <button type="button" class="back-next-button" onclick="previousStep()">Back</button>
-    <button type="button" class="back-next-button" onclick="nextStep()">Next</button>
-  </div>
-  
-  <!-- Step 3: Items -->
-  <div class="step">
-    <p>Please add each item you would like to compare.</p>
-    <p class="prompt">Example: "Pizza", "Hamburgers", "Poptarts"</p>
-    <div id="items-container">
-      <div class="item-container">
-        <label for="item">Item:</label>
-        <input type="text" id="item" name="items[]" placeholder="Enter item" required>
-        <button type="button" class="remove-button" onclick="this.parentElement.remove()">Remove</button>
-      </div>
-    </div>
-    <button type="button" onclick="addField()">+ Add Item</button>
-    <button type="button" class="back-next-button" onclick="previousStep()">Back</button>
-    <button type="button" class="back-next-button" onclick="nextStep()">Next</button>
-  </div>
+        <form action="/x" method="POST">
+            <!-- Step 1: Category -->
+            <div class="step">
+                <label for="category"><h2>Category</h2></label>
+                <p>Please enter a unique category that best describes the items you are comparing.</p>
+                <p class="prompt">Example: "Food", "Names", "Countries"</p>
+                <input type="text" id="category" name="category" placeholder="Enter category" required>
+                <button type="button" class="back-next-button" onclick="location.href='/'">Back</button>
+                <button type="button" class="back-next-button" onclick="nextStep()">Next</button>
+            </div>
+            
+            <!-- Step 2: Prompt -->
+            <div class="step">
+                <p>Please enter a prompt to describe what you are trying to compare.</p>
+                <p class="prompt">Example: "Which food is the most delicious?"</p>
+                <label for="prompt">Prompt</label>
+                <input type="text" id="prompt" name="prompt" placeholder="Enter prompt" required>
+                <button type="button" class="back-next-button" onclick="previousStep()">Back</button>
+                <button type="button" class="back-next-button" onclick="nextStep()">Next</button>
+            </div>
+            
+            <!-- Step 3: Items -->
+            <div class="step">
+                <p>Please add each item you would like to compare.</p>
+                <p class="prompt">Example: "Pizza", "Hamburgers", "Poptarts"</p>
+                <div id="items-container">
+                    <div class="item-container">
+                        <label for="item">Item:</label>
+                        <input type="text" id="item" name="items[]" placeholder="Enter item" required>
+                        <button type="button" class="remove-button" onclick="this.parentElement.remove()">Remove</button>
+                    </div>
+                </div>
+                <button type="button" onclick="addField()">+ Add Item</button>
+                <button type="button" class="back-next-button" onclick="previousStep()">Back</button>
+                <button type="button" class="back-next-button" onclick="nextStep()">Next</button>
+            </div>
 
-  <!-- Step 4: Creator Name -->
-  <div class="step">
-    <p>Please enter the name of the creator of this category.</p>
-    <label for="creator">Creator Name</label>
-    <input type="text" id="creator" name="creator" placeholder="Enter creator name" required>
-    <button type="button" class="back-next-button" onclick="previousStep()">Back</button>
-    <button type="button" class="back-next-button" onclick="nextStep()">Next</button>
-  </div>
+            <!-- Step 4: Creator Name -->
+            <div class="step">
+                <p>Please enter the name of the creator of this category.</p>
+                <label for="creator">Creator Name</label>
+                <input type="text" id="creator" name="creator" placeholder="Enter creator name" required>
+                <button type="button" class="back-next-button" onclick="previousStep()">Back</button>
+                <button type="button" class="back-next-button" onclick="nextStep()">Next</button>
+            </div>
 
-  <!-- Step 5: Preview -->
-  <div class="step">
-    <div id="preview-container">
-      <!-- Preview content will be generated here -->
-    </div>
-    <button type="button" class="back-next-button" onclick="previousStep()">Back</button>
-    <input type="submit" value="Finish" class="finish-button">
-  </div>
-</form>
-
+            <!-- Step 5: Preview -->
+            <div class="step">
+                <div id="preview-container">
+                    <!-- Preview content will be generated here -->
+                </div>
+                <button type="button" class="back-next-button" onclick="previousStep()">Back</button>
+                <input type="submit" value="Finish" class="finish-button">
+            </div>
+        </form>
+    </main>
 </body>
 </html>

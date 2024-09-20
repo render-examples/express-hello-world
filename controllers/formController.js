@@ -3,17 +3,17 @@ const generateCreateTableQuery = (category, items) => {
     return `
       CREATE TABLE IF NOT EXISTS "${category}" (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        prompt TEXT,
-        creator TEXT,
+        Prompt TEXT,
+        Creator TEXT,
         ${items.map(item => `"${item}" INTEGER DEFAULT 0`).join(', ')}
       );
     `.trim();
- };
+  };
   
   // Helper function to generate the INSERT query
   const generateInsertQuery = (prompt, creator, category, items) => {
     return `
-      INSERT INTO "${category}" (prompt, creator${items.length > 0 ? `, ${items.map(item => `"${item}"`).join(', ')}` : ''})
+      INSERT INTO "${category}" (Prompt, Creator${items.length > 0 ? `, ${items.map(item => `"${item}"`).join(', ')}` : ''})
       VALUES ("${prompt}", "${creator}", ${items.map(() => '0').join(', ')});
     `.trim();
   };
@@ -65,11 +65,14 @@ const generateCreateTableQuery = (category, items) => {
       if (insertDataResponse.results && insertDataResponse.results.some(result => result.type === 'error')) {
         throw new Error('Error inserting data.');
       }
-  
+      
       res.send('Table created and data inserted successfully!');
     } catch (err) {
       console.error('Error:', err);
       res.status(500).send('An error occurred.');
     }
   };
+  
+  // Export the executeSQLQuery function
+  module.exports.executeSQLQuery = executeSQLQuery;
   

@@ -8,6 +8,9 @@ const webRoutes = require('./routes/webRoutes'); // Import routes
 const app = express();
 const port = config.port || 3001;
 
+// Set view engine to ejs
+app.set('view engine', 'ejs');
+
 // Middleware setup
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));

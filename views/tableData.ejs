@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= tableName %> Data</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .data-table {
+            margin: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        .row {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+            display: contents; /* Ensure rows work well with grid */
+        }
+        .column {
+            color: #333;
+            padding: 5px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+        .column strong {
+            color: #007bff; /* Bootstrap primary color */
+        }
+        h1, h2 {
+            color: #333;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid #ddd;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a:hover {
+            background: #0056b3;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Data for <%= tableName %></h1>
+
+    <div class="data-table">
+        <% if (data.length > 0) { %>
+            <% data.forEach(row => { %>
+                <div class="row">
+                    <% Object.keys(row).forEach((colName, index) => { %>
+                        <% if (colName !== 'id') { %> <!-- Skip the 'id' column -->
+                            <div class="column">
+                                <strong><%= colName %>:</strong> <%= row[colName] %>
+                            </div>
+                        <% } %>
+                    <% }); %>
+                </div>
+                <hr>
+            <% }); %>
+        <% } else { %>
+            <p>No data available for this table.</p>
+        <% } %>
+    </div>
+
+    <h2>Frequency Chart</h2>
+    <canvas id="frequencyChart" width="400" height="200"></canvas>
+    
+    <script>
+        const labels = <%- JSON.stringify(Object.keys(frequencyData)) %>;
+        const dataValues = <%- JSON.stringify(Object.values(frequencyData)) %>;
+
+        const ctx = document.getElementById('frequencyChart').getContext('2d');
+        const frequencyChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Frequency',
+                    data: dataValues,
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    hoverBackgroundColor: 'rgba(75, 192, 192, 0.8)',
+                    hoverBorderColor: 'rgba(75, 192, 192, 1)',
+                    barThickness: 30,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#e0e0e0',
+                            lineWidth: 1,
+                        },
+                        ticks: {
+                            color: '#333',
+                            font: {
+                                size: 14,
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'transparent',
+                        },
+                        ticks: {
+                            color: '#333',
+                            font: {
+                                size: 14,
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#333',
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+    <a href="/categories">Back to Categories</a>
+</body>
+</html>
