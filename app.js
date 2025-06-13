@@ -3,6 +3,10 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 app.get("/", (req, res) => res.type('html').send(html));
+app.get("/api/users",(req,res)=> {
+  fetch("https://jsonplaceholder.typicode.com/users").then(res => res.json()).then(data => res.json(data))
+  
+})
 
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
