@@ -1,16 +1,32 @@
 {
-  "name": "express-hello-world",
-  "version": "1.0.0",
-  "description": "Express Hello World on Render",
-  "main": "app.js",
-  "repository": "https://github.com/render-examples/express-hello-world",
-  "author": "Render Developers",
-  "license": "MIT",
-  "private": false,
+  "name": "glitch-mvp-node",
+  "version": "0.1.0",
+  "description": "A simple Node app built on fastify, instantly up and running.",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node server.js"
   },
   "dependencies": {
-    "express": "^5.0.0"
-  }
+    "@fastify/formbody": "^7.4.0",
+    "@fastify/static": "^6.10.2",
+    "@fastify/view": "^8.0.0",
+    "basic-auth": "^2.0.1",
+    "body-parser": "^2.2.0",
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.5.1",
+    "fastify": "^4.21.0",
+    "firebase-admin": "^13.2.0",
+    "handlebars": "^4.7.8"
+  },
+  "engines": {
+    "node": "14.x"
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/glitch-mvp-node"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "glitch"
+  ]
 }
