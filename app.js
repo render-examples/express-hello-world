@@ -1,61 +1,58 @@
-const express = require("express");
+import express from "express";
+import fetch from "node-fetch";
+import dotenv from "dotenv";
+dotenv.config();
+
 const app = express();
-const port = process.env.PORT || 3001;
 
-app.get("/", (req, res) => res.type('html').send(html));
+// cache token in memory
+let cachedToken = null;
+let tokenExpiry = 0;
 
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+// helper: get or refresh token
+async function getAccessToken() {
+  const now = Date.now();
+  if (cachedToken && now < tokenExpiry - 30_000) return cachedToken;
 
-server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
+  const res = await fetch("https://accounts-api.airthings.com/v1/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      grant_type: "client_credentials",
+      client_id: process.env.AIRTHINGS_CLIENT_ID,
+      client_secret: process.env.AIRTHINGS_CLIENT_SECRET,
+      scope: [process.env.AIRTHINGS_SCOPE],
+    }),
+  });
 
-const html = `
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Hello from Render!</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script>
-      setTimeout(() => {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-          disableForReducedMotion: true
-        });
-      }, 500);
-    </script>
-    <style>
-      @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
-      @font-face {
-        font-family: "neo-sans";
-        src: url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
-        font-style: normal;
-        font-weight: 700;
-      }
-      html {
-        font-family: neo-sans;
-        font-weight: 700;
-        font-size: calc(62rem / 16);
-      }
-      body {
-        background: white;
-      }
-      section {
-        border-radius: 1em;
-        padding: 1em;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, -50%);
-      }
-    </style>
-  </head>
-  <body>
-    <section>
-      Hello from Render!
-    </section>
-  </body>
-</html>
-`
+  if (!res.ok) throw new Error(`Token error: ${res.status}`);
+  const data = await res.json();
+  cachedToken = data.access_token;
+  tokenExpiry = Date.now() + data.expires_in * 1000;
+  return cachedToken;
+}
+
+// endpoint to fetch latest samples
+app.get("/api/latest", async (req, res) => {
+  try {
+    const token = await getAccessToken();
+    const locationId = req.query.locationId;
+    if (!locationId) {
+      return res.status(400).json({ error: "locationId is required" });
+    }
+
+    const url = `https://ext-api.airthings.com/v1/locations/${locationId}/latest-samples?tempUnit=c&vocUnit=ppb`;
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// start server
+app.listen(process.env.PORT || 3000, () => {
+  console.log("✅ Backend running on port", process.env.PORT || 3000);
+});
