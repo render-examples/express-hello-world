@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  OWNER
+  ADMIN
+  SALA
+  CUCINA
+}
+
+enum BookingStatus {
+  REQUESTED
+  CONFIRMED
+  CANCELLED
+}
+
+enum SaleCategory {
+  VINO
+  FOOD
+  BIBITE
+}
+
+model Locale {
+  id        String       @id @default(cuid())
+  name      String
+  createdAt DateTime     @default(now())
+  users     User[]
+  days      BusinessDay[]
+  bookings  Booking[]
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         UserRole
+  localeId     String
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  locale       Locale   @relation(fields: [localeId], references: [id])
+}
+
+model BusinessDay {
+  id        String       @id @default(cuid())
+  localeId  String
+  dateISO   String
+  isClosed  Boolean      @default(false)
+  notes     String?
+  createdAt DateTime     @default(now())
+  locale    Locale       @relation(fields: [localeId], references: [id])
+  bookings  Booking[]
+  presences Presence[]
+  sales     Sale[]
+  rating    ServiceRating?
+
+  @@unique([localeId, dateISO])
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  localeId        String
+  businessDayId   String
+  name            String
+  time24          String
+  people          Int
+  status          BookingStatus
+  phone           String?
+  whatsapp        String?
+  notes           String?
+  calendarEventId String?
+  createdBy       String
+  createdAt       DateTime      @default(now())
+  locale          Locale        @relation(fields: [localeId], references: [id])
+  businessDay     BusinessDay   @relation(fields: [businessDayId], references: [id])
+}
+
+model Presence {
+  id             String      @id @default(cuid())
+  businessDayId  String
+  timeSlot       String
+  expectedPeople Int
+  actualPeople   Int?
+  createdAt      DateTime    @default(now())
+  businessDay    BusinessDay @relation(fields: [businessDayId], references: [id])
+}
+
+model Sale {
+  id            String      @id @default(cuid())
+  businessDayId String
+  category      SaleCategory
+  productName   String
+  quantity      Int
+  totalAmount   Float
+  createdAt     DateTime    @default(now())
+  businessDay   BusinessDay @relation(fields: [businessDayId], references: [id])
+}
+
+model ServiceRating {
+  id                    String      @id @default(cuid())
+  businessDayId         String      @unique
+  customerSatisfaction  Int
+  serviceEfficiency     Int
+  kitchenEfficiency     Int
+  notes                 String?
+  createdAt             DateTime    @default(now())
+  businessDay           BusinessDay @relation(fields: [businessDayId], references: [id])
+}

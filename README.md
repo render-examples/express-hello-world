@@ -1,15 +1,13 @@
-# README
+# Tuttibrilli AI Backoffice
 
-This is the [Express](https://expressjs.com) [Hello world](https://expressjs.com/en/starter/hello-world.html) example on [Render](https://render.com).
+Backend Node.js (Express) pronto per Render con Prisma + PostgreSQL, Twilio Voice/WhatsApp e Google Calendar.
 
-The app in this repo is deployed at [https://express.onrender.com](https://express.onrender.com).
+## Requisiti
+- Node.js 18+
+- PostgreSQL (Render Postgres)
 
-## Deployment
-
-See https://render.com/docs/deploy-node-express-app or follow the steps below:
-
-Create a new web service with the following values:
-  * Build Command: `yarn`
-  * Start Command: `node app.js`
-
-That's it! Your web service will be live on your Render URL as soon as the build finishes.
+## Setup locale
+```bash
+npm install
+cp .env.example .env
+npm start

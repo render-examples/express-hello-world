@@ -1,16 +1,17 @@
 {
-  "name": "express-hello-world",
+  "name": "tuttibrilli-voice-backend",
   "version": "1.0.0",
-  "description": "Express Hello World on Render",
+  "private": true,
   "main": "app.js",
-  "repository": "https://github.com/render-examples/express-hello-world",
-  "author": "Render Developers",
-  "license": "MIT",
-  "private": false,
+  "type": "commonjs",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "node app.js"
   },
   "dependencies": {
-    "express": "^5.0.0"
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "googleapis": "^133.0.0",
+    "twilio": "^4.23.0"
   }
 }
