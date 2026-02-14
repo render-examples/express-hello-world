@@ -11,6 +11,10 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "^5.0.0"
+    "express": "^5.0.0",
+    "supabase": "^2.67.0"
+  },
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.7.10"
   }
 }
