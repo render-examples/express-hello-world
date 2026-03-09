@@ -1,61 +1,90 @@
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3001;
+const cors = require('cors');
+const { WebcastPushConnection } = require('tiktok-live-connector');
 
-app.get("/", (req, res) => res.type('html').send(html));
+app.use(cors({
+    origin: 'http://localhost:4200',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+}));
 
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.get("/sse", (req, res) => {
 
-server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
 
-const html = `
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Hello from Render!</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script>
-      setTimeout(() => {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-          disableForReducedMotion: true
-        });
-      }, 500);
-    </script>
-    <style>
-      @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
-      @font-face {
-        font-family: "neo-sans";
-        src: url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
-        font-style: normal;
-        font-weight: 700;
-      }
-      html {
-        font-family: neo-sans;
-        font-weight: 700;
-        font-size: calc(62rem / 16);
-      }
-      body {
-        background: white;
-      }
-      section {
-        border-radius: 1em;
-        padding: 1em;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, -50%);
-      }
-    </style>
-  </head>
-  <body>
-    <section>
-      Hello from Render!
-    </section>
-  </body>
-</html>
-`
+
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+    res.flushHeaders();
+
+    // Envoyez des données au client chaque seconde (exemple)
+    const interval = setInterval(() => {
+        const eventData = `data: ${JSON.stringify({ message: `Message from server at ${new Date().toLocaleTimeString()}` })}\n\n`;
+        // res.write(eventData);
+    }, 1000);
+
+
+
+
+    // Username of someone who is currently live
+    // let tiktokUsername = "wilsonn__glenn";
+    let tiktokUsername = "mymydia7";
+    // let tiktokUsername = "arianeandrew";
+    // let tiktokUsername = "blacktigerbxl";
+    // let tiktokUsername = "ambrochette_asb";
+    // let tiktokUsername = "ninkogmari";
+    // Create a new wrapper object and pass the username
+    let tiktokLiveConnection = new WebcastPushConnection(tiktokUsername);
+
+    tiktokLiveConnection.connect().then(state => {
+        console.info(`Connected to roomId ${state.roomId}`);
+        const eventData = `data: ${JSON.stringify({ type: 'connected', data: `Gift: connected to room` })}\n\n`;
+        res.write(eventData);
+         
+        // Store the response object for the current HTTP client
+        // connectedWebSocketClients.add(res);
+    }).catch(err => {
+        console.error('Failed to connect', err);
+        // res.status(500).send('Failed to connect to TikTok Live');
+    })
+    
+    // Define the events that you want to handle
+    // In this case, we listen to chat messages (comments)
+    tiktokLiveConnection.on('chat', data => {
+        console.log(`${data.uniqueId} (userId:${data.userId}) writes: ${data.comment}`);
+        const eventData = `data: ${JSON.stringify({ type: 'chat', user: data.uniqueId, message: data.comment })}\n\n`;
+        // res.write(eventData);
+        // Send the comment to all connected WebSocket clients
+        // res.write(JSON.stringify({ type: 'chat', data: data.comment }));
+    })
+    
+    // And here we receive gifts sent to the streamer
+    tiktokLiveConnection.on('gift', data => {
+        if (data.giftType === 1 && !data.repeatEnd) {
+            // Streak in progress => show only temporary
+            console.log(`${data.uniqueId} is sending gift ${data.giftName} x${data.repeatCount}`);
+        } else {
+            // Streak ended or non-streakable gift => process the gift with final repeat_count
+            console.log(`${data.uniqueId} has sent gift ${data.giftName} x${data.repeatCount}`);
+            // Send the gift information to all connected WebSocket clients
+            const eventData = `data: ${JSON.stringify({ type: 'gift', id: data.giftId, user: data.uniqueId, giftName: data.giftName, repeatCount: data.repeatCount, giftType: data.giftType })}\n\n`;
+            res.write(eventData);
+        }
+    })
+
+
+
+
+
+
+    // Fermez la connexion lorsque le client se déconnecte
+    req.on("close", () => {
+        clearInterval(interval);
+    });
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
