@@ -1,61 +1,140 @@
-const express = require("express");
+import express from 'express';
+import { WebcastPushConnection } from 'tiktok-live-connector';
+import { WebSocketServer } from 'ws';
+import { createServer } from 'http';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import { readFile } from 'fs/promises';
+
+// Obtenir le chemin du répertoire actuel en ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.get("/", (req, res) => res.type('html').send(html));
+const server = createServer(app);
+const wss = new WebSocketServer({ server });
 
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+const wsConnections = new Set();
+let currentTiktokConnection = null;
 
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
 
-const html = `
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Hello from Render!</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script>
-      setTimeout(() => {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-          disableForReducedMotion: true
-        });
-      }, 500);
-    </script>
-    <style>
-      @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
-      @font-face {
-        font-family: "neo-sans";
-        src: url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
-        font-style: normal;
-        font-weight: 700;
-      }
-      html {
-        font-family: neo-sans;
-        font-weight: 700;
-        font-size: calc(62rem / 16);
-      }
-      body {
-        background: white;
-      }
-      section {
-        border-radius: 1em;
-        padding: 1em;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, -50%);
-      }
-    </style>
-  </head>
-  <body>
-    <section>
-      Hello from Render!
-    </section>
-  </body>
-</html>
-`
+wss.on("connection", (ws) => {
+	console.log("Nouveau client WebSocket connecté");
+	wsConnections.add(ws);
+
+	// Gérer les messages reçus du client
+	ws.on("message", async (message) => {
+		const data = JSON.parse(message);
+
+		if (data.type === "connect") {
+			await disconnectTiktokConnection()
+			// Initialiser une nouvelle connexion TikTok
+			console.log('TikTok :', data.username);
+			initTiktokLiveListener(data.username, ws);
+		}
+	});
+
+	ws.on("close", async () => {
+		console.log("Client WebSocket déconnecté");
+		wsConnections.delete(ws);
+		await disconnectTiktokConnection()
+	});
+});
+
+const disconnectTiktokConnection = async () => {
+	if (currentTiktokConnection) {
+		await currentTiktokConnection.disconnect();
+	}
+}
+
+const tiktokConfig = {
+	processInitialData: false,
+	enableExtendedGiftInfo: false,
+	enableWebsocketUpgrade: true,
+	requestPollingIntervalMs: 2000,
+	sessionId: process.env.TIKTOK_SESSION_ID || '123333'
+};
+
+const initTiktokLiveListener = async (tiktokLiveAccount, ws) => {
+	try {
+		const tiktokLiveConnection = new WebcastPushConnection(tiktokLiveAccount, tiktokConfig);
+		const state = await tiktokLiveConnection.connect();
+		currentTiktokConnection = tiktokLiveConnection;
+
+		console.info(`Connecté à roomId ${state.roomId}`);
+		console.info(`Connecté au compte TikTok Live ${tiktokLiveAccount}`);
+
+		ws.send(
+			JSON.stringify({
+				type: "connection_status",
+				status: "connected",
+				username: tiktokLiveAccount,
+			}),
+		);
+
+		let tiktokLiveLastMessage = null;
+
+		tiktokLiveConnection.on("chat", (data) => {
+			if (tiktokLiveLastMessage === data.comment) {
+				console.log(`chat skip ---:${tiktokLiveLastMessage}`);
+				return;
+			}
+
+			tiktokLiveLastMessage = data.comment;
+			console.log(`chat:${data.comment}`);
+
+			const response = {
+				type: "chat",
+				message: data.comment,
+				userId: data.userId,
+				username: data.uniqueId,
+				timestamp: new Date().toISOString(),
+			};
+
+			wsConnections.forEach((client) => {
+				if (client.readyState === 1) {
+					client.send(JSON.stringify(response));
+				}
+			});
+		});
+
+		tiktokLiveConnection.on("error", (err) => {
+			console.error("Erreur TikTok:", err);
+			ws.send(
+				JSON.stringify({
+					type: "connection_status",
+					status: "error",
+					message: err.message,
+				}),
+			);
+		});
+	} catch (error) {
+		console.error("Erreur de connexion TikTok Live:", error);
+		ws.send(
+			JSON.stringify({
+				type: "connection_status",
+				status: "error",
+				message: error.message,
+			}),
+		);
+	}
+};
+
+app.get("/", async (req, res) => {
+	try {
+		const htmlPath = join(__dirname, 'index.html');
+		const content = await readFile(htmlPath, 'utf8');
+		res.type('html').send(content);
+	} catch (error) {
+		console.error('Erreur lors de la lecture du fichier HTML:', error);
+		res.status(500).send('Erreur serveur');
+	}
+});
+
+server.listen(port, () => {
+	console.log(`Serveur démarré sur le port ${port}`);
+});

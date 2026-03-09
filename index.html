@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>TikTok Live Chat</title>
+		<style>
+			@import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
+			@font-face {
+				font-family: "neo-sans";
+				src: url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3")
+					format("woff2");
+				font-style: normal;
+				font-weight: 700;
+			}
+			body {
+				font-family: Arial, sans-serif;
+				margin: 0;
+				padding: 0;
+				background-color: #f0f2f5;
+				min-height: 100vh;
+			}
+			.container {
+				display: flex;
+				flex-direction: column;
+				padding: 20px;
+				max-width: 1400px;
+				margin: 0 auto;
+				gap: 20px;
+			}
+			#connection-form {
+				background: white;
+				padding: 20px;
+				border-radius: 8px;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+				display: flex;
+				flex-wrap: wrap;
+				gap: 10px;
+				align-items: center;
+			}
+			#username-input {
+				flex: 1;
+				min-width: 200px;
+				padding: 12px;
+				border: 2px solid #e1e1e1;
+				border-radius: 6px;
+				font-size: 16px;
+				transition: border-color 0.3s ease;
+			}
+			#username-input:focus {
+				outline: none;
+				border-color: #4caf50;
+			}
+			#connect-button {
+				padding: 12px 24px;
+				background-color: #4caf50;
+				color: white;
+				border: none;
+				border-radius: 6px;
+				cursor: pointer;
+				font-size: 16px;
+				font-weight: 600;
+				transition: background-color 0.3s ease;
+			}
+			#connect-button:hover:not(:disabled) {
+				background-color: #45a049;
+			}
+			#connect-button:disabled {
+				background-color: #cccccc;
+				cursor: not-allowed;
+			}
+			#loading {
+				display: none;
+				text-align: center;
+				width: 100%;
+				color: #666;
+				font-size: 14px;
+			}
+			#status-message {
+				margin: 10px 0;
+				padding: 12px;
+				border-radius: 6px;
+				width: 100%;
+				font-size: 14px;
+				display: none;
+			}
+			.success {
+				background-color: #e7f6e7;
+				color: #2e7d32;
+				border: 1px solid #c8e6c9;
+			}
+			.error {
+				background-color: #ffebee;
+				color: #c62828;
+				border: 1px solid #ffcdd2;
+			}
+			#chat-container {
+				background: white;
+				padding: 20px;
+				border-radius: 8px;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+				height: calc(100vh - 260px);
+				overflow-y: auto;
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+			}
+			.chat-message {
+				padding: 12px 16px;
+				background: #f8f9fa;
+				border-radius: 8px;
+				border-left: 4px solid #4caf50;
+				transition: transform 0.2s ease;
+			}
+			.chat-message:hover {
+				transform: translateX(4px);
+			}
+			.username {
+				font-weight: bold;
+				color: #1a73e8;
+				margin-right: 8px;
+			}
+			.message {
+				color: #333;
+				line-height: 1.4;
+			}
+			/* Scrollbar personnalisé pour Webkit */
+			#chat-container::-webkit-scrollbar {
+				width: 8px;
+			}
+			#chat-container::-webkit-scrollbar-track {
+				background: #f1f1f1;
+				border-radius: 4px;
+			}
+			#chat-container::-webkit-scrollbar-thumb {
+				background: #c1c1c1;
+				border-radius: 4px;
+			}
+			#chat-container::-webkit-scrollbar-thumb:hover {
+				background: #a8a8a8;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div id="connection-form">
+				<input
+					type="text"
+					id="username-input"
+					placeholder="Entrez le nom d'utilisateur TikTok"
+				/>
+				<button id="connect-button">Connecter</button>
+				<div id="loading">Connexion en cours...</div>
+				<div id="status-message"></div>
+			</div>
+			<div id="chat-container"></div>
+		</div>
+
+		<script>
+			const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:"
+			const ws = new WebSocket(`${wsProtocol}//${window.location.host}`)
+			const chatContainer = document.getElementById("chat-container")
+			const usernameInput = document.getElementById("username-input")
+			const connectButton = document.getElementById("connect-button")
+			const loadingDiv = document.getElementById("loading")
+			const statusMessage = document.getElementById("status-message")
+
+			connectButton.addEventListener("click", () => {
+				const username = usernameInput.value.trim()
+				if (username) {
+					connectButton.disabled = true
+					loadingDiv.style.display = "block"
+					statusMessage.style.display = "none"
+
+					ws.send(
+						JSON.stringify({
+							type: "connect",
+							username: username,
+						}),
+					)
+				}
+			})
+
+			ws.onmessage = (event) => {
+				const data = JSON.parse(event.data)
+
+				if (data.type === "connection_status") {
+					loadingDiv.style.display = "none"
+					statusMessage.style.display = "block"
+
+					if (data.status === "connected") {
+						statusMessage.className = "success"
+						statusMessage.textContent = `Connecté au live de ${data.username}`
+					} else if (data.status === "error") {
+						statusMessage.className = "error"
+						statusMessage.textContent = `Erreur: ${data.message}`
+						connectButton.disabled = false
+					}
+				} else if (data.type === "chat") {
+					const messageDiv = document.createElement("div")
+					messageDiv.className = "chat-message"
+					messageDiv.innerHTML = `
+                                                <span class="username">${data.username}:</span>
+                                                <span class="message">${data.message}</span>
+                                                `
+					chatContainer.appendChild(messageDiv)
+					chatContainer.scrollTop = chatContainer.scrollHeight
+				}
+			}
+
+			ws.onclose = () => {
+				console.log("Connexion WebSocket fermée")
+				statusMessage.className = "error"
+				statusMessage.textContent = "Connexion perdue. Veuillez rafraîchir la page."
+				statusMessage.style.display = "block"
+				connectButton.disabled = false
+			}
+
+			ws.onerror = (error) => {
+				console.error("Erreur WebSocket:", error)
+				statusMessage.className = "error"
+				statusMessage.textContent = "Erreur de connexion. Veuillez réessayer."
+				statusMessage.style.display = "block"
+				connectButton.disabled = false
+			}
+		</script>
+	</body>
+</html>

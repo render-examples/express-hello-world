@@ -1,0 +1,26 @@
+.App {
+  text-align: center;
+}
+
+nav {
+  position: fixed;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 15px;
+  border-radius: 11px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  width: 100vw;
+  background-color: #000000;
+}
+
+.App-logo {
+  height: 50vmin;
+  cursor: pointer;
+}
+
+.App-link {
+  color: #61dafb;
+}

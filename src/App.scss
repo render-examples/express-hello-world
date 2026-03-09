@@ -1,0 +1,38 @@
+@import 'variables.scss';
+
+.App-header {
+  background: linear-gradient(to right, rgb(182, 16, 90), rgb(164, 134, 212));
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #fff;
+}
+
+p {
+  position: relative;
+  left: 20%;
+  width: 15vw;
+  padding: 15px;
+  font-weight: bolder;
+  font-size: 15px;
+  background-color: $secondary;
+  box-shadow: 2px 2px 2px #000;
+  color: #fff;
+  border-radius: 11px;
+  z-index: 1;
+
+  &:before {
+	  position: absolute;
+	  text-shadow: 2px 2px black;
+	  bottom: -60px;
+	  left: -20px;
+	  color: $secondary;
+	  content: ".";
+	  font-weight: bolder;
+	  font-size: 90px;
+	  z-index: 0;
+  }
+}

@@ -1,16 +1,39 @@
 {
-  "name": "express-hello-world",
+  "name": "tk-live",
   "version": "1.0.0",
-  "description": "Express Hello World on Render",
+  "description": "tiktok live app",
   "main": "app.js",
-  "repository": "https://github.com/render-examples/express-hello-world",
+  "repository": "https://github.com/alexlevy0/tk-live",
   "author": "Render Developers",
   "license": "MIT",
   "private": false,
+  "type": "module",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "dev": "react-scripts start"
   },
   "dependencies": {
-    "express": "^5.0.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "5.0.1",
+    "express": "^5.0.0",
+    "tiktok-live-connector": "^1.2.0",
+    "ws": "8.18.0",
+    "sass": "^1.56.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
