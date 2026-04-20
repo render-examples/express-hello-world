@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: express-hello-world
+    runtime: node
+    plan: free
+    buildCommand: yarn install --frozen-lockfile
+    startCommand: node app.js
+    envVars:
+      - key: NODE_ENV
+        value: production
