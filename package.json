@@ -8,17 +8,9 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "startmon": "nodemon app.js",
-    "server": "node app.js",
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
-  },
-  "engines": {
-    "node": ">=14"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.3"
+    "express": "^5.0.0"
   }
 }
