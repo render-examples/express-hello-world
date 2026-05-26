@@ -2,15 +2,23 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3001;
 
+app.get("/", (req, res) => res.type('html').send(html));
+
+const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+
+function shutdown() {
+  server.close(() => {
+    console.log('HTTP server closed. Exiting process...');
+    process.exit(0); // 0 indicates a normal, successful shutdown
+  });
+}
+
 // Trigger shutdown on keyboard interrupt (Ctrl+C)
 process.on('SIGINT', shutdown);
 
 // Trigger shutdown on termination signal (e.g., from Docker or system manager)
 process.on('SIGTERM', shutdown);
 
-app.get("/", (req, res) => res.type('html').send(html));
-
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;

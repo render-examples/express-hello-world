@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Test
+        run: yarn test --if-present
+
+      - name: Build docker image
+        run: docker build -t express-hello-world:ci .
+
+      - name: Notify success
+        if: success()
+        run: echo "CI pipeline completed successfully."
+
+      - name: Notify failure
+        if: failure()
+        run: echo "CI pipeline failed."
