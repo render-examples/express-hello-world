@@ -2,6 +2,12 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3001;
 
+// Trigger shutdown on keyboard interrupt (Ctrl+C)
+process.on('SIGINT', shutdown);
+
+// Trigger shutdown on termination signal (e.g., from Docker or system manager)
+process.on('SIGTERM', shutdown);
+
 app.get("/", (req, res) => res.type('html').send(html));
 
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
@@ -54,7 +60,7 @@ const html = `
   </head>
   <body>
     <section>
-      Hello from Render!
+      Hello from 23520923 - Hồ Nguyên Minh!
     </section>
   </body>
 </html>
