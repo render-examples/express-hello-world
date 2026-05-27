@@ -1,0 +1,61 @@
+name: CI
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - id: install_deps
+        name: Install dependencies
+        run: npm ci
+
+      - id: run_tests
+        name: Run tests
+        run: npm test
+
+      - id: build_image
+        name: Build Docker image
+        run: docker build -t ${{ github.repository }}:${{ github.sha }} .
+
+      - name: Notify result
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const result = (process.env.RESULT || 'unknown');
+            const runUrl = `${process.env.GITHUB_SERVER_URL}/${context.repo.owner}/${context.repo.repo}/actions/runs/${process.env.GITHUB_RUN_ID}`;
+            const message = result === 'success'
+              ? `✅ CI succeeded: ${runUrl}`
+              : `❌ CI result: ${result}. See details: ${runUrl}`;
+            const pr = context.payload.pull_request;
+            const isFork = pr && pr.head.repo.full_name !== `${context.repo.owner}/${context.repo.repo}`;
+            if (pr) {
+              if (isFork) {
+                core.info(`Skipping PR comment because this run originated from a fork: ${pr.head.repo.full_name}`);
+              } else {
+                await github.rest.issues.createComment({owner: context.repo.owner, repo: context.repo.repo, issue_number: pr.number, body: message});
+              }
+            } else if (result !== 'success') {
+              await github.rest.issues.create({owner: context.repo.owner, repo: context.repo.repo, title: `CI ${result} - ${context.sha}`, body: message});
+            }
+        env:
+          RESULT: ${{ (steps.install_deps.outcome == 'success' && steps.run_tests.outcome == 'success' && steps.build_image.outcome == 'success') && 'success' || 'failure' }}
