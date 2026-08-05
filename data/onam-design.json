@@ -1,0 +1,21 @@
+{
+  "_comment": "Template used by the create_design tool for brand-new (source: 'local') creatives. Swap the placeholder image URLs below with your hosted PNG URLs. See README / actions.js for how they map to edit state.",
+  "images": {
+    "base": "http://s7ap1.scene7.com/is/image/varunAEM/onam-base?cache=off",
+    "final": "http://s7ap1.scene7.com/is/image/varunAEM/onam-final?cache=off",
+    "malayalam": "http://s7ap1.scene7.com/is/image/varunAEM/onam-malyalam?cache=off"
+  },
+  "palette": [
+    { "name": "Marigold", "hex": "#F4A300" },
+    { "name": "Maroon", "hex": "#800020" },
+    { "name": "Deep Green", "hex": "#1B5E20" }
+  ],
+  "slots": {
+    "editable": [
+      { "name": "headline", "type": "text", "aliases": ["heading", "title", "header", "banner_text", "text"] },
+      { "name": "background", "type": "color", "aliases": ["background_color", "bg", "colour", "color", "background_colour"] },
+      { "name": "address", "type": "text", "aliases": ["store_address", "location", "store"] }
+    ],
+    "locked": ["logo", "product", "background_image"]
+  }
+}

@@ -1,0 +1,24 @@
+%% Flow B — Anjali: create + edit a brand-new design (image.source = "local")
+%% No Express calls — resolves to canned image URLs in data/onam-design.json.
+%% Render: https://mermaid.live  or any Mermaid-capable viewer.
+flowchart TD
+  A1["User: 'create a new design for Onam,<br/>LG washing machine + dishwasher, 20% off'"] --> CD["tool: create_design"]
+  CD --> CDa["actionCreateDesign<br/>loadOnamDesign + imageStore.createDesign<br/>(source = local, id = local_1)"]
+  CDa --> S1["sendImage(images.base)"]
+
+  A2["User: 'add my store address Princess Street Kochi'"] --> EG2["tool: edit_graphic"]
+  A3["User: 'translate the banner to Malayalam'"] --> EG3["tool: edit_graphic"]
+  EG2 --> RT{"actionEditGraphic<br/>image.source?"}
+  EG3 --> RT
+  RT -->|"local"| EL["editLocalDesign"]
+
+  EL --> M{"Malayalam request?<br/>(Malayalam script OR the word<br/>'Malayalam' in ANY key/value)"}
+  M -->|"yes"| MAL["short-circuit:<br/>appliedEdits = {language: 'Malayalam'}<br/>skip locked/palette guards"]
+  M -->|"no"| CANON["canonicalizeEdits (aliases)"]
+  CANON --> GUARD{"unknown key? → 'locked by HQ'<br/>background off-palette? → reject"}
+  GUARD -->|"ok"| RES["resolveLocalImage:<br/>address/background set → images.final<br/>else → images.base"]
+  MAL --> RESM["resolveLocalImage → images.malayalam"]
+  RES --> S2["recordEdits + sendImage(url)"]
+  RESM --> S2
+
+  RT -->|"express"| EXE["editExpressDesign<br/>(Adobe Express API — see other diagram)"]
