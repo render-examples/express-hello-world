@@ -1,0 +1,22 @@
+{
+  "_comment": "Personalised customer offer used by create_design (source: 'local'). Two canned creatives — English and Hindi. Swap the image URLs for your hosted banners. Plans/featured drive the plan-picker buttons and the HQ price-floor governance in the system prompt.",
+  "images": {
+    "en": "https://s7ap1.scene7.com/is/image/varunAEM/banner-apoorva?cache=off",
+    "hi": "https://s7ap1.scene7.com/is/image/varunAEM/banner-apoorva-hindi?cache=off"
+  },
+  "plans": ["3-Yr Comprehensive", "Zero Dep + RSA", "Engine Protect combo"],
+  "featured": {
+    "plan": "3-Yr Comprehensive",
+    "price": "₹28,999/year",
+    "was": "₹52,499/year",
+    "savings": "₹23,500/year"
+  },
+  "defaults": { "customer": "Apoorva", "model": "Grand Vitara" },
+  "models": ["Grand Vitara", "Brezza", "Swift", "Baleno", "Ertiga", "Fronx", "Jimny", "Dzire", "Ciaz", "XL6"],
+  "slots": {
+    "editable": [
+      { "name": "language", "type": "text", "aliases": ["lang", "translate", "translation", "headline", "text"] }
+    ],
+    "locked": ["logo", "brand", "price", "plan", "product"]
+  }
+}

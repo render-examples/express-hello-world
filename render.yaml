@@ -4,7 +4,43 @@ services:
     runtime: node
     plan: free
     buildCommand: yarn install --frozen-lockfile
-    startCommand: node app.js
+    startCommand: node src/app.js
     envVars:
       - key: NODE_ENV
         value: production
+      - key: VERIFY_TOKEN
+        sync: false
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
+      - key: WHATSAPP_TOKEN
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_BASE_URL
+        sync: false
+      - key: OPENAI_MODEL
+        sync: false
+      - key: EXPRESS_CLIENT_ID
+        sync: false
+      - key: EXPRESS_CLIENT_SECRET
+        sync: false
+      - key: EXPRESS_API_SCOPE
+        sync: false
+      - key: EXPRESS_IMS_TOKEN_URL
+        sync: false
+      - key: EXPRESS_API_BASE_URL
+        sync: false
+      - key: EXPRESS_TEMPLATES_FILE
+        sync: false
+      - key: EXPRESS_STATUS_POLL_INTERVAL_MS
+        sync: false
+      - key: EXPRESS_STATUS_POLL_TIMEOUT_MS
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_REGION
+        sync: false
+      - key: S3_BUCKET_NAME
+        sync: false
