@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DropIn — Stations</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="header">
+        <div class="topbar">
+          <div class="brand">
+            <img class="app-logo app-logo-lobby" src="logo2_bg_logo.png" alt="DropIn" />
+            <img class="app-title app-title-lobby" src="logo2_bg_title.png" alt="DropIn" />
+          </div>
+          <button id="profileChip" class="profile-chip hidden" title="Edit your profile">
+            <span id="profileAvatar" class="chip-avatar"></span>
+            <span id="profileNick" class="chip-nick"></span>
+            <span class="chip-edit">✎</span>
+          </button>
+        </div>
+        <p class="subtitle">Pick a station or start your own</p>
+      </header>
+
+      <section class="lobby-actions">
+        <button id="addStationBtn" class="btn-primary add-station-btn">＋ Add Station</button>
+      </section>
+
+      <section id="stationList" class="station-list"></section>
+      <p id="emptyState" class="lobby-empty hidden">
+        No stations yet. Hit <strong>Add Station</strong> to create the first one!
+      </p>
+
+      <div id="toast" class="toast"></div>
+    </main>
+
+    <!-- Create-station modal -->
+    <div id="stationModal" class="modal-overlay hidden">
+      <div class="modal card">
+        <h2>New station</h2>
+        <p class="modal-hint">Give your station a name. Others will find it in the lobby.</p>
+        <form id="stationForm">
+          <label class="modal-label" for="stationNameInput">Station name</label>
+          <input
+            id="stationNameInput"
+            class="modal-input"
+            type="text"
+            maxlength="40"
+            placeholder="e.g. Chill Vibes"
+            autocomplete="off"
+          />
+          <label class="modal-check" for="stationPublicInput">
+            <input id="stationPublicInput" type="checkbox" checked />
+            <span class="modal-check-body">
+              <span class="modal-check-title">Public station</span>
+              <span class="modal-check-hint"
+                >Show it in the lobby. Uncheck to keep it private — reachable
+                only by sharing its link.</span
+              >
+            </span>
+          </label>
+          <div class="modal-actions">
+            <button id="stationCancel" type="button" class="btn-ghost">Cancel</button>
+            <button type="submit" class="btn-primary">Create &amp; enter</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Shared identity modal (also used on station pages) -->
+    <div id="profileModal" class="modal-overlay hidden">
+      <div class="modal card">
+        <h2 id="profileModalTitle">Choose your identity</h2>
+        <p class="modal-hint">Pick a nickname and an avatar so others know who's here.</p>
+        <label class="modal-label" for="nickInput">Nickname</label>
+        <input
+          id="nickInput"
+          class="modal-input"
+          type="text"
+          maxlength="24"
+          placeholder="Your nickname…"
+          autocomplete="off"
+        />
+        <div class="modal-label">Avatar</div>
+        <div id="avatarGrid" class="avatar-grid"></div>
+        <div class="modal-actions">
+          <!-- No cancel: identity is required before entering any station -->
+          <button id="profileSave" type="button" class="btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="profile.js"></script>
+    <script src="lobby.js"></script>
+  </body>
+</html>

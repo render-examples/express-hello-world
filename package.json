@@ -1,16 +1,25 @@
 {
-  "name": "express-hello-world",
+  "name": "DropIn",
   "version": "1.0.0",
-  "description": "Express Hello World on Render",
-  "main": "app.js",
-  "repository": "https://github.com/render-examples/express-hello-world",
-  "author": "Render Developers",
-  "license": "MIT",
-  "private": false,
+  "description": "A shared network jukebox (bitbox) server. Clients add YouTube songs to a shared playlist and everyone listens to the same synchronized stream.",
+  "main": "server.js",
+  "type": "commonjs",
   "scripts": {
-    "start": "node app.js"
+    "build": "mkdir -p bin && curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o bin/yt-dlp && chmod +x bin/yt-dlp",
+    "start": "node server.js",
+    "dev": "node --watch server.js"
   },
+  "keywords": [
+    "jukebox",
+    "bitbox",
+    "youtube",
+    "music",
+    "stream"
+  ],
+  "license": "MIT",
   "dependencies": {
-    "express": "^5.0.0"
+    "express": "^4.19.2",
+    "ws": "^8.18.0",
+    "youtube-dl-exec": "^3.0.10"
   }
 }

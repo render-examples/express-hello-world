@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DropIn — Station</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="header">
+        <div class="topbar">
+          <div class="brand-logo">
+            <img class="app-logo app-logo-top" src="logo2_bg_logo.png" alt="DropIn" />
+            <img class="app-title app-title-top" src="logo2_bg_title.png" alt="DropIn" />
+          </div>
+          <div class="topbar-actions">
+            <button id="shareBtn" class="share-btn" type="button" title="Copy station link">
+              <span class="share-icon">🔗</span>
+              <span class="share-text">Share</span>
+            </button>
+            <button id="profileChip" class="profile-chip hidden" title="Edit your profile">
+              <span id="profileAvatar" class="chip-avatar"></span>
+              <span id="profileNick" class="chip-nick"></span>
+              <span class="chip-edit">✎</span>
+            </button>
+          </div>
+        </div>
+        <div class="station-row">
+          <a href="/" class="back-link" title="All stations">‹</a>
+          <span class="brand-name" id="stationName">DropIn</span>
+          <span class="station-by" id="stationBy"></span>
+        </div>
+      </header>
+
+      <section class="listeners card">
+        <div class="listeners-head">
+          <span class="listeners-label">Listeners</span>
+          <span id="listenerCount" class="count">0</span>
+        </div>
+        <div id="listenersRow" class="listeners-row"></div>
+      </section>
+
+      <section class="now-playing card">
+        <div class="np-label">Now Playing</div>
+        <div id="nowPlaying" class="np-title">Nothing playing yet</div>
+        <div id="nowBy" class="np-by"></div>
+        <div class="player-wrap">
+          <div id="player"></div>
+          <button id="joinBtn" class="join-btn overlay">▶ Tap to join</button>
+        </div>
+        <button id="skipBtn" class="skip-btn hidden">⏭ Skip</button>
+      </section>
+
+      <section class="add card">
+        <div class="add-tabs" role="tablist">
+          <button id="tabSearch" class="add-tab active" role="tab" type="button">Search</button>
+          <button id="tabLink" class="add-tab" role="tab" type="button">Set Link</button>
+        </div>
+
+        <form id="searchForm" class="add-form add-panel">
+          <div class="search-box">
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="Search for a song…"
+              autocomplete="off"
+            />
+            <ul id="searchSuggestions" class="suggestions hidden"></ul>
+          </div>
+          <button type="submit">Add</button>
+        </form>
+
+        <form id="addForm" class="add-form add-panel hidden">
+          <input
+            id="urlInput"
+            type="url"
+            placeholder="Paste a YouTube video or playlist link…"
+            autocomplete="off"
+            required
+          />
+          <button type="submit" id="addVideoBtn">Add Video</button>
+          <button type="button" id="addPlaylistBtn" class="btn-secondary">Add Playlist</button>
+        </form>
+
+        <div id="addProgress" class="add-progress hidden">
+          <div class="add-progress-bar"></div>
+          <span class="add-progress-label">Adding song…</span>
+        </div>
+      </section>
+
+      <section class="queue card">
+        <h2>Up Next <span id="queueCount" class="count">0</span></h2>
+        <ol id="playlist" class="playlist">
+          <li class="empty">The playlist is empty. Add a song!</li>
+        </ol>
+      </section>
+
+      <div id="toast" class="toast"></div>
+    </main>
+
+    <aside id="actionsDrawer" class="drawer drawer-left collapsed">
+      <button type="button" id="actionsToggle" class="drawer-handle">
+        <span class="drawer-handle-icon">📋</span>
+        <span class="drawer-handle-text">Activity</span>
+      </button>
+      <div class="drawer-body">
+        <h3 class="drawer-title">Activity</h3>
+        <ul id="actionsList" class="log-list"></ul>
+      </div>
+    </aside>
+
+    <aside id="chatDrawer" class="drawer drawer-right collapsed">
+      <button type="button" id="chatToggle" class="drawer-handle">
+        <span class="drawer-handle-icon">💬</span>
+        <span class="drawer-handle-text">Chat</span>
+      </button>
+      <div class="drawer-body">
+        <h3 class="drawer-title">Chat</h3>
+        <ul id="chatList" class="chat-list"></ul>
+        <form id="chatForm" class="chat-form">
+          <input
+            id="chatInput"
+            type="text"
+            maxlength="300"
+            placeholder="Message everyone…"
+            autocomplete="off"
+          />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </aside>
+
+    <div id="profileModal" class="modal-overlay hidden">
+      <div class="modal card">
+        <h2 id="profileModalTitle">Choose your identity</h2>
+        <p class="modal-hint">Pick a nickname and an avatar so others know who's adding songs.</p>
+        <label class="modal-label" for="nickInput">Nickname</label>
+        <input
+          id="nickInput"
+          class="modal-input"
+          type="text"
+          maxlength="24"
+          placeholder="Your nickname…"
+          autocomplete="off"
+        />
+        <div class="modal-label">Avatar</div>
+        <div id="avatarGrid" class="avatar-grid"></div>
+        <div class="modal-actions">
+          <!-- No cancel: identity is required to take part in a station -->
+          <button id="profileSave" type="button" class="btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="profile.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
