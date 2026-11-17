@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="NEXORA AI helps businesses manage customers, sales and everyday work from one workspace.">
+  <title>NEXORA AI — Work Smarter. Automate Everything.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" data-page="overview">
+        <span class="brand-mark">N</span><span>NEXORA<span class="brand-ai"> AI</span><small>BUSINESS WORKSPACE</small></span>
+      </a>
+      <div class="workspace-switch"><span class="workspace-dot"></span><span><b>Acme Workspace</b><small>Free workspace</small></span><span class="chevron">⌄</span></div>
+      <p class="nav-label">WORKSPACE</p>
+      <nav class="nav">
+        <button class="nav-item active" data-page="overview"><span>◫</span> Overview</button>
+        <button class="nav-item" data-page="assistant"><span>✧</span> AI Assistant <em>NEW</em></button>
+        <button class="nav-item" data-page="contacts"><span>♙</span> Contacts & CRM</button>
+        <button class="nav-item" data-page="support"><span>▤</span> Customer Support</button>
+        <button class="nav-item" data-page="content"><span>✎</span> Content Studio</button>
+        <button class="nav-item" data-page="automations"><span>⌁</span> Automations</button>
+      </nav>
+      <p class="nav-label">MANAGE</p>
+      <nav class="nav">
+        <button class="nav-item" data-page="billing"><span>◇</span> Plan & Billing</button>
+        <button class="nav-item" data-page="settings"><span>⚙</span> Settings</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card"><div class="help-icon">?</div><b>Need a hand?</b><p>Explore the workspace and discover what NEXORA can do.</p><button data-page="support">Visit help center ↗</button></div>
+        <div class="profile"><div class="avatar">NM</div><span><b>Demo Member</b><small>Owner</small></span><button aria-label="Profile menu">···</button></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation">☰</button>
+        <div class="crumb">Workspace <span>/</span> <b id="crumbCurrent">Overview</b></div>
+        <div class="top-actions"><span class="status-pill"><i></i> All systems operational</span><button class="icon-btn" title="Notifications">♧</button><div class="avatar small">NM</div></div>
+      </header>
+
+      <section class="page active" id="page-overview">
+        <div class="welcome-row"><div><p class="eyebrow">MONDAY, YOUR WORKSPACE IS READY</p><h1>Good morning, Demo Member <span class="wave">✦</span></h1><p class="muted">Here’s what’s happening across your business today.</p></div><button class="primary-btn" data-page="assistant">✧ Ask NEXORA AI</button></div>
+        <div class="stat-grid">
+          <article class="stat-card"><div class="stat-top"><span>Total contacts</span><span class="stat-icon purple">♙</span></div><strong id="statContacts">128</strong><div class="stat-foot"><span class="trend">↗ 12.8%</span> <span>vs last month</span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Open conversations</span><span class="stat-icon blue">▤</span></div><strong>24</strong><div class="stat-foot"><span class="trend">↗ 8.2%</span> <span>vs last month</span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>AI tasks completed</span><span class="stat-icon green">✧</span></div><strong>342</strong><div class="stat-foot"><span class="trend">↗ 18.4%</span> <span>vs last month</span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Workspace usage</span><span class="stat-icon orange">◷</span></div><strong>68<span class="unit">%</span></strong><div class="progress"><i style="width:68%"></i></div><div class="stat-foot"><span>68 of 100 demo credits used</span></div></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel activity-panel"><div class="panel-head"><div><h2>Workspace activity</h2><p>Your recent activity at a glance</p></div><button class="text-btn">Last 7 days⌄</button></div><div class="chart-wrap"><div class="chart-y"><span>100</span><span>75</span><span>50</span><span>25</span><span>0</span></div><div class="chart"><div class="grid-lines"><i></i><i></i><i></i><i></i><i></i></div><svg viewBox="0 0 640 210" preserveAspectRatio="none" role="img" aria-label="Illustrative activity chart"><defs><linearGradient id="area" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#7967f7" stop-opacity=".22"/><stop offset="1" stop-color="#7967f7" stop-opacity="0"/></linearGradient></defs><path d="M0 160 C35 145 55 155 90 125 S150 135 185 105 S245 120 275 90 S330 112 365 76 S425 95 455 62 S520 75 550 48 S600 60 640 24 L640 210 L0 210Z" fill="url(#area)"/><path d="M0 160 C35 145 55 155 90 125 S150 135 185 105 S245 120 275 90 S330 112 365 76 S425 95 455 62 S520 75 550 48 S600 60 640 24" fill="none" stroke="#7868f5" stroke-width="3" vector-effect="non-scaling-stroke"/></svg><div class="chart-x"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div></div></div></article>
+          <article class="panel quick-panel"><div class="panel-head"><div><h2>Quick actions</h2><p>Get things done faster</p></div></div><button class="quick-action" data-page="assistant"><span class="quick-icon purple">✧</span><span><b>Ask AI Assistant</b><small>Get help with business tasks</small></span><i>→</i></button><button class="quick-action" data-page="contacts"><span class="quick-icon blue">＋</span><span><b>Add a new contact</b><small>Grow your customer list</small></span><i>→</i></button><button class="quick-action" data-page="content"><span class="quick-icon orange">✎</span><span><b>Create content</b><small>Draft a post or email</small></span><i>→</i></button></article>
+        </div>
+        <div class="bottom-grid">
+          <article class="panel"><div class="panel-head"><div><h2>Recent contacts</h2><p>Your latest customer relationships</p></div><button class="text-btn" data-page="contacts">View all →</button></div><div class="table-scroll"><table><thead><tr><th>NAME</th><th>COMPANY</th><th>STATUS</th><th>ADDED</th></tr></thead><tbody id="recentContacts"><tr><td><div class="person"><span class="mini-avatar">JD</span> Jordan Davis</div></td><td>Northstar Studio</td><td><span class="tag active-tag">Active</span></td><td>Today</td></tr><tr><td><div class="person"><span class="mini-avatar pink">SK</span> Sarah Kim</div></td><td>Bright Labs</td><td><span class="tag lead-tag">Lead</span></td><td>Yesterday</td></tr><tr><td><div class="person"><span class="mini-avatar green">MR</span> Mateo Rivera</div></td><td>Orbit Digital</td><td><span class="tag active-tag">Active</span></td><td>Oct 21</td></tr></tbody></table></div></article>
+          <article class="panel plan-card"><div class="panel-head"><div><h2>Your plan</h2><p>Make more room to grow</p></div><span class="plan-badge">FREE</span></div><h3>Free workspace</h3><p class="muted">Explore NEXORA AI with essential tools.</p><div class="plan-meter"><div><span>Monthly AI credits</span><b>68 / 100</b></div><div class="progress"><i style="width:68%"></i></div></div><button class="primary-btn full" data-page="billing">Explore plans <span>→</span></button></article>
+        </div>
+      </section>
+
+      <section class="page" id="page-assistant">
+        <div class="page-heading"><div><p class="eyebrow">YOUR AI WORK PARTNER</p><h1>AI Assistant</h1><p class="muted">Get a head start on everyday business tasks.</p></div><span class="beta-badge">✧ AI WORKSPACE</span></div>
+        <div class="assistant-layout"><div class="panel chat-panel"><div class="chat-head"><div class="ai-orb">✧</div><div><b>NEXORA Assistant</b><small><i class="online-dot"></i> Demo mode · Connect an AI API for live answers</small></div><button class="text-btn" id="clearChat">Clear chat</button></div><div class="chat-messages" id="chatMessages"><div class="message assistant-message"><div class="message-avatar">N</div><div><b>NEXORA AI</b><p>Hi there! I'm your business assistant. I can help draft emails, brainstorm marketing ideas, summarize plans and organize your next steps. What are we working on today?</p></div></div></div><div class="suggestions"><button>Write a welcome email</button><button>Give me marketing ideas</button><button>Create a follow-up plan</button></div><form class="chat-input" id="chatForm"><input id="chatInput" placeholder="Ask anything about your business..." autocomplete="off"><button class="send-btn" aria-label="Send message">↑</button></form><p class="disclaimer">Demo responses are illustrative and are not generated by a live AI model.</p></div><aside class="panel prompt-panel"><h3>Try asking</h3><button class="prompt-sample" data-prompt="Write a friendly welcome email for a new customer.">✉ <span>Write a welcome email</span> →</button><button class="prompt-sample" data-prompt="Give me five practical marketing ideas for a small business.">◈ <span>Generate marketing ideas</span> →</button><button class="prompt-sample" data-prompt="Create a three-step customer follow-up plan.">⌁ <span>Plan customer follow-ups</span> →</button><div class="credits-box"><span>✧</span><div><b>AI credits</b><small>Demo workspace · 32 credits remaining</small></div></div></aside></div>
+      </section>
+
+      <section class="page" id="page-contacts">
+        <div class="page-heading"><div><p class="eyebrow">BUILD STRONGER RELATIONSHIPS</p><h1>Contacts & CRM</h1><p class="muted">Keep your customer relationships organized.</p></div><button class="primary-btn" id="addContactBtn">＋ Add contact</button></div>
+        <div class="stat-grid compact-stats"><article class="stat-card"><div class="stat-top"><span>Total contacts</span><span class="stat-icon purple">♙</span></div><strong id="crmTotal">3</strong><div class="stat-foot">Across your workspace</div></article><article class="stat-card"><div class="stat-top"><span>Active customers</span><span class="stat-icon green">✓</span></div><strong id="crmActive">2</strong><div class="stat-foot">Ready for engagement</div></article><article class="stat-card"><div class="stat-top"><span>New leads</span><span class="stat-icon orange">↗</span></div><strong id="crmLeads">1</strong><div class="stat-foot">Potential opportunities</div></article></div>
+        <article class="panel"><div class="panel-head"><div><h2>All contacts</h2><p>Manage your customer list</p></div><input class="search-input" id="contactSearch" placeholder="Search contacts..."></div><div class="table-scroll"><table><thead><tr><th>NAME</th><th>EMAIL</th><th>COMPANY</th><th>STATUS</th><th></th></tr></thead><tbody id="contactsTable"></tbody></table></div><div class="empty-state" id="contactsEmpty" hidden>No contacts match your search.</div></article>
+      </section>
+
+      <section class="page" id="page-support">
+        <div class="page-heading"><div><p class="eyebrow">CARE THAT SCALES</p><h1>Customer Support</h1><p class="muted">A home for customer conversations and support workflows.</p></div><button class="primary-btn" id="newTicketBtn">＋ New ticket</button></div>
+        <div class="stat-grid compact-stats"><article class="stat-card"><div class="stat-top"><span>Open tickets</span><span class="stat-icon blue">▤</span></div><strong>8</strong><div class="stat-foot">Across all channels</div></article><article class="stat-card"><div class="stat-top"><span>Awaiting reply</span><span class="stat-icon orange">◷</span></div><strong>3</strong><div class="stat-foot">Needs attention</div></article><article class="stat-card"><div class="stat-top"><span>Resolved this week</span><span class="stat-icon green">✓</span></div><strong>42</strong><div class="stat-foot"><span class="trend">↗ 14%</span> vs last week</div></article></div>
+        <article class="panel"><div class="panel-head"><div><h2>Support inbox</h2><p>Demo tickets to illustrate the workflow</p></div><span class="tag lead-tag">DEMO DATA</span></div><div class="ticket-list"><div class="ticket"><span class="ticket-avatar">AL</span><div class="ticket-main"><b>Alex Lee <span class="tag urgent-tag">High priority</span></b><p>Question about my subscription renewal</p><small>#NX-1042 · 18 minutes ago</small></div><span class="tag active-tag">Open</span></div><div class="ticket"><span class="ticket-avatar pink">PM</span><div class="ticket-main"><b>Priya Mehta</b><p>Can I add more team members?</p><small>#NX-1041 · 2 hours ago</small></div><span class="tag lead-tag">Pending</span></div><div class="ticket"><span class="ticket-avatar green">TW</span><div class="ticket-main"><b>Thomas Wilson</b><p>Thank you for helping me get started</p><small>#NX-1040 · Yesterday</small></div><span class="tag active-tag">Resolved</span></div></div></article>
+      </section>
+
+      <section class="page" id="page-content">
+        <div class="page-heading"><div><p class="eyebrow">IDEAS INTO ACTION</p><h1>Content Studio</h1><p class="muted">Create a first draft for your next customer touchpoint.</p></div><span class="beta-badge">DEMO MODE</span></div>
+        <div class="content-studio-grid"><article class="panel"><h2>Start creating</h2><p class="muted">Choose a format and describe what you need.</p><form id="contentForm" class="stack-form"><label>Content type<select id="contentType"><option>Social media post</option><option>Marketing email</option><option>Product description</option><option>Blog outline</option></select></label><label>Topic or brief<textarea id="contentBrief" rows="4" placeholder="e.g. A launch announcement for our new eco-friendly product..."></textarea></label><button class="primary-btn" type="submit">✧ Create draft</button></form><p class="disclaimer">Demo draft templates only. Connect a live AI provider to generate original content.</p></article><article class="panel output-panel"><div class="panel-head"><div><h2>Your draft</h2><p id="draftStatus">Your generated content will appear here.</p></div><button class="text-btn" id="copyDraft">Copy text</button></div><div class="draft-output" id="draftOutput">Your draft will appear here when you create content.</div></article></div>
+      </section>
+
+      <section class="page" id="page-automations">
+        <div class="page-heading"><div><p class="eyebrow">LESS REPETITIVE WORK</p><h1>Automations</h1><p class="muted">Plan repeatable workflows for your business.</p></div><button class="primary-btn" id="automationInfo">＋ New automation</button></div>
+        <article class="panel"><div class="panel-head"><div><h2>Workflow templates</h2><p>Starter ideas for your next automation</p></div><span class="tag lead-tag">COMING SOON</span></div><div class="workflow-grid"><div class="workflow-card"><span class="workflow-icon purple">✉</span><h3>New lead welcome</h3><p>Prepare a welcome message when a lead is added.</p><span class="tag">Email workflow</span></div><div class="workflow-card"><span class="workflow-icon blue">◷</span><h3>Follow-up reminder</h3><p>Remind your team to follow up with open leads.</p><span class="tag">Sales workflow</span></div><div class="workflow-card"><span class="workflow-icon green">▤</span><h3>Support triage</h3><p>Organize incoming support requests by priority.</p><span class="tag">Support workflow</span></div></div><div class="notice">Automation execution is not enabled in this MVP demo. Live integrations will be added after backend setup.</div></article>
+      </section>
+
+      <section class="page" id="page-billing">
+        <div class="page-heading"><div><p class="eyebrow">SIMPLE, TRANSPARENT PRICING</p><h1>Plans & Billing</h1><p class="muted">Choose the workspace plan that fits your business.</p></div></div>
+        <div class="billing-note"><b>You're currently on the Free demo plan.</b><span>Payments are not enabled in this preview. No charges can be made.</span></div>
+        <div class="pricing-grid"><article class="price-card"><p class="plan-name">FREE</p><h2>$0 <small>/ month</small></h2><p class="muted">Explore your workspace.</p><ul><li>100 demo AI credits</li><li>1 workspace</li><li>Basic CRM</li><li>Community resources</li></ul><button class="secondary-btn full" disabled>Current plan</button></article><article class="price-card featured"><span class="popular">MOST POPULAR</span><p class="plan-name">STARTER</p><h2>$19 <small>/ month</small></h2><p class="muted">For growing businesses.</p><ul><li>1,000 AI credits</li><li>1 workspace</li><li>AI assistant</li><li>Customer & lead tools</li><li>Email support</li></ul><button class="primary-btn full" data-plan="Starter">Choose Starter</button></article><article class="price-card"><p class="plan-name">PRO</p><h2>$49 <small>/ month</small></h2><p class="muted">For teams that move fast.</p><ul><li>3,500 AI credits</li><li>5 workspaces</li><li>Advanced AI tools</li><li>Team collaboration</li><li>Priority support</li></ul><button class="secondary-btn full" data-plan="Pro">Choose Pro</button></article><article class="price-card"><p class="plan-name">BUSINESS</p><h2>$99 <small>/ month</small></h2><p class="muted">For established teams.</p><ul><li>10,000 AI credits</li><li>Team access</li><li>Advanced workflows</li><li>Usage analytics</li><li>Priority support</li></ul><button class="secondary-btn full" data-plan="Business">Choose Business</button></article></div>
+      </section>
+
+      <section class="page" id="page-settings">
+        <div class="page-heading"><div><p class="eyebrow">MAKE IT YOURS</p><h1>Settings</h1><p class="muted">Manage your workspace preferences.</p></div></div>
+        <article class="panel settings-panel"><div class="settings-row"><div><b>Workspace profile</b><p>Update your business workspace name.</p></div><form id="workspaceForm"><input id="workspaceName" value="Acme Workspace"><button class="secondary-btn">Save</button></form></div><div class="settings-row"><div><b>Appearance</b><p>NEXORA's current interface theme.</p></div><span class="tag">Light theme</span></div><div class="settings-row"><div><b>Account</b><p>This is a local interactive preview. No account is connected.</p></div><span class="tag lead-tag">Preview</span></div></article>
+      </section>
+
+      <footer class="footer"><span>© 2026 NEXORA AI. All rights reserved.</span><span>Work Smarter. Automate Everything.</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <dialog id="contactDialog"><form method="dialog" id="contactForm"><div class="dialog-head"><div><p class="eyebrow">CUSTOMER RELATIONSHIPS</p><h2>Add a contact</h2></div><button class="close-dialog" aria-label="Close">×</button></div><label>Full name<input id="newName" required placeholder="e.g. Jamie Smith"></label><label>Email address<input id="newEmail" type="email" required placeholder="jamie@company.com"></label><label>Company<input id="newCompany" placeholder="Company name"></label><label>Status<select id="newStatus"><option>Lead</option><option>Active</option></select></label><button class="primary-btn full" id="saveContact" value="save">Save contact</button></form></dialog>
+  <script src="app.js"></script>
+</body>
+</html>
