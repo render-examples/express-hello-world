@@ -1,0 +1,13 @@
+# Security checklist before production
+- Keep all secret keys in hosting environment variables, never in frontend code.
+- Rotate any key that has been pasted into chat, committed to git or shared.
+- Enforce HTTPS and configure an exact APP_ORIGIN.
+- Review Supabase RLS policies with at least two test accounts.
+- Add login rate limiting, email verification, password reset and MFA policy.
+- Add organization membership tables and tenant-scoped policies before team features.
+- Add atomic AI usage metering, monthly reset jobs, budget caps and provider spend alerts.
+- Validate Paddle webhook signatures and add event idempotency/replay protection.
+- Never trust a frontend plan value; calculate entitlements server-side from verified subscriptions.
+- Add audit logs, backups, monitoring, error tracking and incident response.
+- Publish Terms, Privacy, Refund/Cancellation and contact pages before selling.
+- Conduct independent security and legal/tax review before live launch.

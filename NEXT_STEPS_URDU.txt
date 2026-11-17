@@ -1,0 +1,9 @@
+NEXORA AI v2 setup ke liye:
+1) Supabase par project banayein aur Project URL, anon key, service_role key hasil karein.
+2) SQL Editor mein supabase-schema.sql run karein.
+3) OpenAI API key banayein.
+4) Paddle seller eligibility aur account approval confirm karein. Abhi live payment enable nahi hai.
+5) Ye keys .env mein server par set karni hongi. Chat mein secret keys share na karein.
+6) Production se pehle dashboard ko API se wire, tenant security, webhook idempotency, usage reset aur full testing complete karna hoga.
+
+Is ZIP mein production backend ka foundation hai; abhi audited, fully launched SaaS nahi hai.

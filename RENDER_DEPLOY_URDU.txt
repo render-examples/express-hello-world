@@ -1,0 +1,29 @@
+NEXORA AI — Render hosting setup (Urdu)
+
+IMPORTANT
+- Keep this GitHub repository PRIVATE.
+- Never upload .env files or paste secrets into source code.
+- This package is a backend integration foundation, not a fully audited production SaaS.
+
+1) Extract this ZIP on your computer.
+2) Open the NEXORA_AI_v2 folder. Upload the CONTENTS of this folder (package.json, server.js, public folder, SQL files, etc.) to the ROOT of a new PRIVATE GitHub repository.
+3) On Render, choose New > Web Service and connect that private GitHub repository.
+4) Use:
+   Runtime: Node
+   Build command: npm install
+   Start command: npm start
+   Root directory: leave blank if files are in repository root
+   Instance: Free for initial testing only; it spins down after inactivity and is not recommended for production.
+5) In Render > Environment, add these variables (values come from your own provider dashboards):
+   SUPABASE_URL
+   SUPABASE_ANON_KEY
+   SUPABASE_SERVICE_ROLE_KEY
+   OPENAI_API_KEY
+   OPENAI_MODEL = gpt-4o-mini
+   APP_ORIGIN = leave unset during first deploy, then set to your Render URL after it is created
+   Do not add Paddle variables until Paddle seller approval and checkout integration are complete.
+6) Save changes and deploy. Test https://YOUR-RENDER-SERVICE.onrender.com/api/health
+7) After the Render URL exists, set APP_ORIGIN to that exact https URL and redeploy.
+8) In Supabase Authentication > URL Configuration, set Site URL to the Render URL and add it to Redirect URLs. Later, when nexora.app is connected, update these URLs to the custom domain.
+
+Do not publish this app as a production paid SaaS until dashboard/API wiring, usage metering, subscription entitlements, webhook idempotency, security review and end-to-end tests are complete.
