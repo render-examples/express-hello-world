@@ -1,61 +1,65 @@
-const express = require("express");
-const app = express();
-const port = process.env.PORT || 3001;
+const { Client, GatewayIntentBits } = require('discord.js');
+const client = new Client({ 
+  intents: [
+    GatewayIntentBits.Guilds, 
+    GatewayIntentBits.GuildMessages, 
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers
+  ] 
+});
 
-app.get("/", (req, res) => res.type('html').send(html));
+client.on('ready', () => {
+  console.log(`Nexus S Shop & Full Server Bot is online! (${client.user.tag})`);
+  client.user.setActivity('Nexus S Shop | تيكت وطلب', { type: 3 }); // Activity: Watching
+});
 
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+client.on('messageCreate', msg => {
+  if (msg.author.bot) return;
+  const content = msg.content.toLowerCase();
 
-server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
+  // 1. نظام التيكتات والطلب والشراء
+  if (content === 'تيكت' || content === 'ticket' || content === 'تذاكر' || content === 'طلب' || content === 'شراء') {
+    msg.reply('🎟️ **نظام التيكتات والطلب في Nexus S Shop:**\nلطلب أي منتج، شحن، أو فتح تيكت خاصة بك، يرجى التوجه إلى روم الـ (tickets) المخصص والضغط على زر فتح التيكت، وسيتم خدمتك بأسرع وقت! ✨');
+  }
 
-const html = `
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Hello from Render!</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script>
-      setTimeout(() => {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-          disableForReducedMotion: true
-        });
-      }, 500);
-    </script>
-    <style>
-      @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
-      @font-face {
-        font-family: "neo-sans";
-        src: url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
-        font-style: normal;
-        font-weight: 700;
-      }
-      html {
-        font-family: neo-sans;
-        font-weight: 700;
-        font-size: calc(62rem / 16);
-      }
-      body {
-        background: white;
-      }
-      section {
-        border-radius: 1em;
-        padding: 1em;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, -50%);
-      }
-    </style>
-  </head>
-  <body>
-    <section>
-      Hello from Render!
-    </section>
-  </body>
-</html>
-`
+  // 2. شوب ومتجر روبلكس والمنتجات
+  if (content === 'شوب' || content === 'shop' || content === 'متجر' || content === 'المنتجات' || content === 'روبلكس') {
+    msg.reply('🛒 أهلاً بك في **Nexus S Shop**! نوفر لك أفضل منتجات روبلكس وخدمات الدعم. تصفح الرومات الخاصة بالمنتجات وللشراء افتح تيكت جديدة 🎟️.');
+  }
+
+  // 3. الأسعار والمنيو
+  if (content === 'اسعار' || content === 'أسعار' || content === 'prices' || content === 'المنيو' || content === 'الاسعار') {
+    msg.reply('📋 **قائمة الأسعار والمنتجات:**\nجميع الأسعار وتفاصيل المنتجات موضحة بالكامل في الرومات الخاصة بها بالسيرفر، تصفحها وافتح تيكت عند اختيار طلبك!');
+  }
+
+  // 4. طرق الدفع المتاحة
+  if (content === 'طرق الدفع' || content === 'دفع' || content === 'شحن' || content === 'robux' || content === 'تحويل') {
+    msg.reply('💳 **طرق الدفع المتاحة في السيرفر:**\n- روبلكس (Robux)\n- بطاقات / تحويلات حسب المتجر\nتأكد من مراجعة روم طرق الدفع أو سؤال الإدارة داخل التيكت.');
+  }
+
+  // 5. الأمان والتشفير والتحذيرات
+  if (content === 'تشفير' || content === 'امان' || content === 'أمان' || content === 'سرقة' || content === 'نصب') {
+    msg.reply('🔒 **نظام الحماية والأمان في Nexus S:**\n⚠️ **تنبيه هام جداً:** لا تشارك كلمة سر حسابك، البريد الإلكتروني، أو أي معلومات شخصية مع أي شخص أبداً! الإدارة لا تطلب منك كلمة السر نهائياً، واحرص على الحذر من الروابط الوهمية.');
+  }
+
+  // 6. الدعم الفني والإدارة
+  if (content === 'دعم' || content === 'تواصل' || content === 'إدارة' || content === 'مساعدة' || content === 'حل مشكلة') {
+    msg.reply('🛠️ **الدعم الفني والإدارة:**\nللمساعدة أو الاستفسارات الخاصة، افتح تيكت دعم فني. فريق الإدارة جاهز دائماً لمساعدتك.');
+  }
+
+  // 7. الترحيب العام والسلام
+  if (content === 'السلام عليكم' || content === 'سلام عليكم' || content === 'hi' || content === 'hello' || content === 'هلا') {
+    msg.reply('وعليكم السلام ورحمة الله وبركاته! منور سيرفر **Nexus S Shop** ✨ كيف يمكننا مساعدتك اليوم؟');
+  }
+});
+
+// تسجيل الدخول باستخدام المتوكن المخفي في إعدادات Render
+client.login(process.env.DISCORD_TOKEN);
+
+// خادم ويب وهمي لإبقاء البوت يعمل 24/7 دون توقف على موقع Render
+const http = require('http');
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Nexus S Shop & Full Server Bot is running 24/7 successfully!');
+});
+server.listen(process.env.PORT || 3000);
